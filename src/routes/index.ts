@@ -1,10 +1,11 @@
 import { Application } from 'express';
+import { required } from '../middlewares';
 import { sessionController } from '../controllers';
 
 const registRoutes = (app: Application) => {
-  app.get('/auth', sessionController.getSession);
   app.post('/auth', sessionController.createSession);
-  app.delete('/auth', sessionController.deleteSessioin);
+  app.get('/auth', required, sessionController.getSession);
+  app.delete('/auth', required, sessionController.deleteSessioin);
 };
 
 export default registRoutes;

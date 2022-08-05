@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import registRoutes from './routes';
+import { deserialize } from './middlewares';
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(
     credentials: true,
   }),
 );
+
+app.use(deserialize);
 
 registRoutes(app);
 
