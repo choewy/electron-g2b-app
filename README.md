@@ -51,7 +51,8 @@ module.exports = {
 
 - React with craro
 
-```json
+```js
+/** @path ./package.js */
 {
   /* ... */
   "scripts": {
@@ -66,7 +67,9 @@ module.exports = {
 
 - Electron
 
-```json
+```js
+/** @path ./package.js */
+
 {
   "homepage": "./",
   "main": "public/main.js",
