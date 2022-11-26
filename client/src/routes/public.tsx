@@ -1,14 +1,11 @@
 import {
-  Home as HomeIcon,
   Login as LoginIcon,
   HowToReg as SignUpIcon,
 } from '@mui/icons-material';
 import { Router, RouterAbstract } from './class';
-import { HomePage, LoginPage, SignUpPage } from '@/pages';
+import { LoginPage, SignUpPage } from '@/pages';
 
 export class PublicRouter extends RouterAbstract {
-  public static readonly Home = new Router('홈', '', HomeIcon, HomePage);
-
   public static readonly Login = new Router(
     '로그인',
     'login',

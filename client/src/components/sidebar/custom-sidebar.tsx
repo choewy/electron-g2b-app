@@ -8,7 +8,7 @@ import {
 import { Drawer, Box } from '@mui/material';
 import { useSidebarState } from '@/states';
 import { CustomSidebarItemList } from './custom-sidebar-item-list';
-import { PrivateRouter, PublicRouter } from '@/routes';
+import { CommonRouter, PrivateRouter, PublicRouter } from '@/routes';
 import { useNavigate } from 'react-router-dom';
 
 const CustomSidebar = () => {
@@ -47,6 +47,10 @@ const CustomSidebar = () => {
   return (
     <Drawer anchor="left" open={open} onClose={onClose}>
       <Box sx={{ width: 250 }} role="presentation" onKeyDown={onClose}>
+        <CustomSidebarItemList
+          items={CommonRouter.all()}
+          onClickHandler={onClickHandler}
+        />
         <CustomSidebarItemList
           items={PrivateRouter.all()}
           onClickHandler={onClickHandler}
