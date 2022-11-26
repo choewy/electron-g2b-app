@@ -1,16 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+
+import { Suspense } from 'react';
+import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 
+import { RecoilRoot } from 'recoil';
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+import { App } from '@/app';
+import { CustomHelmet, CustomNavbar, CustomSidebar } from '@/components';
+
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
+
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <RecoilRoot>
+    <Suspense fallback={<div>LOAD...</div>}>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <HelmetProvider>
+          <CustomHelmet title="TODO" />
+          <CustomNavbar />
+          <CustomSidebar />
+          <App />
+        </HelmetProvider>
+      </BrowserRouter>
+    </Suspense>
+  </RecoilRoot>,
 );
 
 // If you want to start measuring performance in your app, pass a function
