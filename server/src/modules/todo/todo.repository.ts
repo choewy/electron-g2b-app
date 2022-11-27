@@ -1,6 +1,6 @@
 import { Todo, TodoItem } from '@/core';
 import { Injectable } from '@nestjs/common';
-import { DataSource, InsertResult, IsNull, Repository } from 'typeorm';
+import { DataSource, InsertResult, IsNull, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class TodoRepository {
@@ -17,6 +17,9 @@ export class TodoRepository {
       where: {
         user: { id: userId },
         deletedAt: IsNull(),
+      },
+      order: {
+        createdAt: 'DESC' as any,
       },
     });
   }
@@ -37,6 +40,17 @@ export class TodoRepository {
         todo: { id: todoId },
         deletedAt: IsNull(),
       },
+      order: {
+        createdAt: 'DESC' as any,
+      },
+    });
+  }
+
+  async findItemByIdAndTodoId(todoId: number, itemId: number): Promise<TodoItem> {
+    return this.itemRepo.findOneBy({
+      id: itemId,
+      todo: { id: todoId },
+      deletedAt: IsNull(),
     });
   }
 
@@ -46,5 +60,9 @@ export class TodoRepository {
 
   async insertItem(item: Partial<TodoItem>): Promise<InsertResult> {
     return this.itemRepo.insert(item);
+  }
+
+  async updateItem({ id, ...item }: Partial<TodoItem>): Promise<UpdateResult> {
+    return this.itemRepo.update(id, item);
   }
 }

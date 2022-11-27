@@ -1,12 +1,14 @@
 import { UserParam } from '@/common';
 import { User } from '@/core';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import {
   CreateTodoBody,
   TodoParams,
   TodoItemResponse,
   TodoResponse,
   CreateTodoItemBody,
+  TodoItemParams,
+  UpdateTodoItemDoneBody,
 } from './dtos';
 import { TodoService } from './todo.service';
 
@@ -44,5 +46,19 @@ export class TodoController {
     @Body() body: CreateTodoItemBody,
   ) {
     return this.service.createItem(user, params.todoId, body);
+  }
+
+  @Patch(':todoId/items/:itemId/done')
+  async updateDone(
+    @UserParam() user: User,
+    @Param() params: TodoItemParams,
+    @Body() body: UpdateTodoItemDoneBody,
+  ): Promise<void> {
+    return this.service.updateDone(user, params.todoId, params.itemId, body);
+  }
+
+  @Delete(':todoId/items/:itemId')
+  async deleteItem(@UserParam() user: User, @Param() params: TodoItemParams): Promise<void> {
+    return this.service.deleteItem(user, params.todoId, params.itemId);
   }
 }

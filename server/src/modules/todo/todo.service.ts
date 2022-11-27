@@ -1,6 +1,13 @@
 import { Todo, TodoItem, User } from '@/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTodoBody, CreateTodoItemBody, TodoItemResponse, TodoResponse } from './dtos';
+import { DateTime } from 'luxon';
+import {
+  CreateTodoBody,
+  CreateTodoItemBody,
+  TodoItemResponse,
+  TodoResponse,
+  UpdateTodoItemDoneBody,
+} from './dtos';
 import { TodoRepository } from './todo.repository';
 
 @Injectable()
@@ -59,5 +66,47 @@ export class TodoService {
         todo,
       }),
     );
+  }
+
+  async updateDone(
+    user: User,
+    todoId: number,
+    itemId: number,
+    body: UpdateTodoItemDoneBody,
+  ): Promise<void> {
+    const todo = await this.repository.findByUserAndId(user.id, todoId);
+
+    if (!todo) {
+      throw new NotFoundException();
+    }
+
+    const item = await this.repository.findItemByIdAndTodoId(todoId, itemId);
+
+    if (!item) {
+      throw new NotFoundException();
+    }
+
+    item.done = body.done;
+    item.updatedAt = DateTime.local();
+
+    await this.repository.updateItem(item);
+  }
+
+  async deleteItem(user: User, todoId: number, itemId: number): Promise<void> {
+    const todo = await this.repository.findByUserAndId(user.id, todoId);
+
+    if (!todo) {
+      throw new NotFoundException();
+    }
+
+    const item = await this.repository.findItemByIdAndTodoId(todoId, itemId);
+
+    if (!item) {
+      throw new NotFoundException();
+    }
+
+    item.deletedAt = DateTime.local();
+
+    await this.repository.updateItem(item);
   }
 }

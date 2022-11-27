@@ -1,5 +1,6 @@
+import { DateTimeToString } from '@/common';
 import { Expose } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class TodoResponse {
   @Expose()
@@ -9,9 +10,11 @@ export class TodoResponse {
   title: string;
 
   @Expose()
+  @DateTimeToString()
   createdAt: string;
 
   @Expose()
+  @DateTimeToString()
   updatedAt: string;
 }
 
@@ -25,6 +28,12 @@ export class TodoParams {
   @IsNotEmpty()
   @IsNumber()
   todoId: number;
+}
+
+export class TodoItemParams extends TodoParams {
+  @IsNotEmpty()
+  @IsNumber()
+  itemId: number;
 }
 
 export class TodoItemResponse {
@@ -41,9 +50,11 @@ export class TodoItemResponse {
   done: boolean;
 
   @Expose()
+  @DateTimeToString()
   createdAt: string;
 
   @Expose()
+  @DateTimeToString()
   updatedAt: string;
 }
 
@@ -55,4 +66,10 @@ export class CreateTodoItemBody {
   @IsOptional()
   @IsString()
   description: string;
+}
+
+export class UpdateTodoItemDoneBody {
+  @IsNotEmpty()
+  @IsBoolean()
+  done: boolean;
 }
