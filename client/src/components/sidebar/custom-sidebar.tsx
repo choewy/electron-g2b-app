@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 import { Drawer, Box } from '@mui/material';
-import { useSidebarState } from '@/states';
+import { useSidebarState, useUserValue } from '@/states';
 import { CustomSidebarItemList } from './custom-sidebar-item-list';
 import { CommonRouter, PrivateRouter, PublicRouter } from '@/routes';
 import { useNavigate } from 'react-router-dom';
@@ -14,8 +14,19 @@ import { useNavigate } from 'react-router-dom';
 const CustomSidebar = () => {
   const navigate = useNavigate();
 
+  const user = useUserValue();
+
+  const [signed, setSigned] = useState<boolean>(false);
   const [sidebar, setSidebar] = useSidebarState();
   const [open, setOpen] = useState<boolean>(sidebar);
+
+  useEffect(() => {
+    if (user.id) {
+      setSigned(true);
+    } else {
+      setSigned(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     setOpen(sidebar);
@@ -51,14 +62,17 @@ const CustomSidebar = () => {
           items={CommonRouter.all()}
           onClickHandler={onClickHandler}
         />
-        <CustomSidebarItemList
-          items={PrivateRouter.all()}
-          onClickHandler={onClickHandler}
-        />
-        <CustomSidebarItemList
-          items={PublicRouter.all()}
-          onClickHandler={onClickHandler}
-        />
+        {signed ? (
+          <CustomSidebarItemList
+            items={PrivateRouter.all()}
+            onClickHandler={onClickHandler}
+          />
+        ) : (
+          <CustomSidebarItemList
+            items={PublicRouter.all()}
+            onClickHandler={onClickHandler}
+          />
+        )}
       </Box>
     </Drawer>
   );

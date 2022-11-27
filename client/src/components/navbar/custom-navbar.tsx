@@ -1,5 +1,7 @@
+import { FC } from 'react';
 import {
   AppBar,
+  Avatar,
   Box,
   Button,
   IconButton,
@@ -7,15 +9,12 @@ import {
   Typography,
 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
-import { useSetSidebar } from '@/states';
-import { FC, useCallback } from 'react';
+import { useSetSidebar, useUserValue } from '@/states';
 
 const CustomNavbar: FC = () => {
-  const setOpen = useSetSidebar();
+  const user = useUserValue();
 
-  const onOpen = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
+  const setOpen = useSetSidebar();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -27,14 +26,18 @@ const CustomNavbar: FC = () => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={onOpen}
+            onClick={() => setOpen(true)}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             TODO
           </Typography>
-          <Button color="inherit">로그인</Button>
+          {user.id === 0 ? (
+            <Button color="inherit">로그인</Button>
+          ) : (
+            <Avatar src={user.imagePath} />
+          )}
         </Toolbar>
       </AppBar>
     </Box>
