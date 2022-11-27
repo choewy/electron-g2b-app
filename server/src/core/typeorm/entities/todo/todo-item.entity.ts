@@ -4,29 +4,29 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  JoinTable,
-  OneToMany,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DateTimeColumn } from '@/core/typeorm/columns';
-import { Todo } from '../todo';
+import { Todo } from './todo.entity';
 
 @Entity()
-export class User {
+export class TodoItem {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  email: string;
-
-  @Column()
-  password: string;
-
-  @Column()
   name: string;
 
-  @Column({ default: null })
-  imagePath: string;
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  description: string;
+
+  @Column({ default: false })
+  done: boolean;
 
   @DateTimeColumn({ update: false })
   createdAt: DateTime;
@@ -37,9 +37,9 @@ export class User {
   @DateTimeColumn({ default: null })
   deletedAt: DateTime;
 
-  @OneToMany(() => Todo, (e) => e.user)
-  @JoinTable()
-  todos: Todo[];
+  @ManyToOne(() => Todo, (e) => e.items)
+  @JoinColumn()
+  todo: Todo;
 
   @BeforeInsert()
   protected beforeInsert() {
