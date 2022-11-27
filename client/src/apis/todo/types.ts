@@ -28,3 +28,7 @@ export type CreateTodoItemBody = {
   name: string;
   description: string;
 };
+
+export type UpdateTodoItemDoneBody = {
+  done: boolean;
+};

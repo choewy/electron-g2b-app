@@ -5,6 +5,7 @@ import {
   TodoItemsResponse,
   TodoListResponse,
   TodoResponse,
+  UpdateTodoItemDoneBody,
 } from './types';
 
 class TodoApi extends AxiosInstance {
@@ -24,7 +25,7 @@ class TodoApi extends AxiosInstance {
     });
   }
 
-  async getItems(todoId: string): Promise<TodoItemsResponse> {
+  async getItems(todoId: number): Promise<TodoItemsResponse> {
     return this.request({
       method: this.method.Get,
       url: `${this.URL}/${todoId}/items`,
@@ -39,11 +40,30 @@ class TodoApi extends AxiosInstance {
     });
   }
 
-  async createItem(todoId: string, data: CreateTodoItemBody): Promise<void> {
+  async createItem(todoId: number, data: CreateTodoItemBody): Promise<void> {
     return this.request({
       method: this.method.Post,
       url: `${this.URL}/${todoId}`,
       data,
+    });
+  }
+
+  async updateItemDone(
+    todoId: number,
+    itemId: number,
+    data: UpdateTodoItemDoneBody,
+  ): Promise<void> {
+    return this.request({
+      method: this.method.Patch,
+      url: `${this.URL}/${todoId}/items/${itemId}/done`,
+      data,
+    });
+  }
+
+  async deleteItem(todoId: number, itemId: number) {
+    return this.request({
+      method: this.method.Delete,
+      url: `${this.URL}/${todoId}/items/${itemId}`,
     });
   }
 }
