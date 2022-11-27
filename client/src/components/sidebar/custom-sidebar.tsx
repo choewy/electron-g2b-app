@@ -68,7 +68,7 @@ const CustomSidebar = () => {
         />
         {signed ? (
           <CustomSidebarItemList
-            items={PrivateRouter.all()}
+            items={PrivateRouter.all().filter(({ text }) => text)}
             onClickHandler={onClickHandler}
           />
         ) : (

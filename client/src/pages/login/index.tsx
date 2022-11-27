@@ -18,6 +18,7 @@ const LoginPage: FC = () => {
         display: 'flex',
         flexDirection: 'column',
         boxSizing: 'border-box',
+        alignItems: 'center',
         padding: 10,
       }}
       onSubmit={onSubmitEvent(email, password)}
@@ -38,7 +39,10 @@ const LoginPage: FC = () => {
         placeholder="이메일을 입력하세요."
         autoComplete="off"
         size="small"
-        sx={{ my: 1 }}
+        sx={{
+          my: 1,
+          width: '300px',
+        }}
         value={email}
         onChange={onChangeEvent(setEmail)}
       />
@@ -48,7 +52,10 @@ const LoginPage: FC = () => {
         placeholder="비밀번호를 입력하세요."
         autoComplete="off"
         size="small"
-        sx={{ my: 1 }}
+        sx={{
+          my: 1,
+          width: '300px',
+        }}
         value={password}
         onChange={onChangeEvent(setPassword)}
       />
@@ -56,8 +63,8 @@ const LoginPage: FC = () => {
         type="submit"
         variant="contained"
         sx={{
-          width: '100%',
           my: 1,
+          width: '300px',
         }}
       >
         로그인

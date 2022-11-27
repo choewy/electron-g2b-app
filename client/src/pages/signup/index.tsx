@@ -20,6 +20,7 @@ const SignUpPage: FC = () => {
         display: 'flex',
         flexDirection: 'column',
         boxSizing: 'border-box',
+        alignItems: 'center',
         padding: 10,
       }}
       onSubmit={onSubmitEvent(name, email, password, confirmPassword)}
@@ -41,7 +42,10 @@ const SignUpPage: FC = () => {
         placeholder="이름을 입력하세요."
         autoComplete="off"
         size="small"
-        sx={{ my: 1 }}
+        sx={{
+          my: 1,
+          width: '300px',
+        }}
         value={name}
         onChange={onChangeEvent(setName)}
       />
@@ -52,7 +56,10 @@ const SignUpPage: FC = () => {
         placeholder="이메일을 입력하세요."
         autoComplete="off"
         size="small"
-        sx={{ my: 1 }}
+        sx={{
+          my: 1,
+          width: '300px',
+        }}
         value={email}
         onChange={onChangeEvent(setEmail)}
       />
@@ -63,7 +70,10 @@ const SignUpPage: FC = () => {
         placeholder="비밀번호를 입력하세요."
         autoComplete="off"
         size="small"
-        sx={{ my: 1 }}
+        sx={{
+          my: 1,
+          width: '300px',
+        }}
         value={password}
         onChange={onChangeEvent(setPassword)}
       />
@@ -74,7 +84,10 @@ const SignUpPage: FC = () => {
         placeholder="비밀번호를 한번더 입력하세요."
         autoComplete="off"
         size="small"
-        sx={{ my: 1 }}
+        sx={{
+          my: 1,
+          width: '300px',
+        }}
         value={confirmPassword}
         onChange={onChangeEvent(setConfirmPassword)}
       />
@@ -83,8 +96,8 @@ const SignUpPage: FC = () => {
         type="submit"
         variant="contained"
         sx={{
-          width: '100%',
           my: 1,
+          width: '300px',
         }}
       >
         회원가입

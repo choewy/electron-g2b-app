@@ -4,17 +4,20 @@ import {
   Avatar,
   Box,
   Button,
+  ButtonGroup,
   IconButton,
   Toolbar,
-  Typography,
 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { useSetSidebar, useUserValue } from '@/states';
+import { useOnClickLink } from '@/hooks';
+import { PublicRouter } from '@/routes';
 
 const CustomNavbar: FC = () => {
   const user = useUserValue();
 
   const setOpen = useSetSidebar();
+  const onClickEvent = useOnClickLink();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -30,11 +33,22 @@ const CustomNavbar: FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            TODO
-          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
           {user.id === 0 ? (
-            <Button color="inherit">로그인</Button>
+            <ButtonGroup variant="text">
+              <Button
+                onClick={onClickEvent(PublicRouter.Login.path)}
+                sx={{ color: '#fff', padding: 2, boxSizing: 'border-box' }}
+              >
+                로그인
+              </Button>
+              <Button
+                onClick={onClickEvent(PublicRouter.SignUp.path)}
+                sx={{ color: '#fff', padding: 2, boxSizing: 'border-box' }}
+              >
+                회원가입
+              </Button>
+            </ButtonGroup>
           ) : (
             <Avatar src={user.imagePath} />
           )}
