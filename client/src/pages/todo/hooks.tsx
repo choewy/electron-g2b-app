@@ -1,4 +1,11 @@
-import { FormEvent, SyntheticEvent, useCallback, useEffect } from 'react';
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+} from 'react';
 import { todoApi } from '@/apis';
 import { useSetAlert, useSetTodoList, useTodoListState } from '@/states';
 
@@ -134,6 +141,37 @@ export const useCallDeleteTodoItemApi = () => {
         }));
       }
     },
+    [setAlert, setList],
+  );
+};
+
+export const useCallCreateTodoApi = () => {
+  const setAlert = useSetAlert();
+  const setList = useSetTodoList();
+
+  return useCallback(
+    (title: string, setTitle: Dispatch<SetStateAction<string>>) =>
+      async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+          await todoApi.createTodo({ title });
+          const { data } = await todoApi.getList();
+          setList(
+            data.map((row) => ({
+              ...row,
+              expanded: false,
+              items: [],
+            })),
+          );
+          setTitle('');
+        } catch (e) {
+          setAlert((prev) => ({
+            ...prev,
+            error: '서버 요청 오류',
+          }));
+        }
+      },
     [setAlert, setList],
   );
 };
