@@ -1,68 +1,68 @@
-import { authApi } from '@/apis';
-import { CommonRouter } from '@/routes';
-import { useSetAlert } from '@/states';
-import { setAccessToken } from '@/utils';
-import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  FormEvent,
-  SetStateAction,
-  useCallback,
-  useState,
-} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, useState } from 'react';
+import { useOnChangeEvent } from '@/hooks';
+import { useOnSubmitLoginForm } from './hooks';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 const LoginPage: FC = () => {
-  const navigate = useNavigate();
-
-  const setAlert = useSetAlert();
-
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const onChange = useCallback(
-    (setState: Dispatch<SetStateAction<string>>) =>
-      (e: ChangeEvent<HTMLInputElement>) => {
-        setState(e.target.value);
-      },
-    [],
-  );
-
-  const onSubmit = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      try {
-        const { data } = await authApi.signIn({
-          email,
-          password,
-        });
-
-        setAccessToken(data.accessToken);
-        navigate(CommonRouter.Home.path, { replace: true });
-      } catch (e) {
-        setAlert((prev) => ({
-          ...prev,
-          error: '로그인 실패',
-        }));
-      }
-    },
-    [email, password, navigate, setAlert],
-  );
+  const onChangeEvent = useOnChangeEvent();
+  const onSubmitEvent = useOnSubmitLoginForm();
 
   return (
-    <div>
-      <h1>LOGIN</h1>
-      <form onSubmit={onSubmit}>
-        <input type="text" value={email} onChange={onChange(setEmail)} />
-        <input
-          type="password"
-          value={password}
-          onChange={onChange(setPassword)}
-        />
-        <button type="submit">로그인</button>
-      </form>
-    </div>
+    <Box
+      component="form"
+      sx={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box',
+        padding: 10,
+      }}
+      onSubmit={onSubmitEvent(email, password)}
+    >
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{
+          py: 3,
+          boxSizing: 'border-box',
+        }}
+      >
+        로그인
+      </Typography>
+      <TextField
+        type="text"
+        label="이메일"
+        placeholder="이메일을 입력하세요."
+        autoComplete="off"
+        size="small"
+        sx={{ my: 1 }}
+        value={email}
+        onChange={onChangeEvent(setEmail)}
+      />
+      <TextField
+        type="password"
+        label="비밀번호"
+        placeholder="비밀번호를 입력하세요."
+        autoComplete="off"
+        size="small"
+        sx={{ my: 1 }}
+        value={password}
+        onChange={onChangeEvent(setPassword)}
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          width: '100%',
+          my: 1,
+        }}
+      >
+        로그인
+      </Button>
+    </Box>
   );
 };
 

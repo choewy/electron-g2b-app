@@ -1,80 +1,95 @@
-import { authApi } from '@/apis';
-import { CommonRouter } from '@/routes';
-import { useSetAlert } from '@/states';
-import { setAccessToken } from '@/utils';
-import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  FormEvent,
-  SetStateAction,
-  useCallback,
-  useState,
-} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, useState } from 'react';
+import { useOnChangeEvent } from '@/hooks';
+import { useOnSubmitSignUpForm } from './hooks';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 const SignUpPage: FC = () => {
-  const navigate = useNavigate();
-
-  const setAlert = useSetAlert();
-
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-  const onChange = useCallback(
-    (setState: Dispatch<SetStateAction<string>>) =>
-      (e: ChangeEvent<HTMLInputElement>) => {
-        setState(e.target.value);
-      },
-    [],
-  );
-
-  const onSubmit = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      try {
-        const { data } = await authApi.signUp({
-          name,
-          email,
-          password,
-          confirmPassword,
-        });
-
-        setAccessToken(data.accessToken);
-        navigate(CommonRouter.Home.path, { replace: true });
-      } catch (e) {
-        console.log(e);
-        setAlert((prev) => ({
-          ...prev,
-          error: '회원가입 실패',
-        }));
-      }
-    },
-    [name, email, password, confirmPassword, navigate, setAlert],
-  );
+  const onChangeEvent = useOnChangeEvent();
+  const onSubmitEvent = useOnSubmitSignUpForm();
 
   return (
-    <div>
-      <h1>SIGN-UP</h1>
-      <form onSubmit={onSubmit}>
-        <input type="text" value={name} onChange={onChange(setName)} />
-        <input type="text" value={email} onChange={onChange(setEmail)} />
-        <input
-          type="password"
-          value={password}
-          onChange={onChange(setPassword)}
-        />
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={onChange(setConfirmPassword)}
-        />
-        <button type="submit">회원가입</button>
-      </form>
-    </div>
+    <Box
+      component="form"
+      sx={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box',
+        padding: 10,
+      }}
+      onSubmit={onSubmitEvent(name, email, password, confirmPassword)}
+    >
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{
+          py: 3,
+          boxSizing: 'border-box',
+        }}
+      >
+        회원가입
+      </Typography>
+
+      <TextField
+        type="text"
+        label="이름"
+        placeholder="이름을 입력하세요."
+        autoComplete="off"
+        size="small"
+        sx={{ my: 1 }}
+        value={name}
+        onChange={onChangeEvent(setName)}
+      />
+
+      <TextField
+        type="text"
+        label="이메일"
+        placeholder="이메일을 입력하세요."
+        autoComplete="off"
+        size="small"
+        sx={{ my: 1 }}
+        value={email}
+        onChange={onChangeEvent(setEmail)}
+      />
+
+      <TextField
+        type="password"
+        label="비밀번호"
+        placeholder="비밀번호를 입력하세요."
+        autoComplete="off"
+        size="small"
+        sx={{ my: 1 }}
+        value={password}
+        onChange={onChangeEvent(setPassword)}
+      />
+
+      <TextField
+        type="password"
+        label="비밀번호 확인"
+        placeholder="비밀번호를 한번더 입력하세요."
+        autoComplete="off"
+        size="small"
+        sx={{ my: 1 }}
+        value={confirmPassword}
+        onChange={onChangeEvent(setConfirmPassword)}
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          width: '100%',
+          my: 1,
+        }}
+      >
+        회원가입
+      </Button>
+    </Box>
   );
 };
 
