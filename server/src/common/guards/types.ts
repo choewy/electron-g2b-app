@@ -6,5 +6,6 @@ export type JwtPayload = {
 
 export type RequestCtx = Request & {
   payload: JwtPayload;
+  ctx: string;
   user: any;
 };
