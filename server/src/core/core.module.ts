@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -25,7 +25,7 @@ import { BcryptService } from './service';
       },
     }),
   ],
-  providers: [JwtService, BcryptService],
-  exports: [JwtService, BcryptService],
+  providers: [Logger, JwtService, BcryptService],
+  exports: [Logger, JwtService, BcryptService],
 })
 export class CoreModule {}

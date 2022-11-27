@@ -4,6 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthRepsitory } from './auth.repository';
+import { SignInBody, SignResponse, SignUpBody } from './dtos';
 import { AlreadyExistUserExeption, IncorrectPasswordException } from './exceptions';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AuthService {
     this.config = this.configService.get<JwtConfig>(ConfigKey.Jwt);
   }
 
-  async signUp(body: any) {
+  async signUp(body: SignUpBody): Promise<SignResponse> {
     if (body.password !== body.confirmPassword) {
       throw new IncorrectPasswordException();
     }
@@ -36,32 +37,34 @@ export class AuthService {
       Object.assign<User, Partial<User>>(new User(), body),
     );
 
-    return {
+    return Object.assign<SignResponse, SignResponse>(new SignResponse(), {
       accessToken: this.jwtService.sign(
         { id: identifiers[0].id },
-        {
-          secret: this.config.secret,
-          ...this.config.signOptions,
-        },
+        { secret: this.config.secret, ...this.config.signOptions },
       ),
-    };
+      refreshToken: this.jwtService.sign(
+        { id: identifiers[0].id },
+        { secret: this.config.secret, ...this.config.signOptions },
+      ),
+    });
   }
 
-  async signIn(body: any) {
+  async signIn(body: SignInBody): Promise<SignResponse> {
     const user = await this.repository.findByEmail(body.email);
 
     if (!user || !this.bcryptService.compare(body.password, user.password)) {
       throw new UnauthorizedException();
     }
 
-    return {
+    return Object.assign<SignResponse, SignResponse>(new SignResponse(), {
       accessToken: this.jwtService.sign(
         { id: user.id },
-        {
-          secret: this.config.secret,
-          ...this.config.signOptions,
-        },
+        { secret: this.config.secret, ...this.config.signOptions },
       ),
-    };
+      refreshToken: this.jwtService.sign(
+        { id: user.id },
+        { secret: this.config.secret, ...this.config.signOptions },
+      ),
+    });
   }
 }
