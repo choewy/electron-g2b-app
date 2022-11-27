@@ -1,6 +1,9 @@
-import { AccountCircle as MeIcon } from '@mui/icons-material';
+import {
+  AccountCircle as MeIcon,
+  Logout as LogoutIcon,
+} from '@mui/icons-material';
 import { Router, RouterAbstract } from './class';
-import { MyPage } from '@/pages';
+import { MyPage, SignOutPage } from '@/pages';
 
 export class PrivateRouter extends RouterAbstract {
   public static readonly MyPage = new Router(
@@ -8,6 +11,13 @@ export class PrivateRouter extends RouterAbstract {
     'me',
     MeIcon,
     MyPage,
+  );
+
+  public static readonly SignOut = new Router(
+    '로그아웃',
+    'signout',
+    LogoutIcon,
+    SignOutPage,
   );
 
   public static render() {

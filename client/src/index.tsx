@@ -8,7 +8,14 @@ import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { App } from '@/app';
-import { CustomHelmet, CustomNavbar, CustomSidebar } from '@/components';
+import {
+  CustomAlert,
+  CustomBackdrop,
+  CustomFallback,
+  CustomHelmet,
+  CustomNavbar,
+  CustomSidebar,
+} from '@/components';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -16,10 +23,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <RecoilRoot>
-    <Suspense fallback={<div>LOAD...</div>}>
+    <Suspense fallback={<CustomFallback />}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <HelmetProvider>
           <CustomHelmet title="TODO" />
+          <CustomBackdrop />
+          <CustomAlert />
           <CustomNavbar />
           <CustomSidebar />
           <App />

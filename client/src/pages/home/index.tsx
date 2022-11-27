@@ -1,15 +1,11 @@
-import { FC, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC } from 'react';
+import { useOnClickLink } from '@/hooks';
+import { useCallAuthApi } from './hooks';
+import { PublicRouter } from '@/routes';
 
 const HomePage: FC = () => {
-  const navigate = useNavigate();
-
-  const onClick = useCallback(
-    (path: string) => () => {
-      navigate(path, { replace: true });
-    },
-    [navigate],
-  );
+  const user = useCallAuthApi();
+  const onClickEvent = useOnClickLink();
 
   return (
     <div
@@ -20,10 +16,16 @@ const HomePage: FC = () => {
       }}
     >
       <h1>HOME PAGE</h1>
-      <div>
-        <button onClick={onClick('/login')}>로그인</button>
-        <button onClick={onClick('/signup')}>회원가입</button>
-      </div>
+      {user.id === 0 && (
+        <div>
+          <button onClick={onClickEvent(PublicRouter.Login.path)}>
+            로그인
+          </button>
+          <button onClick={onClickEvent(PublicRouter.SignUp.path)}>
+            회원가입
+          </button>
+        </div>
+      )}
     </div>
   );
 };

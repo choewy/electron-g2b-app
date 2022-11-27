@@ -2,6 +2,7 @@ import {
   atom,
   useRecoilState,
   useRecoilValue,
+  useResetRecoilState,
   useSetRecoilState,
 } from 'recoil';
 import { UserStore } from './types';
@@ -17,5 +18,6 @@ export const userStore = atom<UserStore>({
 });
 
 export const useUserState = () => useRecoilState(userStore);
-export const useSetUser = () => useSetRecoilState(userStore);
 export const useUserValue = () => useRecoilValue(userStore);
+export const useSetUser = () => useSetRecoilState(userStore);
+export const useResetUser = () => useResetRecoilState(userStore);

@@ -1,8 +1,4 @@
-export type AlertStore = {
-  info: string;
-  success: string;
-  warning: string;
-  error: string;
-};
+import { AlertColor } from '@mui/material';
 
-export type AlertKey = keyof AlertStore;
+export type AlertStore = Record<AlertColor, string>;
+export type AlertKey = AlertColor;
