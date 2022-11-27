@@ -1,5 +1,5 @@
 import { Home as HomeIcon, GitHub as GitHubIcon } from '@mui/icons-material';
-import { GitHubHref, HomePage } from '@/pages';
+import { HomePage } from '@/pages';
 import { Router, RouterAbstract } from './class';
 
 export class CommonRouter extends RouterAbstract {
@@ -9,7 +9,8 @@ export class CommonRouter extends RouterAbstract {
     'GitHub',
     'https://github.com/choewy/electron-todo-app',
     GitHubIcon,
-    GitHubHref,
+    undefined,
+    true,
   );
 
   public static render() {

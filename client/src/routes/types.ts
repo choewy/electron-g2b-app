@@ -6,4 +6,5 @@ export type RouterMetadata = {
   path: string;
   icon?: SvgIconComponent;
   element?: LazyExoticComponent<any>;
+  open?: boolean;
 };

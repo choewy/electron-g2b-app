@@ -11,6 +11,7 @@ export class Router implements RouterMetadata {
     public readonly path: string,
     public readonly icon?: SvgIconComponent,
     public readonly element?: LazyExoticComponent<any>,
+    public readonly open?: boolean,
   ) {}
 }
 

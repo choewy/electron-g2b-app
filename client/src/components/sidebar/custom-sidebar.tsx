@@ -48,9 +48,13 @@ const CustomSidebar = () => {
   );
 
   const onClickHandler = useCallback(
-    (path: string) => () => {
-      setSidebar(false);
-      navigate(path, { replace: true });
+    (path: string, open?: boolean) => () => {
+      if (open) {
+        window.open(path);
+      } else {
+        setSidebar(false);
+        navigate(path, { replace: true });
+      }
     },
     [setSidebar, navigate],
   );
