@@ -5,6 +5,20 @@ import { useCallback, useEffect } from 'react';
 import { BidSearchStoreType } from './types';
 
 export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
+  useGetDataEffect(): void {
+    const useFallback = this.useFallback();
+    const useGetData = this.useGetData();
+
+    useEffect(() => {
+      const callback: StoreCallbackType = {
+        func: useGetData,
+        args: [],
+      };
+
+      useFallback(callback);
+    }, [useGetData]);
+  }
+
   useGetData(): () => Promise<void> {
     const [{ query }, setState] = this.useState();
 
@@ -22,20 +36,6 @@ export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
         console.log(e);
       }
     }, [query, setState]);
-  }
-
-  useGetDataEffect(): void {
-    const useFallback = this.useFallback();
-    const useGetData = this.useGetData();
-
-    useEffect(() => {
-      const callback: StoreCallbackType = {
-        func: useGetData,
-        args: [],
-      };
-
-      useFallback(callback);
-    }, [useGetData]);
   }
 }
 

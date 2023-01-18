@@ -11,7 +11,7 @@ import {
 } from 'recoil';
 import { StoreCallbackType, StoreDefaultType } from './types';
 
-export class StoreInstance<T extends StoreDefaultType> {
+export class StoreInstance<T extends {} | StoreDefaultType> {
   private readonly store: RecoilState<T>;
 
   constructor(private readonly key: string, private readonly init: T) {

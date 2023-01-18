@@ -1,5 +1,5 @@
 export type StoreDefaultType = {
-  loading: boolean;
+  loading?: boolean;
 };
 
 export type StoreCallbackType = {
