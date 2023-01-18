@@ -1,17 +1,24 @@
-import { bidSearchApi } from '@/apis';
-import { FC, Fragment, useCallback, useEffect } from 'react';
+import { FC, Fragment } from 'react';
+import { bidSearchStore } from '@/store';
 
 const App: FC = () => {
-  const search = useCallback(async () => {
-    const data = await bidSearchApi.search();
-    console.log(data.response.body);
-  }, []);
+  const { loading, data } = bidSearchStore.useValue();
 
-  useEffect(() => {
-    search();
-  }, [search]);
+  bidSearchStore.useGetDataEffect();
 
-  return <Fragment>APP</Fragment>;
+  return (
+    <Fragment>
+      {loading ? (
+        <div>LOADING</div>
+      ) : (
+        <Fragment>
+          {data.items.map((item) => (
+            <div key={JSON.stringify(item)}>{item.crdtrNm}</div>
+          ))}
+        </Fragment>
+      )}
+    </Fragment>
+  );
 };
 
 export default App;

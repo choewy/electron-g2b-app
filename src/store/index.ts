@@ -1,1 +1,1 @@
-export * from './bid-search.store';
+export * from './bid-search';
