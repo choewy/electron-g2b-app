@@ -5,7 +5,7 @@ export class ApiInstance {
 
   constructor() {
     this.request.interceptors.response.use(
-      (response) => Promise.resolve(response.data),
+      (r) => Promise.resolve(r.data),
       (e) => Promise.reject(e.response.data),
     );
   }
