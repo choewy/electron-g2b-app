@@ -197,7 +197,7 @@ export type BidSearchItemType = Record<BidSearchItemKeyType, string>;
 export type BidSearchResponseBodyType = {
   totalCount: number;
   numOfRows: number;
-  pageNo: 1;
+  pageNo: number;
   items: BidSearchItemType[];
 };
 
