@@ -1,27 +1,18 @@
-import { HomePage, SettingPage } from '@/page';
-import { FC, ReactElement } from 'react';
-import { NavigateFunction, Route, Routes } from 'react-router-dom';
+import { Fragment, PropsWithChildren, ReactElement } from 'react';
 import {
   AppBar,
   Box,
-  Button,
   Divider,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
 } from '@mui/material';
-import { Menu as MenuIcon, Mail as MailIcon } from '@mui/icons-material';
-
+import { Menu as MenuIcon } from '@mui/icons-material';
 import { appStore } from '@/store';
 
 export class CommonComponentClass {
-  public Header(): ReactElement {
+  Header(): ReactElement {
     const { title } = appStore.useValue();
     const openSidebar = appStore.useSetSidebar(true);
 
@@ -48,27 +39,7 @@ export class CommonComponentClass {
     );
   }
 
-  /** @TODO fix */
-  SidebarItem(): ReactElement {
-    return (
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>{<MailIcon />}</ListItemIcon>
-            <ListItemText primary="mail" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>{<MailIcon />}</ListItemIcon>
-            <ListItemText primary="mail" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    );
-  }
-
-  public Sidebar(props: { item: ReactElement }): ReactElement {
+  Sidebar(props: { item: ReactElement }): ReactElement {
     const { isOpenSidebar } = appStore.useValue();
     const closeSidebar = appStore.useSetSidebar(false);
 
@@ -87,12 +58,11 @@ export class CommonComponentClass {
     );
   }
 
-  public Router(): ReactElement {
-    return (
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/setting" element={<SettingPage />} />
-      </Routes>
+  Loader(props: PropsWithChildren & { loading: boolean }): ReactElement {
+    return props.loading ? (
+      <div>LOADING</div>
+    ) : (
+      <Fragment>{props.children}</Fragment>
     );
   }
 }

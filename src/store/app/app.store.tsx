@@ -1,4 +1,5 @@
 import { StoreInstance } from '@/core';
+import { RouterProps } from '@/router';
 import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AppStoreType } from './types';
@@ -7,22 +8,11 @@ export class AppStore extends StoreInstance<AppStoreType> {
   useTitleEffect(): void {
     const location = useLocation();
     const setState = this.useSetState();
+    const router = RouterProps.findByPath(location.pathname);
 
     useEffect(() => {
-      let title: string;
-
-      switch (location.pathname) {
-        case '/':
-          title = '나라장터 입찰정보 수집 프로그램';
-          break;
-
-        case '/setting':
-          title = '환경설정';
-          break;
-      }
-
-      setState((prev) => ({ ...prev, title }));
-    }, [location]);
+      setState((prev) => ({ ...prev, title: router?.title || '' }));
+    }, [router]);
   }
 
   useSetSidebar(isOpenSidebar: boolean): () => void {
@@ -35,6 +25,6 @@ export class AppStore extends StoreInstance<AppStoreType> {
 }
 
 export const appStore = new AppStore(AppStore.name, {
-  title: '나라장터 입찰정보 수집 프로그램',
+  title: RouterProps.Home.title,
   isOpenSidebar: false,
 });
