@@ -41,27 +41,23 @@ export class StoreInstance<T extends {} | StoreDefaultType> {
     return useResetRecoilState(this.store);
   }
 
-  useFallback() {
+  useFallback(...callbacks: StoreCallbackType[]) {
     const setState = this.useSetState();
-
-    return useCallback(
-      async (...callbacks: StoreCallbackType[]) => {
-        setState((prev) => ({ ...prev, loading: true }));
-        try {
-          for (const callback of callbacks) {
-            const { func, args } = callback;
-            if (args) {
-              await func(...args);
-            } else {
-              await func();
-            }
+    return useCallback(async () => {
+      setState((prev) => ({ ...prev, loading: true }));
+      try {
+        for (const callback of callbacks) {
+          const { func, args } = callback;
+          if (args) {
+            await func(...args);
+          } else {
+            await func();
           }
-        } catch (e) {
-        } finally {
-          setState((prev) => ({ ...prev, loading: false }));
         }
-      },
-      [setState],
-    );
+      } catch (e) {
+      } finally {
+        setState((prev) => ({ ...prev, loading: false }));
+      }
+    }, [setState]);
   }
 }

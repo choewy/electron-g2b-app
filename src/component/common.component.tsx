@@ -65,6 +65,12 @@ export class CommonComponentClass {
       <Fragment>{props.children}</Fragment>
     );
   }
+
+  Page(props: PropsWithChildren): ReactElement {
+    appStore.useTitleEffect();
+
+    return <Fragment>{props.children}</Fragment>;
+  }
 }
 
 export const CommonComponent = new CommonComponentClass();

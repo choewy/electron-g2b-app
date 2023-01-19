@@ -8,7 +8,6 @@ import {
   ListItemText,
 } from '@mui/material';
 import { appStore } from '@/store';
-import { PageTemplate } from '@/component';
 import { RouterProps } from './router.path';
 
 export class RouterComponentClass {
@@ -21,7 +20,7 @@ export class RouterComponentClass {
           <Route
             key={`page-${router.path}-${i}`}
             path={router.path}
-            element={<PageTemplate>{router.page}</PageTemplate>}
+            element={router.page}
           />
         ))}
       </Routes>
