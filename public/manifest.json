@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "조달청 입찰공고",
+  "name": "조달청 입찰공고 Desktop",
   "icons": [
     {
       "src": "favicon.ico",

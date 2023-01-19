@@ -10,8 +10,17 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { appStore } from '@/store';
+import { Helmet } from 'react-helmet-async';
 
 export class CommonComponentClass {
+  Helmet(): ReactElement {
+    return (
+      <Helmet>
+        <title>조달청 입찰 공고</title>
+      </Helmet>
+    );
+  }
+
   Header(): ReactElement {
     const { title } = appStore.useValue();
     const openSidebar = appStore.useSetSidebar(true);

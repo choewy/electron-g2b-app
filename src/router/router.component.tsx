@@ -1,6 +1,7 @@
-import { ReactElement, useCallback } from 'react';
+import { Fragment, ReactElement, useCallback } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import {
+  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -37,16 +38,49 @@ export class RouterComponentClass {
     );
 
     return (
-      <List>
-        {RouterProps.all.map((router, i) => (
-          <ListItem key={`navigator-${router.path}-${i}`} disablePadding>
-            <ListItemButton onClick={goToFunction(router.path)}>
-              <ListItemIcon>{router.icon}</ListItemIcon>
-              <ListItemText primary={router.title} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <Fragment>
+        <List>
+          {RouterProps.global.map((router, i) => (
+            <ListItem
+              key={`navigator-global-${router.path}-${i}`}
+              disablePadding
+            >
+              <ListItemButton onClick={goToFunction(router.path)}>
+                <ListItemIcon>{router.icon}</ListItemIcon>
+                <ListItemText primary={router.title} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {RouterProps.common.map((router, i) => (
+            <ListItem
+              key={`navigator-common-${router.path}-${i}`}
+              disablePadding
+            >
+              <ListItemButton onClick={goToFunction(router.path)}>
+                <ListItemIcon>{router.icon}</ListItemIcon>
+                <ListItemText primary={router.title} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {RouterProps.private.map((router, i) => (
+            <ListItem
+              key={`navigator-private-${router.path}-${i}`}
+              disablePadding
+            >
+              <ListItemButton onClick={goToFunction(router.path)}>
+                <ListItemIcon>{router.icon}</ListItemIcon>
+                <ListItemText primary={router.title} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Fragment>
     );
   }
 }

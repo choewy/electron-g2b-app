@@ -5,6 +5,7 @@ import { RouterComponent } from '@/router';
 const App: FC = () => {
   return (
     <Fragment>
+      <CommonComponent.Helmet />
       <CommonComponent.Header />
       <CommonComponent.Sidebar item={<RouterComponent.Navigator />} />
       <CommonComponent.Page>
