@@ -1,7 +1,4 @@
-import {
-  BidSearchOptionalQueryType,
-  BidSearchResponseBodyType,
-} from '@/apis/bid-search/types';
+import { BidSearchOptionalQueryType, BidSearchResponseBodyType } from '@/apis';
 
 export type BidSearchStoreType = {
   loading: boolean;

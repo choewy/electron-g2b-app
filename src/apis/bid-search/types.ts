@@ -1,12 +1,12 @@
 export type BidSearchRequiredQueryType = {
   ServiceKey: string;
+  numOfRows: number;
+  pageNo: number;
+  inqryDiv: 1 | 2;
   type: 'json';
 };
 
 export type BidSearchOptionalQueryType = Partial<{
-  numOfRows: number;
-  pageNo: number;
-  inqryDiv: 1 | 2;
   inqryBgnDt: string;
   inqryEndDt: string;
   bidNtceNm: string;
@@ -202,9 +202,7 @@ export type BidSearchResponseBodyType = {
 };
 
 export type BidSearchResponseType = {
-  response: {
-    body: BidSearchResponseBodyType;
-  };
+  response: { body: BidSearchResponseBodyType };
   headers: {
     resultCode: string;
     resultMsg: string;

@@ -1,5 +1,10 @@
+import {
+  HrcsSearchOptionalQueryType,
+  HrcsSearchResponseBodyType,
+} from '@/apis';
+
 export type HrcsSearchStoreType = {
   loading: boolean;
-  query: {};
-  data: {};
+  query: HrcsSearchOptionalQueryType;
+  data: HrcsSearchResponseBodyType;
 };

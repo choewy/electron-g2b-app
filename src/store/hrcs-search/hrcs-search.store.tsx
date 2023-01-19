@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { bidSearchApi } from '@/apis';
+import { hrcsSearchApi } from '@/apis';
 import { StoreInstance } from '@/core';
 import { HrcsSearchStoreType } from './types';
 
@@ -11,7 +11,7 @@ export class HrcsSearchStore extends StoreInstance<HrcsSearchStoreType> {
       func: useCallback(async () => {
         const {
           response: { body },
-        } = await bidSearchApi.search(query);
+        } = await hrcsSearchApi.search(query);
 
         try {
           setState((prev) => ({
