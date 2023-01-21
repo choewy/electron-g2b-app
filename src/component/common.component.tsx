@@ -1,7 +1,9 @@
 import { Fragment, PropsWithChildren, ReactElement } from 'react';
 import {
   AppBar,
+  Backdrop,
   Box,
+  CircularProgress,
   Divider,
   Drawer,
   IconButton,
@@ -68,10 +70,16 @@ export class CommonComponentClass {
   }
 
   Loader(props: PropsWithChildren & { loading: boolean }): ReactElement {
-    return props.loading ? (
-      <div>LOADING</div>
-    ) : (
-      <Fragment>{props.children}</Fragment>
+    return (
+      <Fragment>
+        <Backdrop
+          sx={{ color: 'skyblue', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={props.loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        {props.children}
+      </Fragment>
     );
   }
 
