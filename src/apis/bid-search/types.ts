@@ -7,6 +7,7 @@ export type BidSearchRequiredQueryType = {
 };
 
 export type BidSearchOptionalQueryType = Partial<{
+  inqryDiv: 1 | 2;
   inqryBgnDt: string;
   inqryEndDt: string;
   bidNtceNm: string;
@@ -22,7 +23,7 @@ export type BidSearchOptionalQueryType = Partial<{
   presmptPrceBgn: string;
   presmptPrceEnd: string;
   dtilPrdctClsfcNoNm: string;
-  masYn: 'Y';
+  masYn: 'Y' | 'N';
   prcrmntReqNo: string;
   bidClseExcpYn: string;
   intrntnlDivCd: string;
@@ -33,7 +34,6 @@ export type BidSearchQueryType = BidSearchRequiredQueryType &
 
 export type BidSearchItemKeyType =
   | 'VAT'
-  | 'apiBssCntnts'
   | 'arsltApplDocRcptDt'
   | 'arsltApplDocRcptMthdNm'
   | 'arsltCmptYn'
@@ -53,7 +53,6 @@ export type BidSearchItemKeyType =
   | 'bidPrtcptFeePaymntYn'
   | 'bidPrtcptLmtYn'
   | 'bidQlfctRgstDt'
-  | 'bidWgrnteeRcptClseDt'
   | 'brffcBidprcPermsnYn'
   | 'chgDt'
   | 'chgNtceRsn'
@@ -106,7 +105,6 @@ export type BidSearchItemKeyType =
   | 'incntvRgnNm4'
   | 'indstrytyEvlRt'
   | 'indstrytyLmtYn'
-  | 'indstrytyMfrcFldEvlYn'
   | 'indutyVAT'
   | 'intrbidYn'
   | 'jntcontrctDutyRgnNm1'
