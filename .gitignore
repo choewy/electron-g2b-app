@@ -8,6 +8,7 @@
 .DS_Store
 # testing
 /coverage
+/src/core/utils/google-sheet/credentials/*.json
 
 # production
 /build
