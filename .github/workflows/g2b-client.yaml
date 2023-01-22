@@ -1,0 +1,48 @@
+name: deploy G2B client
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: CD Pipeline
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: ['16.x']
+    steps:
+      # Checkout
+      - uses: actions/checkout@v3
+
+      # Install Node.js
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Install Node.js dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Create frontend/.env file
+      - name: Create frontend/.env file
+        run: |
+          touch .env
+          echo TZ=Asia/Seoul >> .env
+          echo REACT_APP_G2B_API_KEY=${{ secrets.REACT_APP_G2B_API_KEY }} >> .env
+          echo REACT_APP_G2B_API_URL=${{ secrets.REACT_APP_G2B_API_URL }} >> .env
+          echo REACT_APP_GOOGLE_SHEET_DOC_ID=${{ secrets.REACT_APP_GOOGLE_SHEET_DOC_ID }} >> .env
+          cat .env
+      # Build Typescript
+      - name: Run build
+        run: npm run build
+
+      # Deploy with Github Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: client
+          publish_dir: ./build
