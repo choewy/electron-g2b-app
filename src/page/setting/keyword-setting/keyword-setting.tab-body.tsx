@@ -43,13 +43,14 @@ export const KeywordSettingTabBody: FC<KeywordSettingTabContentProps> = ({
         </FormComponent.Row>
         <Box sx={{ overflowY: 'scroll' }}>
           <List>
-            {rows.map((row) => (
-              <KeywordSettingItem
-                key={`keyword-setting-${title}-item-${row.rowIndex}`}
-                title={title}
-                row={row}
-              />
-            ))}
+            {rows &&
+              rows.map((row) => (
+                <KeywordSettingItem
+                  key={`keyword-setting-${title}-item-${row.rowIndex}`}
+                  title={title}
+                  row={row}
+                />
+              ))}
           </List>
         </Box>
       </CommonComponent.Loader>
