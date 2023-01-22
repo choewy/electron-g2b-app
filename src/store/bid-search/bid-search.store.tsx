@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 import { bidSearchApi } from '@/apis';
 import { StoreInstance } from '@/core';
 import { BidSearchStoreType } from './types';
+import { DateTime } from 'luxon';
+import { CalenderChangeEventHandler } from '@/component';
 
 export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
   useGetData(): () => Promise<void> {
@@ -9,15 +11,9 @@ export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
 
     return this.useFallback({
       func: useCallback(async () => {
-        const {
-          response: { body },
-        } = await bidSearchApi.search(query);
-
         try {
-          setState((prev) => ({
-            ...prev,
-            data: body,
-          }));
+          const { response } = await bidSearchApi.search(query);
+          setState((prev) => ({ ...prev, data: response.body }));
         } catch (e) {
           console.log(e);
         }
@@ -25,11 +21,31 @@ export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
       args: [],
     });
   }
+
+  useChangeDate(key: 'inqryBgnDt' | 'inqryEndDt'): CalenderChangeEventHandler {
+    const setState = this.useSetState();
+
+    return useCallback(
+      (datetime) => {
+        setState((prev) => ({
+          ...prev,
+          query: {
+            ...prev.query,
+            [key]: datetime?.toFormat('yyyy-MM-dd') || undefined,
+          },
+        }));
+      },
+      [setState],
+    );
+  }
 }
 
 export const bidSearchStore = new BidSearchStore(BidSearchStore.name, {
   loading: false,
-  query: {},
+  query: {
+    inqryBgnDt: DateTime.local().toFormat('yyyy-MM-dd'),
+    inqryEndDt: DateTime.local().toFormat('yyyy-MM-dd'),
+  },
   data: {
     totalCount: 0,
     numOfRows: 0,

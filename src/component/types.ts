@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import {
   DetailedHTMLProps,
   InputHTMLAttributes,
@@ -11,3 +12,14 @@ export type InputProps = DetailedHTMLProps<
 
 export type FormProps = PropsWithChildren &
   DetailedHTMLProps<InputHTMLAttributes<HTMLFormElement>, HTMLFormElement>;
+
+export type CalenderChangeEventHandler = (
+  value: DateTime | null,
+  keyboardInputValue?: string | undefined,
+) => void;
+
+export type CalenderProps = {
+  label: string;
+  value: DateTime;
+  onChange: CalenderChangeEventHandler;
+};
