@@ -73,5 +73,6 @@
     "tls": "^0.0.1",
     "url": "^0.11.0",
     "web3-utils": "^1.8.1"
-  }
+  },
+  "homepage": "https://choewy.github.io/g2b"
 }
