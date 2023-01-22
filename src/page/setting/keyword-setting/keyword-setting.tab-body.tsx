@@ -17,10 +17,10 @@ export const KeywordSettingTabBody: FC<KeywordSettingTabContentProps> = ({
   hidden,
 }) => {
   const [keyword, setKeyword] = useState<string>('');
-
-  const { loading, rows } = keywordStore.useValue();
   const onLoad = keywordStore.useLoad(title);
   const onAppend = keywordStore.useAppend(title, keyword, setKeyword);
+
+  const { loading, rows } = keywordStore.useValue();
 
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
