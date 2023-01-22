@@ -1,35 +1,42 @@
-import { useCallback } from 'react';
+import { FormEvent, MouseEvent, useCallback } from 'react';
 import { hrcsSearchApi } from '@/apis';
 import { StoreInstance } from '@/core';
 import { HrcsSearchStoreType } from './types';
+import { DateTime } from 'luxon';
 
 export class HrcsSearchStore extends StoreInstance<HrcsSearchStoreType> {
-  useGetData(): () => Promise<void> {
+  useGetData() {
     const [{ query }, setState] = this.useState();
 
-    return this.useFallback({
-      func: useCallback(async () => {
-        const {
-          response: { body },
-        } = await hrcsSearchApi.search(query);
+    return useCallback(
+      async (e: FormEvent<HTMLElement> | MouseEvent<HTMLElement>) => {
+        e.preventDefault();
 
         try {
+          setState((prev) => ({ ...prev, loading: true }));
+          const { response } = await hrcsSearchApi.search(query);
+
           setState((prev) => ({
             ...prev,
-            data: body,
+            loading: false,
+            data: response.body,
           }));
         } catch (e) {
           console.log(e);
+          setState((prev) => ({ ...prev, loading: false }));
         }
-      }, [query, setState]),
-      args: [],
-    });
+      },
+      [query, setState],
+    );
   }
 }
 
 export const hrcsSearchStore = new HrcsSearchStore(HrcsSearchStore.name, {
   loading: false,
-  query: {},
+  query: {
+    inqryBgnDt: DateTime.local().toFormat('yyyyMMdd0000'),
+    inqryEndDt: DateTime.local().toFormat('yyyyMMdd0000'),
+  },
   data: {
     totalCount: 0,
     numOfRows: 0,

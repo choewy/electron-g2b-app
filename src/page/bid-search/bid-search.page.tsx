@@ -12,21 +12,27 @@ export const BidSearchPage: FC = () => {
 
   return (
     <CommonComponent.Loader loading={loading}>
-      <FormComponent.Calender
-        label="조회시작일자"
-        value={DateTime.fromFormat(query.inqryBgnDt as string, 'yyyy-MM-dd')}
-        onChange={onChangeBgnDt}
-      />
-      <FormComponent.Calender
-        label="조회종료일자"
-        value={DateTime.fromFormat(query.inqryEndDt as string, 'yyyy-MM-dd')}
-        onChange={onChangeEndDt}
-      />
-      <FormComponent.Search>
-        {['입찰공고', '개찰결과', '최종낙찰자'].map((task) => (
+      <FormComponent.Search onSubmit={onSearch}>
+        <InputComponent.Calender
+          label="조회시작일자"
+          value={DateTime.fromFormat(
+            query.inqryBgnDt as string,
+            'yyyyMMdd0000',
+          )}
+          onChange={onChangeBgnDt}
+        />
+        <InputComponent.Calender
+          label="조회종료일자"
+          value={DateTime.fromFormat(
+            query.inqryEndDt as string,
+            'yyyyMMdd0000',
+          )}
+          onChange={onChangeEndDt}
+        />
+        {['공고게시일시', '개찰일시'].map((option, i) => (
           <InputComponent.Radio
-            id={`bid-search-radio-${task}`}
-            labelText={task}
+            id={`bid-search-option-radio-${i + 1}`}
+            labelText={option}
           />
         ))}
         {[

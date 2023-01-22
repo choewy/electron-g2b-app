@@ -23,13 +23,13 @@ export class BidSearchQuery implements BidSearchQueryType {
   presmptPrceBgn: string | undefined;
   presmptPrceEnd: string | undefined;
   dtilPrdctClsfcNoNm: string | undefined;
-  masYn: 'Y' | undefined;
+  masYn: 'Y' | 'N' | undefined;
   prcrmntReqNo: string | undefined;
   bidClseExcpYn: string | undefined;
   intrntnlDivCd: string | undefined;
 
-  constructor(private readonly config: BidSearchConfig) {
-    this.ServiceKey = this.config.key;
+  constructor(config: BidSearchConfig) {
+    this.ServiceKey = config.key;
     this.inqryDiv = 1;
     this.numOfRows = 10;
     this.pageNo = 1;

@@ -1,9 +1,5 @@
 import { CSSProperties, ReactElement } from 'react';
-import { CalenderProps, FormProps } from './types';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { TextField } from '@mui/material';
+import { FormProps } from './types';
 
 export class FormComponentClass {
   Search({ children, style, ...props }: FormProps): ReactElement {
@@ -39,18 +35,6 @@ export class FormComponentClass {
       >
         {children}
       </form>
-    );
-  }
-
-  Calender(props: CalenderProps): ReactElement {
-    return (
-      <LocalizationProvider dateAdapter={AdapterLuxon}>
-        <DesktopDatePicker
-          inputFormat="yyyy-MM-dd"
-          renderInput={(params) => <TextField {...params} />}
-          {...props}
-        />
-      </LocalizationProvider>
     );
   }
 }

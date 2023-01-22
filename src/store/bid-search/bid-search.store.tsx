@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { FormEvent, MouseEvent, useCallback } from 'react';
 import { bidSearchApi } from '@/apis';
 import { StoreInstance } from '@/core';
 import { BidSearchStoreType } from './types';
@@ -6,20 +6,29 @@ import { DateTime } from 'luxon';
 import { CalenderChangeEventHandler } from '@/component';
 
 export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
-  useGetData(): () => Promise<void> {
+  useGetData() {
     const [{ query }, setState] = this.useState();
 
-    return this.useFallback({
-      func: useCallback(async () => {
+    return useCallback(
+      async (e: FormEvent<HTMLElement> | MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+
         try {
+          setState((prev) => ({ ...prev, loading: true }));
           const { response } = await bidSearchApi.search(query);
-          setState((prev) => ({ ...prev, data: response.body }));
+          console.log(response);
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            data: response.body,
+          }));
         } catch (e) {
           console.log(e);
+          setState((prev) => ({ ...prev, loading: false }));
         }
-      }, [query, setState]),
-      args: [],
-    });
+      },
+      [query, setState],
+    );
   }
 
   useChangeDate(key: 'inqryBgnDt' | 'inqryEndDt'): CalenderChangeEventHandler {
@@ -31,11 +40,11 @@ export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
           ...prev,
           query: {
             ...prev.query,
-            [key]: datetime?.toFormat('yyyy-MM-dd') || undefined,
+            [key]: datetime?.toFormat('yyyyMMdd0000') || undefined,
           },
         }));
       },
-      [setState],
+      [key, setState],
     );
   }
 }
@@ -43,8 +52,8 @@ export class BidSearchStore extends StoreInstance<BidSearchStoreType> {
 export const bidSearchStore = new BidSearchStore(BidSearchStore.name, {
   loading: false,
   query: {
-    inqryBgnDt: DateTime.local().toFormat('yyyy-MM-dd'),
-    inqryEndDt: DateTime.local().toFormat('yyyy-MM-dd'),
+    inqryBgnDt: DateTime.local().toFormat('yyyyMMdd0000'),
+    inqryEndDt: DateTime.local().toFormat('yyyyMMdd0000'),
   },
   data: {
     totalCount: 0,

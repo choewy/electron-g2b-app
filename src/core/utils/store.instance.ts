@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import {
   atom,
   RecoilState,
@@ -9,9 +8,8 @@ import {
   useResetRecoilState,
   useSetRecoilState,
 } from 'recoil';
-import { StoreCallbackType, StoreDefaultType } from './types';
 
-export class StoreInstance<T extends {} | StoreDefaultType> {
+export class StoreInstance<T> {
   private readonly store: RecoilState<T>;
 
   constructor(private readonly key: string, private readonly init: T) {
@@ -39,25 +37,5 @@ export class StoreInstance<T extends {} | StoreDefaultType> {
 
   useResetState(): Resetter {
     return useResetRecoilState(this.store);
-  }
-
-  useFallback(...callbacks: StoreCallbackType[]) {
-    const setState = this.useSetState();
-    return useCallback(async () => {
-      setState((prev) => ({ ...prev, loading: true }));
-      try {
-        for (const callback of callbacks) {
-          const { func, args } = callback;
-          if (args) {
-            await func(...args);
-          } else {
-            await func();
-          }
-        }
-      } catch (e) {
-      } finally {
-        setState((prev) => ({ ...prev, loading: false }));
-      }
-    }, [setState]);
   }
 }

@@ -9,6 +9,7 @@ export class BidSearchApi extends ApiInstance {
   async search(
     query: BidSearchOptionalQueryType = {},
   ): Promise<BidSearchResponseType> {
+    console.log(query);
     return this.request.get(this.config.url, {
       params: Object.assign(new BidSearchQuery(this.config), query),
     });
