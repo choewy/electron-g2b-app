@@ -24,7 +24,7 @@ jobs:
 
       # Install Node.js dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       # Create frontend/.env file
       - name: Create frontend/.env file
@@ -36,7 +36,7 @@ jobs:
           echo REACT_APP_GOOGLE_SHEET_DOC_ID=${{ secrets.REACT_APP_GOOGLE_SHEET_DOC_ID }} >> .env
           cat .env
       # Build Typescript
-      - name: Run build
+      - name: Build
         run: npm run build
 
       # Deploy with Github Pages
