@@ -17,7 +17,8 @@ export class FirebaseAuthErrorMessage implements AppMessageType {
         return;
 
       case FireBaseAuthErrorCode.WeekPassword:
-        this.warn = '비밀번호는 6자 이상으로 입력하세요.';
+        this.warn =
+          '비밀번호는 8자 이상(숫자, 특수문자 필수 포함)으로 입력하세요.';
         return;
 
       case FireBaseAuthErrorCode.InvalidEmail:
@@ -38,6 +39,9 @@ export class FirebaseAuthErrorMessage implements AppMessageType {
 
       case FireBaseAuthErrorCode.WrongPassword:
         this.warn = '비밀번호가 일치하지 않습니다.';
+        return;
+
+      case FireBaseAuthErrorCode.PopupClosedByUser:
         return;
 
       default:

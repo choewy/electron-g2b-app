@@ -1,4 +1,9 @@
-import { EmailRegExp, firebaseAuth, StoreInstance } from '@/core';
+import {
+  EmailRegExp,
+  firebaseAuth,
+  PasswordRegExp,
+  StoreInstance,
+} from '@/core';
 import { RouterProps } from '@/router';
 import { User } from '@firebase/auth';
 import { FormEvent, useCallback, useEffect } from 'react';
@@ -24,8 +29,8 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
       return '비밀번호를 입력하세요.';
     }
 
-    if (password.length < 6) {
-      return '비밀번호는 6자 이상으로 입력하세요.';
+    if (new PasswordRegExp().test(password)) {
+      return '비밀번호는 8자 이상(숫자, 특수문자 필수 포함)으로 입력하세요.';
     }
 
     if (password !== confirmPassword) {

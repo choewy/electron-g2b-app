@@ -7,4 +7,5 @@ export enum FireBaseAuthErrorCode {
   MissingEmail = 'auth/missing-email',
   UserNotFound = 'auth/user-not-found',
   WrongPassword = 'auth/wrong-password',
+  PopupClosedByUser = 'auth/popup-closed-by-user',
 }
