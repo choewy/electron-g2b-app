@@ -9,6 +9,7 @@ import {
   User,
 } from 'firebase/auth';
 import { SetterOrUpdater } from 'recoil';
+import { GmailRegExp } from '../regexp';
 import { FireBaseAuthErrorCode } from './enums';
 import { FirebaseAuthErrorMessage } from './errors';
 import { firebaseApp } from './firebase.app';
@@ -55,14 +56,22 @@ export class FirebaseAuth {
   async signUpWithEmailAndPassword(
     email: string,
     password: string,
-  ): Promise<UserCredential> {
+  ): Promise<UserCredential | null> {
+    if (new GmailRegExp().test(email)) {
+      return this.signInWithPopup('google');
+    }
+
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
   async signInWithEmailAndPassword(
     email: string,
     password: string,
-  ): Promise<UserCredential> {
+  ): Promise<UserCredential | null> {
+    if (new GmailRegExp().test(email)) {
+      return this.signInWithPopup('google');
+    }
+
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
