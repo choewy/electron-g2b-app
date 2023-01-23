@@ -48,13 +48,13 @@ export class FirebaseDB {
   }
 
   async findKeywordsByUidAndType(uid: string, type: FirebaseKeywordType) {
-    /** @TODO  orderBy('createdAt', 'desc') */
     return this.parseSnapshotToType<FirebaseKeywordDataType>(
       await getDocs<FirebaseKeywordDataType>(
-        query<FirebaseKeywordDataType>(
+        query(
           this.keywordsCollection,
           where('uid', '==', uid),
           where('type', '==', type),
+          orderBy('createdAt', 'desc'),
         ),
       ),
     );
@@ -64,12 +64,10 @@ export class FirebaseDB {
     uid: string,
     row: FirebaseKeywordDataOmitType,
   ): Promise<DocumentReference<FirebaseKeywordDataType>> {
+    const createdAt = DateTime.local().toISO({ includeOffset: false });
     return addDoc(
       this.keywordsCollection,
-      Object.assign(row, {
-        uid,
-        createdAt: DateTime.local().toISO({ includeOffset: false }),
-      }),
+      Object.assign(row, { uid, createdAt }),
     );
   }
 
