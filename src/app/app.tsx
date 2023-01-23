@@ -10,11 +10,11 @@ const App: FC = () => {
   return (
     <Fragment>
       <AppHelmet />
+      <AppSnakbar />
       <AppLoader />
       <AppHeader />
       <AppDrawer />
       <AppRoutes />
-      <AppSnakbar />
     </Fragment>
   );
 };
