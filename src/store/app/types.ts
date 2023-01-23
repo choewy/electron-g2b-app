@@ -1,6 +1,11 @@
+export type AppMessageType = {
+  info?: string;
+  error?: string;
+};
+
 export type AppStoreType = {
-  loading: boolean;
-  error: string;
   title: string;
   isOpenSidebar: boolean;
+  loading: boolean;
+  messages: AppMessageType;
 };

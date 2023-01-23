@@ -2,7 +2,7 @@ import { StoreInstance } from '@/core';
 import { RouterProps } from '@/router';
 import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AppStoreType } from './types';
+import { AppMessageType, AppStoreType } from './types';
 
 export class AppStore extends StoreInstance<AppStoreType> {
   useTitle(): string {
@@ -37,12 +37,14 @@ export class AppStore extends StoreInstance<AppStoreType> {
     );
   }
 
-  useSetError(): (error: string) => void {
+  useSetMessage() {
     const setState = this.useSetState();
-
     return useCallback(
-      async (error) => {
-        setState((prev) => ({ ...prev, error }));
+      async (messages: AppMessageType) => {
+        setState((prev) => ({
+          ...prev,
+          messages,
+        }));
       },
       [setState],
     );
@@ -51,7 +53,7 @@ export class AppStore extends StoreInstance<AppStoreType> {
 
 export const appStore = new AppStore(AppStore.name, {
   title: RouterProps.Home.title,
-  loading: false,
-  error: '',
   isOpenSidebar: false,
+  loading: false,
+  messages: {},
 });

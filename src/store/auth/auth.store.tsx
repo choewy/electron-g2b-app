@@ -43,7 +43,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
 
   useSignUpCallback(email: string, password: string, confirmPassword: string) {
     const setState = this.useSetState();
-    const setError = appStore.useSetError();
+    const setMessage = appStore.useSetMessage();
     const setLoading = appStore.useSetLoading();
 
     return useCallback(
@@ -54,18 +54,18 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
           setLoading(true);
           await firebaseAuth.signUpWithEmailAndPassword(email, password);
         } catch (e) {
-          setError(firebaseAuth.getErrorMessageByCode(e));
+          setMessage({ error: firebaseAuth.getErrorMessageByCode(e) });
         } finally {
           setLoading(false);
         }
       },
-      [email, password, confirmPassword, setState, setLoading, setError],
+      [email, password, confirmPassword, setState, setLoading, setMessage],
     );
   }
 
   useSignInCallback(email: string, password: string) {
     const setState = this.useSetState();
-    const setError = appStore.useSetError();
+    const setMessage = appStore.useSetMessage();
     const setLoading = appStore.useSetLoading();
 
     return useCallback(
@@ -77,12 +77,12 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
           await firebaseAuth.signInWithEmailAndPassword(email, password);
           setLoading(false);
         } catch (e) {
-          setError(firebaseAuth.getErrorMessageByCode(e));
+          setMessage({ error: firebaseAuth.getErrorMessageByCode(e) });
         } finally {
           setLoading(false);
         }
       },
-      [email, password, setState, setLoading, setError],
+      [email, password, setState, setLoading, setMessage],
     );
   }
 
