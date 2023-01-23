@@ -1,3 +1,4 @@
+import { AppMessageType } from '@/store';
 import {
   Auth,
   UserCredential,
@@ -9,6 +10,7 @@ import {
 } from 'firebase/auth';
 import { SetterOrUpdater } from 'recoil';
 import { FireBaseAuthErrorCode } from './enums';
+import { FirebaseAuthErrorMessage } from './errors';
 import { firebaseApp } from './firebase.app';
 
 export class FirebaseAuth {
@@ -31,22 +33,12 @@ export class FirebaseAuth {
     });
   }
 
-  getErrorMessageByCode(e: unknown): string {
+  getErrorMessageByCode(
+    setMessage: (messages: AppMessageType) => void,
+    e: unknown,
+  ) {
     const error = e as Record<'code', FireBaseAuthErrorCode>;
-
-    switch (error.code) {
-      case FireBaseAuthErrorCode.EmailAlreadyInUse:
-        return '이미 등록된 이메일 계정입니다.';
-
-      case FireBaseAuthErrorCode.UserDisabled:
-        return '비활성 계정입니다. 관리자에게 문의하세요.';
-
-      case FireBaseAuthErrorCode.WeekPassword:
-        return '비밀번호는 6자 이상으로 입력하세요.';
-
-      default:
-        return error.code;
-    }
+    setMessage(new FirebaseAuthErrorMessage(error.code));
   }
 
   get user(): User | null {

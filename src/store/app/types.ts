@@ -1,5 +1,6 @@
 export type AppMessageType = {
   info?: string;
+  warn?: string;
   error?: string;
 };
 

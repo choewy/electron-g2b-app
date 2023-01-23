@@ -54,7 +54,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
           setLoading(true);
           await firebaseAuth.signUpWithEmailAndPassword(email, password);
         } catch (e) {
-          setMessage({ error: firebaseAuth.getErrorMessageByCode(e) });
+          firebaseAuth.getErrorMessageByCode(setMessage, e);
         } finally {
           setLoading(false);
         }
@@ -77,7 +77,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
           await firebaseAuth.signInWithEmailAndPassword(email, password);
           setLoading(false);
         } catch (e) {
-          setMessage({ error: firebaseAuth.getErrorMessageByCode(e) });
+          firebaseAuth.getErrorMessageByCode(setMessage, e);
         } finally {
           setLoading(false);
         }
@@ -88,20 +88,18 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
 
   useSignOutCallback() {
     const setState = this.useSetState();
+    const setMessage = appStore.useSetMessage();
+    const setLoading = appStore.useSetLoading();
 
     return useCallback(async () => {
       try {
-        setState((prev) => ({ ...prev, loading: true }));
-
+        setLoading(true);
         await firebaseAuth.signOut();
-
-        setState((prev) => ({ ...prev, loading: false }));
+        setMessage({ info: '로그아웃 되었습니다.' });
       } catch (e) {
-        setState((prev) => ({
-          ...prev,
-          loading: false,
-          error: firebaseAuth.getErrorMessageByCode(e),
-        }));
+        firebaseAuth.getErrorMessageByCode(setMessage, e);
+      } finally {
+        setLoading(false);
       }
     }, [setState]);
   }

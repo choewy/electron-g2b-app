@@ -4,6 +4,7 @@ import { AppLoader } from './app.loader';
 import { AppHeader } from './app.header';
 import { AppDrawer } from './app.drawer';
 import { AppRoutes } from './app.routes';
+import { AppSnakbar } from './app.snakbar';
 
 const App: FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: FC = () => {
       <AppHeader />
       <AppDrawer />
       <AppRoutes />
+      <AppSnakbar />
     </Fragment>
   );
 };
