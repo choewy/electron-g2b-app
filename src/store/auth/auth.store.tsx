@@ -13,12 +13,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
     const [{ user }, setState] = this.useState();
 
     useEffect(() => {
-      firebaseAuth.auth.onAuthStateChanged((user) => {
-        setState((prev) => ({
-          ...prev,
-          user: user ? JSON.parse(JSON.stringify(user)) : null,
-        }));
-      });
+      firebaseAuth.bindStateObserver(setState);
     }, [setState]);
 
     useEffect(() => {

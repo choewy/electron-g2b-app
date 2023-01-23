@@ -4,7 +4,6 @@ import { AppLoader } from './app.loader';
 import { AppHeader } from './app.header';
 import { AppDrawer } from './app.drawer';
 import { AppRoutes } from './app.routes';
-import { authStore } from '@/store';
 
 const App: FC = () => {
   return (
