@@ -1,6 +1,5 @@
 import './index.css';
 
-import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 
@@ -8,7 +7,6 @@ import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { App } from '@/app';
-import { CommonComponent } from './component';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -16,13 +14,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <RecoilRoot>
-    <Suspense fallback={<CommonComponent.Loader loading={true} />}>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <HelmetProvider>
-          <App />
-        </HelmetProvider>
-      </BrowserRouter>
-    </Suspense>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
+    </BrowserRouter>
   </RecoilRoot>,
 );
 
