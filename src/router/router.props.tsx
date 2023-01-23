@@ -2,6 +2,7 @@ import {
   BidSearchPage,
   HomePage,
   HrcsSearchPage,
+  KeywordPage,
   SignInPage,
   SignOutPage,
   SignUpPage,
@@ -12,6 +13,7 @@ import {
   Login as SignInIcon,
   Logout as SignOutIcon,
   Search as SearchIcon,
+  Toc as KeywordIcon,
 } from '@mui/icons-material';
 import { RouterPropsMapType, RouterPropsType } from './types';
 
@@ -52,7 +54,7 @@ export class RouterPropsClass {
   }
 
   get user(): RouterPropsType[] {
-    return [this.SignOut];
+    return [this.Keyword, this.SignOut];
   }
 
   get Home(): RouterPropsType {
@@ -89,6 +91,15 @@ export class RouterPropsClass {
       path: '/signout',
       icon: <SignOutIcon />,
       page: <SignOutPage />,
+    };
+  }
+
+  get Keyword(): RouterPropsType {
+    return {
+      title: '키워드 설정',
+      path: '/keywords',
+      icon: <KeywordIcon />,
+      page: <KeywordPage />,
     };
   }
 

@@ -1,5 +1,5 @@
-import { FirebaseKeywordDataType } from '@/core/firebase/types';
+import { FirebaseKeywordRowType } from '@/core';
 
 export type KeywordStoreType = {
-  rows: FirebaseKeywordDataType[];
+  rows: FirebaseKeywordRowType[];
 };

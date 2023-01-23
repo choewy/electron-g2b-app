@@ -11,19 +11,25 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  orderBy,
 } from '@firebase/firestore';
+import { DateTime } from 'luxon';
 import { firebaseApp } from './firebase.app';
-import { FirebaseKeywordDataType, FirebaseKeywordDataOmitType } from './types';
+import {
+  FirebaseKeywordDataType,
+  FirebaseKeywordDataOmitType,
+  FirebaseKeywordType,
+} from './types';
 
 export class FirebaseDB {
   private readonly PATH_OF_KEYWORDS = 'keywords';
 
   constructor(private readonly db: Firestore) {}
 
-  private parseSnapshotToType<T>(
-    snapshot: QuerySnapshot<FirebaseKeywordDataType>,
-  ) {
-    return snapshot.docs.map((doc) => doc.data()) as T[];
+  private parseSnapshotToType<T extends {}>(snapshot: QuerySnapshot<T>) {
+    return snapshot.docs.map((doc) =>
+      Object.assign<T, { id: string }>(doc.data(), { id: doc.id }),
+    ) as Array<T & { id: string }>;
   }
 
   private get keywordsCollection() {
@@ -41,12 +47,14 @@ export class FirebaseDB {
     ) as DocumentReference<FirebaseKeywordDataType>;
   }
 
-  async findKeywordsByUid(uid: string) {
+  async findKeywordsByUidAndType(uid: string, type: FirebaseKeywordType) {
+    /** @TODO  orderBy('createdAt', 'desc') */
     return this.parseSnapshotToType<FirebaseKeywordDataType>(
       await getDocs<FirebaseKeywordDataType>(
         query<FirebaseKeywordDataType>(
           this.keywordsCollection,
           where('uid', '==', uid),
+          where('type', '==', type),
         ),
       ),
     );
@@ -56,7 +64,13 @@ export class FirebaseDB {
     uid: string,
     row: FirebaseKeywordDataOmitType,
   ): Promise<DocumentReference<FirebaseKeywordDataType>> {
-    return addDoc(this.keywordsCollection, Object.assign({ uid }, row));
+    return addDoc(
+      this.keywordsCollection,
+      Object.assign(row, {
+        uid,
+        createdAt: DateTime.local().toISO({ includeOffset: false }),
+      }),
+    );
   }
 
   async updateKeyword(
