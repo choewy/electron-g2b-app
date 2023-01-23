@@ -1,16 +1,19 @@
 import { FC, Fragment } from 'react';
-import { CommonComponent } from '@/component';
-import { RouterComponent } from '@/router';
+import { AppHelmet } from './app.helmet';
+import { AppLoader } from './app.loader';
+import { AppHeader } from './app.header';
+import { AppDrawer } from './app.drawer';
+import { AppRoutes } from './app.routes';
+import { authStore } from '@/store';
 
 const App: FC = () => {
   return (
     <Fragment>
-      <CommonComponent.Helmet />
-      <CommonComponent.Header />
-      <CommonComponent.Sidebar item={<RouterComponent.Navigator />} />
-      <CommonComponent.Page>
-        <RouterComponent.Routes />
-      </CommonComponent.Page>
+      <AppHelmet />
+      <AppLoader />
+      <AppHeader />
+      <AppDrawer />
+      <AppRoutes />
     </Fragment>
   );
 };

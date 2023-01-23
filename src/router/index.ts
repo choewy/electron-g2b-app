@@ -1,3 +1,3 @@
 export * from './types';
-export * from './router.path';
-export * from './router.component';
+export * from './router.props';
+export * from './router.navigators';

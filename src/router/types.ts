@@ -5,4 +5,11 @@ export type RouterPropsType = {
   path: string;
   icon: ReactElement;
   page: ReactElement;
+  hiddenInSidebar?: boolean;
 };
+
+export type RouterPropsMapKey = 'common' | 'service' | 'user' | 'visitor';
+
+export type RouterPropsMapType = Partial<
+  Record<RouterPropsMapKey, RouterPropsType[]>
+>;
