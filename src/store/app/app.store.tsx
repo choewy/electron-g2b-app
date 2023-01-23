@@ -12,7 +12,10 @@ export class AppStore extends StoreInstance<AppStoreType> {
 
     useEffect(() => {
       const router = RouterProps.selectByPath(location.pathname);
-      setState((prev) => ({ ...prev, title: router?.title || '' }));
+
+      if (router) {
+        setState((prev) => ({ ...prev, title: router.title }));
+      }
     }, [location]);
 
     return title;

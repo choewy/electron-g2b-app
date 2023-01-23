@@ -1,3 +1,4 @@
+import { localStorageService } from '@/core';
 import {
   Divider,
   List,
@@ -15,8 +16,13 @@ export const RouterNavigators: FC<{ routerProps: RouterPropsType[] }> = ({
 }) => {
   const navigate = useNavigate();
   const navigationCallback = useCallback(
-    (path: string) => () => {
-      navigate(path, { replace: true });
+    (router: RouterPropsType) => () => {
+      if (router.openNewWindow && router.url) {
+        return window.open(router.url);
+      }
+
+      localStorageService.setPath(router.path);
+      navigate(router.path, { replace: true });
     },
     [navigate],
   );
@@ -26,7 +32,7 @@ export const RouterNavigators: FC<{ routerProps: RouterPropsType[] }> = ({
       <List>
         {routerProps.map((router) => (
           <ListItem key={`navigator-${router.path}`} disablePadding>
-            <ListItemButton onClick={navigationCallback(router.path)}>
+            <ListItemButton onClick={navigationCallback(router)}>
               <ListItemIcon>{router.icon}</ListItemIcon>
               <ListItemText primary={router.title} />
             </ListItemButton>

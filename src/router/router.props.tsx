@@ -10,6 +10,7 @@ import {
 import { User } from '@firebase/auth';
 import {
   Home as HomeIcon,
+  GitHub as GitHubIcon,
   Login as SignInIcon,
   Logout as SignOutIcon,
   Search as SearchIcon,
@@ -42,7 +43,7 @@ export class RouterPropsClass {
   }
 
   get common(): RouterPropsType[] {
-    return [this.Home];
+    return [this.Home, this.Github];
   }
 
   get service(): RouterPropsType[] {
@@ -63,6 +64,17 @@ export class RouterPropsClass {
       path: '/',
       icon: <HomeIcon />,
       page: <HomePage />,
+    };
+  }
+
+  get Github(): RouterPropsType {
+    return {
+      title: 'GitHub',
+      path: '',
+      icon: <GitHubIcon />,
+      page: <></>,
+      openNewWindow: true,
+      url: 'https://github.com/choewy/g2b',
     };
   }
 

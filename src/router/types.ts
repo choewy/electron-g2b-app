@@ -6,6 +6,8 @@ export type RouterPropsType = {
   icon: ReactElement;
   page: ReactElement;
   hiddenInSidebar?: boolean;
+  openNewWindow?: boolean;
+  url?: string;
 };
 
 export type RouterPropsMapKey = 'common' | 'service' | 'user' | 'visitor';
