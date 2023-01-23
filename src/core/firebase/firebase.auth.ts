@@ -7,18 +7,28 @@ import {
   GoogleAuthProvider,
   User,
 } from 'firebase/auth';
+import { SetterOrUpdater } from 'recoil';
 import { FireBaseAuthErrorCode } from './enums';
 import { firebaseApp } from './firebase.app';
 
 export class FirebaseAuth {
-  public auth: Auth;
   private googleAuth: GoogleAuthProvider;
 
-  constructor() {
-    this.auth = firebaseApp.auth;
+  constructor(public readonly auth: Auth) {
     this.googleAuth = new GoogleAuthProvider();
     this.googleAuth.addScope('profile');
     this.googleAuth.addScope('email');
+  }
+
+  bindStateObserver<T extends { user: User | null }>(
+    setState: SetterOrUpdater<T>,
+  ) {
+    this.auth.onAuthStateChanged((user) => {
+      setState((prev) => ({
+        ...prev,
+        user: user ? JSON.parse(JSON.stringify(user)) : null,
+      }));
+    });
   }
 
   getErrorMessageByCode(e: unknown): string {
@@ -69,4 +79,4 @@ export class FirebaseAuth {
   }
 }
 
-export const firebaseAuth = new FirebaseAuth();
+export const firebaseAuth = new FirebaseAuth(firebaseApp.auth);

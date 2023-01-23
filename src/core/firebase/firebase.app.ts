@@ -1,11 +1,13 @@
 import { Analytics, getAnalytics } from '@firebase/analytics';
 import { FirebaseApp as App, initializeApp } from '@firebase/app';
 import { Auth, getAuth } from '@firebase/auth';
+import { Firestore, getFirestore } from '@firebase/firestore';
 
 export class FirebaseApp {
   public readonly app: App;
   public readonly analytics: Analytics;
   public readonly auth: Auth;
+  public readonly db: Firestore;
 
   constructor() {
     this.app = initializeApp({
@@ -19,6 +21,7 @@ export class FirebaseApp {
     });
     this.analytics = getAnalytics(this.app);
     this.auth = getAuth(this.app);
+    this.db = getFirestore(this.app);
   }
 }
 
