@@ -36,6 +36,10 @@ export class FirebaseAuthErrorMessage implements AppMessageType {
         this.warn = '존재하지 않는 계정입니다.';
         return;
 
+      case FireBaseAuthErrorCode.WrongPassword:
+        this.warn = '비밀번호가 일치하지 않습니다.';
+        return;
+
       default:
         this.error = code;
     }
