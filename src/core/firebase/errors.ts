@@ -21,7 +21,7 @@ export class FirebaseAuthErrorMessage implements AppMessageType {
         return;
 
       case FireBaseAuthErrorCode.InvalidEmail:
-        this.warn = '존재하지 않는 계정입니다.';
+        this.warn = '이메일 형식이 아닙니다.';
         return;
 
       case FireBaseAuthErrorCode.MissingEmail:
@@ -30,6 +30,10 @@ export class FirebaseAuthErrorMessage implements AppMessageType {
 
       case FireBaseAuthErrorCode.InternalError:
         this.warn = '비밀번호를 입력하세요.';
+        return;
+
+      case FireBaseAuthErrorCode.UserNotFound:
+        this.warn = '존재하지 않는 계정입니다.';
         return;
 
       default:

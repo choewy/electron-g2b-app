@@ -5,4 +5,5 @@ export enum FireBaseAuthErrorCode {
   InvalidEmail = 'auth/invalid-email',
   InternalError = 'auth/internal-error',
   MissingEmail = 'auth/missing-email',
+  UserNotFound = 'auth/user-not-found',
 }

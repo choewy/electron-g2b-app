@@ -1,4 +1,4 @@
-import { firebaseAuth, StoreInstance } from '@/core';
+import { EmailRegExp, firebaseAuth, StoreInstance } from '@/core';
 import { RouterProps } from '@/router';
 import { User } from '@firebase/auth';
 import { FormEvent, useCallback, useEffect } from 'react';
@@ -7,6 +7,32 @@ import { appStore } from '../app';
 import { AuthStoreType } from './types';
 
 export class AuthStore extends StoreInstance<AuthStoreType> {
+  private useValidation(
+    email: string,
+    password: string,
+    confirmPassword: string,
+  ): string | undefined {
+    if (!email) {
+      return '이메일 계정을 입력하세요.';
+    }
+
+    if (!new EmailRegExp().test(email)) {
+      return '이메일 형식이 아닙니다.';
+    }
+
+    if (!password) {
+      return '비밀번호를 입력하세요.';
+    }
+
+    if (password.length < 6) {
+      return '비밀번호는 6자 이상으로 입력하세요.';
+    }
+
+    if (password !== confirmPassword) {
+      return '비밀번호가 일치하지 않습니다.';
+    }
+  }
+
   useAuth(): User | null {
     const location = useLocation();
     const navigate = useNavigate();
@@ -50,6 +76,12 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
       async (e: FormEvent<HTMLElement>) => {
         e.preventDefault();
 
+        const validation = this.useValidation(email, password, confirmPassword);
+
+        if (validation) {
+          return setMessage({ warn: validation });
+        }
+
         try {
           setLoading(true);
           await firebaseAuth.signUpWithEmailAndPassword(email, password);
@@ -71,6 +103,12 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
     return useCallback(
       async (e: FormEvent<HTMLElement>) => {
         e.preventDefault();
+
+        const validation = this.useValidation(email, password, password);
+
+        if (validation) {
+          return setMessage({ warn: validation });
+        }
 
         try {
           setLoading(true);
