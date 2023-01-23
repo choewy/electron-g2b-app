@@ -14,17 +14,17 @@ export const AppSnakbar: FC = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-      if (messages.info) {
+      if (messages?.info) {
         enqueueSnackbar(messages.info, { variant: 'info' });
         return;
       }
 
-      if (messages.warn) {
+      if (messages?.warn) {
         enqueueSnackbar(messages.warn, { variant: 'warning' });
         return;
       }
 
-      if (messages.error) {
+      if (messages?.error) {
         enqueueSnackbar(messages.error, { variant: 'error' });
         return;
       }
