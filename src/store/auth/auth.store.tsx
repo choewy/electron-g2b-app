@@ -29,7 +29,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
       return '비밀번호를 입력하세요.';
     }
 
-    if (new PasswordRegExp().test(password)) {
+    if (!new PasswordRegExp().test(password)) {
       return '비밀번호는 8자 이상(숫자, 특수문자 필수 포함)으로 입력하세요.';
     }
 

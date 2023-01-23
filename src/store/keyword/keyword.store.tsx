@@ -46,7 +46,7 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
       async (e: FormEvent<HTMLElement>) => {
         e.preventDefault();
 
-        if (!user) {
+        if (!user || !keyword) {
           return;
         }
 
