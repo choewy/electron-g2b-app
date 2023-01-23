@@ -39,7 +39,7 @@ export const KeywordTab: FC<KeywordTabProps> = ({ value, content }) => {
         <input value={keyword} onChange={onChange} />
         <button type="submit">추가</button>
       </form>
-      {rows.map((row) => (
+      {(rows || []).map((row) => (
         <KeywordRow key={row.id} row={row} onLoad={onLoad} />
       ))}
     </div>
