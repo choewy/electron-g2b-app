@@ -5,6 +5,39 @@ import { authStore } from '../auth';
 import { KeywordStoreType } from './types';
 
 export class KeywordStore extends StoreInstance<KeywordStoreType> {
+  useInitCallback() {
+    const setState = this.useSetState();
+    const setLoading = appStore.useSetLoading();
+    const setMessage = appStore.useSetMessage();
+
+    const { user } = authStore.useValue();
+
+    return useCallback(async () => {
+      if (!user) {
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const rows = await firebaseDB.findKeywordsByUid(user.uid);
+        const { include, exclude } = rows.reduce<KeywordStoreType>(
+          (prev, row) => {
+            prev[row.type].push(row);
+            return prev;
+          },
+          { include: [], exclude: [] },
+        );
+
+        setState((prev) => ({ ...prev, include, exclude }));
+      } catch (e) {
+        const error = e as any;
+        setMessage({ error: error.code });
+      } finally {
+        setLoading(false);
+      }
+    }, [user, setState, setLoading, setMessage]);
+  }
+
   useLoadCallback(type: FirebaseKeywordType) {
     const setState = this.useSetState();
     const setLoading = appStore.useSetLoading();
@@ -20,7 +53,7 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
       try {
         setLoading(true);
         const rows = await firebaseDB.findKeywordsByUidAndType(user.uid, type);
-        setState((prev) => ({ ...prev, rows }));
+        setState((prev) => ({ ...prev, [type]: rows }));
       } catch (e) {
         console.log(e);
         const error = e as any;
@@ -145,5 +178,6 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
 }
 
 export const keywordStore = new KeywordStore(KeywordStore.name, {
-  rows: [],
+  include: [],
+  exclude: [],
 });

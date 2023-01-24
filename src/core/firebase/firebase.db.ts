@@ -47,6 +47,18 @@ export class FirebaseDB {
     ) as DocumentReference<FirebaseKeywordDataType>;
   }
 
+  async findKeywordsByUid(uid: string) {
+    return this.parseSnapshotToType<FirebaseKeywordDataType>(
+      await getDocs<FirebaseKeywordDataType>(
+        query(
+          this.keywordsCollection,
+          where('uid', '==', uid),
+          orderBy('createdAt', 'desc'),
+        ),
+      ),
+    );
+  }
+
   async findKeywordsByUidAndType(uid: string, type: FirebaseKeywordType) {
     return this.parseSnapshotToType<FirebaseKeywordDataType>(
       await getDocs<FirebaseKeywordDataType>(
