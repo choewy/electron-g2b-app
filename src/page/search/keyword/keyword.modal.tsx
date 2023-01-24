@@ -19,7 +19,7 @@ export const KeywordDeleteModal: FC<KeywordDeleteModalProps> = ({
   const onCloseEvent = keywordStore.useToggleDeleteModalEvent();
 
   return (
-    <Dialog open={!hidden && deleteDocId !== ''} onClose={onCloseEvent('')}>
+    <Dialog open={!hidden && !!deleteDocId} onClose={onCloseEvent('')}>
       <DialogTitle>키워드 삭제</DialogTitle>
       <DialogContent>
         <DialogContentText>
