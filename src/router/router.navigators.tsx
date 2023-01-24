@@ -1,4 +1,4 @@
-import { localStorageService } from '@/core';
+import { sessionStorageService } from '@/core';
 import {
   Divider,
   List,
@@ -21,7 +21,7 @@ export const RouterNavigators: FC<{ routerProps: RouterPropsType[] }> = ({
         return window.open(router.url);
       }
 
-      localStorageService.setPath(router.path);
+      sessionStorageService.setPath(router.path);
       navigate(router.path, { replace: true });
     },
     [navigate],

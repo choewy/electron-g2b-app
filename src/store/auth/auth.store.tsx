@@ -1,7 +1,7 @@
 import {
   EmailRegExp,
   firebaseAuth,
-  localStorageService,
+  sessionStorageService,
   PasswordRegExp,
   StoreInstance,
 } from '@/core';
@@ -55,7 +55,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
           location.pathname,
         )
       ) {
-        return navigate(localStorageService.path || RouterProps.Home.path, {
+        return navigate(sessionStorageService.path || RouterProps.Home.path, {
           replace: true,
         });
       }
