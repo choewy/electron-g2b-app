@@ -1,25 +1,45 @@
-import { ChangeEvent, FC, Fragment, useCallback, useState } from 'react';
-import { Box } from '@mui/material';
+import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { Box, IconButton, TextField, Typography } from '@mui/material';
 import { keywordStore } from '@/store';
 import { KeywordRowMode, KeywordChildRowProps, KeywordRowProps } from './types';
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Check as SaveIcon,
+  Cancel as CancelIcon,
+} from '@mui/icons-material';
 
 export const KeywordReadonlyRow: FC<KeywordChildRowProps> = ({
   row,
-  onLoad,
   setRowMode,
 }) => {
   const onEditable = useCallback(() => {
     setRowMode('editable');
   }, [setRowMode]);
 
-  const onDelete = keywordStore.useDeleteCallback(row.id, onLoad);
+  const onModalOpenEvent = keywordStore.useToggleDeleteModalEvent();
 
   return (
-    <Fragment>
-      <div>{row.keyword}</div>
-      <button onClick={onEditable}>수정</button>
-      <button onClick={onDelete}>삭제</button>
-    </Fragment>
+    <Box display="flex" sx={{ height: 40, width: '100%' }}>
+      <Typography
+        component="div"
+        variant="body2"
+        flex={1}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        {row.keyword}
+      </Typography>
+      <IconButton onClick={onEditable} size="small">
+        <EditIcon />
+      </IconButton>
+      <IconButton onClick={onModalOpenEvent(row.id)} size="small">
+        <DeleteIcon />
+      </IconButton>
+    </Box>
   );
 };
 
@@ -50,16 +70,23 @@ export const KeywordEditableRow: FC<KeywordChildRowProps> = ({
   );
 
   return (
-    <Fragment>
-      <input
-        type="text"
+    <Box display="flex" sx={{ height: 40, width: '100%' }}>
+      <TextField
+        variant="standard"
         value={keyword}
         onChange={onChange}
         autoComplete="off"
+        sx={{ flex: 1, marginRight: 2, justifyContent: 'center' }}
+        size="small"
+        inputProps={{ style: { fontSize: 14 } }}
       />
-      <button onClick={onUpdate}>저장</button>
-      <button onClick={onReadonly}>취소</button>
-    </Fragment>
+      <IconButton onClick={onUpdate} size="small">
+        <SaveIcon />
+      </IconButton>
+      <IconButton onClick={onReadonly} size="small">
+        <CancelIcon />
+      </IconButton>
+    </Box>
   );
 };
 

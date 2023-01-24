@@ -29,3 +29,8 @@ export type KeywordRowProps = {
 export type KeywordChildRowProps = KeywordRowProps & {
   setRowMode: Dispatch<SetStateAction<KeywordRowMode>>;
 };
+
+export type KeywordDeleteModalProps = {
+  hidden: boolean;
+  onLoad(): Promise<void>;
+};

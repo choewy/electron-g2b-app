@@ -7,7 +7,7 @@ export const KeywordTabs: FC<KeywordTabsProps> = ({
   onChange,
 }) => {
   return (
-    <Tabs value={keywordType} onChange={onChange}>
+    <Tabs value={keywordType} onChange={onChange} centered>
       <Tab value="include" label="검색 키워드" />
       <Tab value="exclude" label="제외 키워드" />
     </Tabs>

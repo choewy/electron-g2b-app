@@ -20,7 +20,9 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
       try {
         setLoading(true);
         const rows = await firebaseDB.findKeywordsByUid(user.uid);
-        const { include, exclude } = rows.reduce<KeywordStoreType>(
+        const { include, exclude } = rows.reduce<
+          Omit<KeywordStoreType, 'deleteDocId'>
+        >(
           (prev, row) => {
             prev[row.type].push(row);
             return prev;
@@ -61,7 +63,7 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
       } finally {
         setLoading(false);
       }
-    }, [user, setState, setLoading, setMessage]);
+    }, [type, user, setState, setLoading, setMessage]);
   }
 
   useAppendCallback(
@@ -141,7 +143,10 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
     );
   }
 
-  useDeleteCallback(docId: string, ...callbacks: Array<() => Promise<void>>) {
+  useDeleteCallback(
+    docId: string,
+    ...callbacks: Array<() => void | Promise<void>>
+  ) {
     const setState = this.useSetState();
     const setLoading = appStore.useSetLoading();
     const setMessage = appStore.useSetMessage();
@@ -166,6 +171,7 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
             await callback();
           }
 
+          setState((prev) => ({ ...prev, deleteDocId: '' }));
           setMessage({ info: '키워드가 삭제되었습니다.' });
         } catch (e) {
         } finally {
@@ -175,9 +181,24 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
       [docId, callbacks, setState, setLoading, setMessage],
     );
   }
+
+  useToggleDeleteModalEvent() {
+    const setState = this.useSetState();
+
+    return useCallback(
+      (deleteDocId: string) => () => {
+        setState((prev) => ({
+          ...prev,
+          deleteDocId,
+        }));
+      },
+      [setState],
+    );
+  }
 }
 
 export const keywordStore = new KeywordStore(KeywordStore.name, {
+  deleteDocId: '',
   include: [],
   exclude: [],
 });

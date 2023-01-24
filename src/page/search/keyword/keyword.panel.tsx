@@ -4,6 +4,7 @@ import { keywordStore } from '@/store';
 import { KeywordTabProps } from './types';
 import { KeywordForm } from './keyword.form';
 import { KeywordRow } from './keyword.rows';
+import { KeywordDeleteModal } from './keyword.modal';
 
 export const KeywordPanel: FC<KeywordTabProps> = ({
   fixedType,
@@ -14,11 +15,14 @@ export const KeywordPanel: FC<KeywordTabProps> = ({
   const onLoad = keywordStore.useLoadCallback(fixedType);
 
   return (
-    <Box hidden={hidden}>
+    <Box hidden={hidden} sx={{ padding: 1 }}>
+      <KeywordDeleteModal hidden={hidden} onLoad={onLoad} />
       <KeywordForm fixedType={fixedType} onLoad={onLoad} />
-      {rows.map((row) => (
-        <KeywordRow key={row.id} row={row} onLoad={onLoad} />
-      ))}
+      <Box sx={{ flex: 1, overflowY: 'scroll', maxHeight: 400 }}>
+        {rows.map((row) => (
+          <KeywordRow key={row.id} row={row} onLoad={onLoad} />
+        ))}
+      </Box>
     </Box>
   );
 };

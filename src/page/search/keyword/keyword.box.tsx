@@ -1,5 +1,12 @@
-import { FC, SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import {
+  FC,
+  Fragment,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import { Paper } from '@mui/material';
 import { FirebaseKeywordType } from '@/core';
 import { KeywordPanel } from './keyword.panel';
 import { KeywordTabs } from './keyword.tabs';
@@ -23,15 +30,25 @@ export const KeywordBox: FC = () => {
   }, [onInit]);
 
   return (
-    <Box flex="3">
-      <KeywordTabs keywordType={keywordType} onChange={onChange} />
-      {(['include', 'exclude'] as FirebaseKeywordType[]).map((fixedType) => (
-        <KeywordPanel
-          key={['keyword', fixedType, 'box'].join('-')}
-          fixedType={fixedType}
-          keywordType={keywordType}
-        />
-      ))}
-    </Box>
+    <Fragment>
+      <Paper
+        elevation={3}
+        sx={{
+          flex: 1,
+          padding: 3,
+          marginLeft: 1,
+          maxHeight: 'inherit',
+        }}
+      >
+        <KeywordTabs keywordType={keywordType} onChange={onChange} />
+        {(['include', 'exclude'] as FirebaseKeywordType[]).map((fixedType) => (
+          <KeywordPanel
+            key={['keyword', fixedType, 'box'].join('-')}
+            fixedType={fixedType}
+            keywordType={keywordType}
+          />
+        ))}
+      </Paper>
+    </Fragment>
   );
 };

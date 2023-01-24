@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { keywordStore } from '@/store';
 import { KeywordFormType } from './types';
 
@@ -8,7 +8,7 @@ export const KeywordForm: FC<KeywordFormType> = ({ fixedType, onLoad }) => {
 
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setKeyword(e.target.value);
+      setKeyword(e.target.value.trim());
     },
     [setKeyword],
   );
@@ -25,9 +25,16 @@ export const KeywordForm: FC<KeywordFormType> = ({ fixedType, onLoad }) => {
   );
 
   return (
-    <Box component="form" onSubmit={onAppend}>
-      <input value={keyword} onChange={onChange} />
-      <button type="submit">추가</button>
+    <Box component="form" onSubmit={onAppend} sx={{ paddingY: 2 }}>
+      <TextField
+        label="새 키워드"
+        value={keyword}
+        onChange={onChange}
+        size="small"
+        placeholder="엔터(Enter)를 누르면 등록됩니다."
+        autoComplete="off"
+        fullWidth
+      />
     </Box>
   );
 };
