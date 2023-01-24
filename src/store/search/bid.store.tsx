@@ -128,11 +128,9 @@ export class BidSearchStore extends StoreInstance<
         );
       });
 
-      setState((prev) => {
-        return { ...prev, rows };
-      });
-
+      setState((prev) => ({ ...prev, rows }));
       setLoading(false);
+      setMessage({ info: `${rows.length}건의 결과가 검색되었습니다.` });
     }, [tasks, query, setState, setLoading, setMessage]);
   }
 }
