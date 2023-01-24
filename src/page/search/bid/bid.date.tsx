@@ -14,7 +14,7 @@ export const BidSearchDate: FC = () => {
   const onChangeInqryEndDt = bidSearchStore.useSetDateCallback('inqryEndDt');
 
   return (
-    <Box display="flex">
+    <Box display="flex" sx={{ alignItems: 'center', justifyContent: 'center' }}>
       <DatePicker
         label="조회시작일자"
         value={

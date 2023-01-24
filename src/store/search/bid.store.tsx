@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+import { SyntheticEvent, useCallback } from 'react';
 import {
   bidTask,
   searchApi,
@@ -5,11 +7,8 @@ import {
   BidItemType,
   SearchTaskType,
 } from '@/apis';
-import { DateFormat } from '@/component';
-import { DateChangeEventHandler } from '@/component/date-picker/types';
 import { KeywordRegExp, StoreInstance } from '@/core';
-import { DateTime } from 'luxon';
-import { ChangeEvent, useCallback } from 'react';
+import { DateFormat, DateChangeEventHandler } from '@/component';
 import { appStore } from '../app';
 import { keywordStore } from '../keyword';
 import { SearchStoreType } from './types';
@@ -17,14 +16,14 @@ import { SearchStoreType } from './types';
 export class BidSearchStore extends StoreInstance<
   SearchStoreType<SearchTaskType, SearchCustomQueryType, BidItemType>
 > {
-  useSetTaskCallback(): (e: ChangeEvent<HTMLInputElement>) => void {
+  useChangeTaskEvent(): (
+    text: string,
+  ) => (e: SyntheticEvent<Element, Event>, checked: boolean) => void {
     const setState = this.useSetState();
 
     return useCallback(
-      (e) => {
-        const { value, checked } = e.target;
-
-        const task = bidTask.findByText(value);
+      (text) => (_, checked) => {
+        const task = bidTask.findByText(text);
 
         if (!task) {
           return;

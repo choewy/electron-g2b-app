@@ -1,28 +1,27 @@
 import { FC } from 'react';
-import { Box } from '@mui/material';
-
-import { BidSearchTasks } from './bid.tasks';
-import { BidSearchDate } from './bid.date';
+import { Paper } from '@mui/material';
 import { bidSearchStore } from '@/store';
 import { BidItemRow } from '@/apis';
 import { CsvDownloader } from '@/component';
+import { BidSearchTasks } from './bid.tasks';
+import { BidSearchDate } from './bid.date';
+import { BidSearchButtons } from './bid.buttons';
 
 export const BidSearchForm: FC = () => {
   const rows = bidSearchStore.useValue().rows || [];
   const onReset = bidSearchStore.useResetState();
-  const onSearch = bidSearchStore.useSearchCallback();
 
   return (
-    <Box flex="5" component="div">
+    <Paper elevation={3} sx={{ flex: 2, padding: 3, marginRight: 1 }}>
       <BidSearchTasks />
       <BidSearchDate />
-      <button onClick={onSearch}>검색</button>
+      <BidSearchButtons />
       <CsvDownloader
         title="나라장터입찰공고"
         classType={BidItemRow}
         onReset={onReset}
         data={rows}
       />
-    </Box>
+    </Paper>
   );
 };

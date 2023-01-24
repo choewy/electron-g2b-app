@@ -5,7 +5,7 @@ import { BidSearchForm } from './bid.form';
 
 export const BidSearchPage: FC = () => {
   return (
-    <Box display="flex">
+    <Box component="div" display="flex" sx={{ padding: 1, height: 600 }}>
       <BidSearchForm />
       <KeywordBox />
     </Box>

@@ -1,29 +1,31 @@
-import { FC, Fragment } from 'react';
+import { FC } from 'react';
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { bidTasks } from '@/apis';
-import { Box } from '@mui/material';
 import { bidSearchStore } from '@/store';
 
 export const BidSearchTasks: FC = () => {
   const tasks = bidSearchStore.useValue().tasks || [];
-  const onChange = bidSearchStore.useSetTaskCallback();
+  const onChangeEvent = bidSearchStore.useChangeTaskEvent();
 
   return (
-    <Box display="flex">
-      {bidTasks.map((task) => {
-        const key = JSON.stringify(task);
-        return (
-          <Fragment key={key}>
-            <input
-              id={key}
-              type="checkbox"
-              value={task.text}
-              checked={!!tasks.find(({ text }) => text === task.text)}
-              onChange={onChange}
-            />
-            <label htmlFor={key}>{task.text}</label>
-          </Fragment>
-        );
-      })}
-    </Box>
+    <FormGroup
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 2,
+      }}
+    >
+      {bidTasks.map((task) => (
+        <FormControlLabel
+          control={<Checkbox size="small" />}
+          label={task.text}
+          value={task.text}
+          checked={!!tasks.find(({ text }) => text === task.text)}
+          onChange={onChangeEvent(task.text)}
+        />
+      ))}
+    </FormGroup>
   );
 };
