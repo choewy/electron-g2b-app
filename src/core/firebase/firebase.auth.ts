@@ -23,13 +23,13 @@ export class FirebaseAuth {
     this.googleAuth.addScope('email');
   }
 
-  bindStateObserver<T extends { user: User | null }>(
+  bindStateObserver<T extends { user: User | null | false }>(
     setState: SetterOrUpdater<T>,
   ) {
     this.auth.onAuthStateChanged((user) => {
       setState((prev) => ({
         ...prev,
-        user: user ? JSON.parse(JSON.stringify(user)) : null,
+        user: user ? JSON.parse(JSON.stringify(user)) : false,
       }));
     });
   }

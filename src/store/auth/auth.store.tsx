@@ -39,7 +39,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
     }
   }
 
-  useAuth(): User | null {
+  useAuth(): User | null | false {
     const location = useLocation();
     const navigate = useNavigate();
     const [{ user }, setState] = this.useState();
@@ -51,20 +51,20 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
     useEffect(() => {
       if (
         user &&
-        [RouterProps.SignIn.path, RouterProps.SignUp.path].includes(
-          location.pathname,
-        )
+        [
+          RouterProps.Home.path,
+          RouterProps.SignIn.path,
+          RouterProps.SignUp.path,
+        ].includes(location.pathname)
       ) {
-        /** @TODO edit RouterProps.BidSearch.path -> RouterProps.Home.path */
         return navigate(
           sessionStorageService.path || RouterProps.BidSearch.path,
           { replace: true },
         );
       }
 
-      /** @TODO append RouterProps.Home.path */
       if (
-        !user &&
+        user === false &&
         ![RouterProps.SignIn.path, RouterProps.SignUp.path].includes(
           location.pathname,
         )

@@ -22,7 +22,9 @@ export const RouterNavigators: FC<{ routerProps: RouterPropsType[] }> = ({
         return window.open(router.url);
       }
 
-      if (router.path !== RouterProps.SignOut.path) {
+      if (
+        ![RouterProps.Home.path, RouterProps.SignOut.path].includes(router.path)
+      ) {
         sessionStorageService.setPath(router.path);
       }
 

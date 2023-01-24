@@ -17,7 +17,7 @@ import {
 import { RouterPropsMapType, RouterPropsType } from './types';
 
 export class RouterPropsClass {
-  selectMapByAuth(user: User | null): Partial<RouterPropsMapType> {
+  selectMapByAuth(user: User | null | false): Partial<RouterPropsMapType> {
     const routerPropsMap: Partial<RouterPropsMapType> = {
       common: this.common,
     };
@@ -41,8 +41,7 @@ export class RouterPropsClass {
   }
 
   get common(): RouterPropsType[] {
-    /** @TODO append Home */
-    return [this.Github];
+    return [this.Home, this.Github];
   }
 
   get service(): RouterPropsType[] {
@@ -63,6 +62,7 @@ export class RouterPropsClass {
       path: '/',
       icon: <HomeIcon />,
       page: <HomePage />,
+      hiddenInSidebar: true,
     };
   }
 
