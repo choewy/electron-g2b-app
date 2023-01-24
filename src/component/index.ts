@@ -1,3 +1,1 @@
-export * from './types';
-export * from './input.component';
-export * from './form.component';
+export * from './date-picker';
