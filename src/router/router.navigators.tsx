@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { FC, Fragment, useCallback } from 'react';
 import { useNavigate } from 'react-router';
+import { RouterProps } from './router.props';
 import { RouterPropsType } from './types';
 
 export const RouterNavigators: FC<{ routerProps: RouterPropsType[] }> = ({
@@ -21,7 +22,10 @@ export const RouterNavigators: FC<{ routerProps: RouterPropsType[] }> = ({
         return window.open(router.url);
       }
 
-      sessionStorageService.setPath(router.path);
+      if (router.path !== RouterProps.SignOut.path) {
+        sessionStorageService.setPath(router.path);
+      }
+
       navigate(router.path, { replace: true });
     },
     [navigate],

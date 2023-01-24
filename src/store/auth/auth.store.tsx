@@ -55,18 +55,19 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
           location.pathname,
         )
       ) {
-        return navigate(sessionStorageService.path || RouterProps.Home.path, {
-          replace: true,
-        });
+        /** @TODO edit RouterProps.BidSearch.path -> RouterProps.Home.path */
+        return navigate(
+          sessionStorageService.path || RouterProps.BidSearch.path,
+          { replace: true },
+        );
       }
 
+      /** @TODO append RouterProps.Home.path */
       if (
         !user &&
-        ![
-          RouterProps.Home.path,
-          RouterProps.SignIn.path,
-          RouterProps.SignUp.path,
-        ].includes(location.pathname)
+        ![RouterProps.SignIn.path, RouterProps.SignUp.path].includes(
+          location.pathname,
+        )
       ) {
         return navigate(RouterProps.SignIn.path, { replace: true });
       }
@@ -93,6 +94,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
         try {
           setLoading(true);
           await firebaseAuth.signUpWithEmailAndPassword(email, password);
+          sessionStorageService.setPath(RouterProps.BidSearch.path);
         } catch (e) {
           firebaseAuth.getErrorMessageByCode(setMessage, e);
         } finally {
@@ -121,7 +123,7 @@ export class AuthStore extends StoreInstance<AuthStoreType> {
         try {
           setLoading(true);
           await firebaseAuth.signInWithEmailAndPassword(email, password);
-          setLoading(false);
+          sessionStorageService.setPath(RouterProps.BidSearch.path);
         } catch (e) {
           firebaseAuth.getErrorMessageByCode(setMessage, e);
         } finally {

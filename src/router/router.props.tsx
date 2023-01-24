@@ -41,7 +41,8 @@ export class RouterPropsClass {
   }
 
   get common(): RouterPropsType[] {
-    return [this.Home, this.Github];
+    /** @TODO append Home */
+    return [this.Github];
   }
 
   get service(): RouterPropsType[] {
