@@ -2,7 +2,6 @@ import {
   BidSearchPage,
   HomePage,
   HrcsSearchPage,
-  KeywordPage,
   SignInPage,
   SignOutPage,
   SignUpPage,
@@ -14,7 +13,6 @@ import {
   Login as SignInIcon,
   Logout as SignOutIcon,
   Search as SearchIcon,
-  Toc as KeywordIcon,
 } from '@mui/icons-material';
 import { RouterPropsMapType, RouterPropsType } from './types';
 
@@ -55,7 +53,7 @@ export class RouterPropsClass {
   }
 
   get user(): RouterPropsType[] {
-    return [this.Keyword, this.SignOut];
+    return [this.SignOut];
   }
 
   get Home(): RouterPropsType {
@@ -106,19 +104,10 @@ export class RouterPropsClass {
     };
   }
 
-  get Keyword(): RouterPropsType {
-    return {
-      title: '키워드 설정',
-      path: '/keywords',
-      icon: <KeywordIcon />,
-      page: <KeywordPage />,
-    };
-  }
-
   get BidSearch(): RouterPropsType {
     return {
       title: '입찰 공고 검색',
-      path: '/bid-search',
+      path: '/search/bid',
       icon: <SearchIcon />,
       page: <BidSearchPage />,
     };
@@ -127,7 +116,7 @@ export class RouterPropsClass {
   get HrcsSearch(): RouterPropsType {
     return {
       title: '사전 규격 검색',
-      path: '/hrcs-search',
+      path: '/search/hrcs',
       icon: <SearchIcon />,
       page: <HrcsSearchPage />,
     };
