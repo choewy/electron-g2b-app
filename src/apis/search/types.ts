@@ -1,12 +1,12 @@
 export type SearchFixedQuery = {
   readonly ServiceKey: string;
   readonly numOfRows: number;
-  readonly pageNo: number;
   readonly inqryDiv: 1 | 2;
   readonly type: 'json';
 };
 
 export type SearchCustomQueryType = {
+  pageNo: number;
   inqryBgnDt: string;
   inqryEndDt: string;
 };

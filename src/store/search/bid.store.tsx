@@ -9,7 +9,7 @@ import {
 } from '@/apis';
 import { KeywordRegExp, StoreInstance } from '@/core';
 import { DateFormat, DateChangeEventHandler } from '@/component';
-import { appStore } from '../app';
+import { AppMessageType, appStore } from '../app';
 import { keywordStore } from '../keyword';
 import { SearchStoreType } from './types';
 
@@ -79,6 +79,61 @@ export class BidSearchStore extends StoreInstance<
     );
   }
 
+  private async recursiveApiCall({
+    includeRegExp,
+    excludeRegExp,
+    rows,
+    endPoint,
+    query,
+    setMessage,
+  }: {
+    includeRegExp?: KeywordRegExp;
+    excludeRegExp?: KeywordRegExp;
+    rows: BidItemType[];
+    endPoint: string;
+    query: SearchCustomQueryType;
+    setMessage(messages: AppMessageType): Promise<void>;
+  }) {
+    try {
+      const res = await searchApi.bid(endPoint, query);
+      const { pageNo, numOfRows, totalCount, items } = res.response.body;
+
+      rows = rows.concat(
+        (items || []).filter((item) => {
+          const text = [
+            item.bidNtceNm,
+            item.ntceInsttNm,
+            item.dminsttNm,
+          ].join();
+
+          return (
+            (includeRegExp ? includeRegExp.test(text) : true) &&
+            (excludeRegExp ? !excludeRegExp.test(text) : true)
+          );
+        }),
+      );
+
+      if (totalCount > pageNo * numOfRows) {
+        rows = await this.recursiveApiCall({
+          rows,
+          includeRegExp,
+          excludeRegExp,
+          endPoint,
+          setMessage,
+          query: {
+            ...query,
+            pageNo: pageNo + 1,
+          },
+        });
+      }
+    } catch (e) {
+      const error = e as any;
+      setMessage({ error: error.message });
+    }
+
+    return rows;
+  }
+
   useSearchCallback(): () => Promise<void> {
     const [{ tasks, query }, setState] = this.useState();
 
@@ -102,30 +157,28 @@ export class BidSearchStore extends StoreInstance<
         taskTargets = tasks;
       }
 
-      let items: BidItemType[] = [];
+      let rows: BidItemType[] = [];
 
       setLoading(true);
 
+      const includeRegExp = include.length
+        ? new KeywordRegExp(include)
+        : undefined;
+
+      const excludeRegExp = exclude.length
+        ? new KeywordRegExp(exclude)
+        : undefined;
+
       for (const task of taskTargets) {
-        try {
-          const res = await searchApi.bid(task.endPoint, query);
-          items = items.concat(res.response.body.items || []);
-        } catch (e) {
-          const error = e as any;
-          setMessage({ error: error.message });
-        }
+        rows = await this.recursiveApiCall({
+          includeRegExp,
+          excludeRegExp,
+          query,
+          rows,
+          endPoint: task.endPoint,
+          setMessage,
+        });
       }
-      const includeRegExp = include.length && new KeywordRegExp(include);
-      const excludeRegExp = exclude.length && new KeywordRegExp(exclude);
-
-      const rows = items.filter((item) => {
-        const text = [item.bidNtceNm, item.ntceInsttNm, item.dminsttNm].join();
-
-        return (
-          (includeRegExp ? includeRegExp.test(text) : true) &&
-          (excludeRegExp ? !excludeRegExp.test(text) : true)
-        );
-      });
 
       setState((prev) => ({ ...prev, rows }));
       setLoading(false);
@@ -137,6 +190,7 @@ export class BidSearchStore extends StoreInstance<
 export const bidSearchStore = new BidSearchStore(BidSearchStore.name, {
   tasks: bidTask.initValues,
   query: {
+    pageNo: 1,
     inqryBgnDt: DateTime.local().toFormat(DateFormat),
     inqryEndDt: DateTime.local().toFormat(DateFormat),
   },

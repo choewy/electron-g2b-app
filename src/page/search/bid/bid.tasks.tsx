@@ -19,6 +19,7 @@ export const BidSearchTasks: FC = () => {
     >
       {bidTasks.map((task) => (
         <FormControlLabel
+          key={JSON.stringify(task)}
           control={<Checkbox size="small" />}
           label={task.text}
           value={task.text}

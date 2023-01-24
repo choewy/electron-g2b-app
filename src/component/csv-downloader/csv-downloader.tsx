@@ -20,7 +20,7 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
   }, [setFilename]);
 
   useEffect(() => {
-    if (data.length) {
+    if (data && data.length) {
       onChangeFilename();
     }
   }, [data, onChangeFilename]);
@@ -41,7 +41,7 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
       id={ID}
       hidden={true}
       filename={filename}
-      data={data.map((row) => new classType(row))}
+      data={data ? data.map((row) => new classType(row)) : []}
     />
   );
 };
