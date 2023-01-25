@@ -71,7 +71,12 @@ export const KeywordEditableRow: FC<KeywordChildRowProps> = ({
   );
 
   return (
-    <Box display="flex" sx={{ height: 40, width: '100%' }}>
+    <Box
+      component="form"
+      display="flex"
+      sx={{ height: 40, width: '100%' }}
+      onSubmit={onUpdate}
+    >
       <TextField
         variant="standard"
         value={keyword}

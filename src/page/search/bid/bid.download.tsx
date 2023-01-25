@@ -10,7 +10,7 @@ import {
 import { FC, Fragment, SyntheticEvent, useCallback, useState } from 'react';
 import { BidDownloadProps } from './types';
 
-export const BidDownload: FC<BidDownloadProps> = ({ rows, onReset }) => {
+export const BidDownload: FC<BidDownloadProps> = ({ rows }) => {
   const [download, setDownload] = useState<{ csv: boolean; excel: boolean }>({
     csv: false,
     excel: true,
@@ -38,22 +38,20 @@ export const BidDownload: FC<BidDownloadProps> = ({ rows, onReset }) => {
       <CsvDownloader
         title="나라장터입찰공고"
         classType={BidItemRow}
-        onReset={onReset}
         data={rows}
       />
     );
-  }, [rows, onReset]);
+  }, [rows]);
 
   const excelDownload = useCallback(() => {
     return (
       <ExcelDownloader
         title="나라장터입찰공고"
         classType={BidItemRow}
-        onReset={onReset}
         data={rows}
       />
     );
-  }, [rows, onReset]);
+  }, [rows]);
 
   return (
     <Fragment>

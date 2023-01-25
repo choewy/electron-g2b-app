@@ -114,7 +114,9 @@ export class KeywordStore extends StoreInstance<KeywordStoreType> {
     const setMessage = appStore.useSetMessage();
 
     return useCallback(
-      async (_: MouseEvent<HTMLElement>) => {
+      async (e: FormEvent<HTMLElement> | MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+
         try {
           setLoading(true);
           const doc = await firebaseDB.findKeywordById(docId);

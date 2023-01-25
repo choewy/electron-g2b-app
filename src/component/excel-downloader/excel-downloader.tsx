@@ -7,7 +7,6 @@ export const ExcelDownloader: FC<ExcelDownloaderProps> = ({
   classType,
   title,
   data,
-  onReset,
 }) => {
   const id = 'excel-download-link';
 
@@ -46,13 +45,9 @@ export const ExcelDownloader: FC<ExcelDownloaderProps> = ({
       }
 
       button.click();
-
-      return () => {
-        onReset();
-        setFilename('');
-      };
+      setFilename('');
     }
-  }, [filename, onReset, setFilename]);
+  }, [filename, setFilename]);
 
   return (
     <div hidden={true} id={id}>

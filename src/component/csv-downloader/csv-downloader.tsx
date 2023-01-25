@@ -7,7 +7,6 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
   classType,
   data,
   title,
-  onReset,
 }) => {
   const id = 'csv-download-link';
 
@@ -27,14 +26,16 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
 
   useEffect(() => {
     if (filename) {
-      document.getElementById(id)?.click();
+      const link = document.getElementById(id);
 
-      return () => {
-        onReset();
-        setFilename('');
-      };
+      if (!link) {
+        return;
+      }
+
+      link.click();
+      setFilename('');
     }
-  }, [filename, onReset, setFilename]);
+  }, [filename, setFilename]);
 
   return (
     <CSVLink

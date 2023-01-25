@@ -8,13 +8,12 @@ import { BidDownload } from './bid.download';
 
 export const BidSearchForm: FC = () => {
   const rows = bidSearchStore.useValue().rows || [];
-  const onReset = bidSearchStore.useResetState();
 
   return (
     <Paper elevation={3} sx={{ flex: 2, padding: 3, marginRight: 1 }}>
       <BidSearchTasks />
       <BidSearchDate />
-      <BidDownload rows={rows} onReset={onReset} />
+      <BidDownload rows={rows} />
       <BidSearchButtons />
     </Paper>
   );
