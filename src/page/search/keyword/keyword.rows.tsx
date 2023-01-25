@@ -28,7 +28,8 @@ export const KeywordReadonlyRow: FC<KeywordChildRowProps> = ({
         sx={{
           display: 'flex',
           alignItems: 'center',
-          width: '100%',
+          overflow: 'hidden',
+          maxWidth: 200,
         }}
       >
         {row.keyword}

@@ -37,7 +37,7 @@ export const KeywordBox: FC = () => {
           flex: 1,
           padding: 3,
           marginLeft: 1,
-          maxHeight: 'inherit',
+          width: 400,
         }}
       >
         <KeywordTabs keywordType={keywordType} onChange={onChange} />
