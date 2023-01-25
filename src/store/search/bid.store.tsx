@@ -140,7 +140,9 @@ export class BidSearchStore extends StoreInstance<
     const setLoading = appStore.useSetLoading();
     const setMessage = appStore.useSetMessage();
 
-    const { include, exclude } = keywordStore.useValue();
+    const keywords = keywordStore.useValue();
+    const include = keywords.include || [];
+    const exclude = keywords.exclude || [];
 
     return useCallback(async () => {
       if (!tasks || !query) {
