@@ -24,7 +24,7 @@ jobs:
 
       # Install Node.js dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps
 
       # Create frontend/.env file
       - name: Create .env file
