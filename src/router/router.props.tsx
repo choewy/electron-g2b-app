@@ -14,6 +14,7 @@ import {
   Logout as SignOutIcon,
   Search as SearchIcon,
 } from '@mui/icons-material';
+import { Fragment } from 'react';
 import { RouterPropsMapType, RouterPropsType } from './types';
 
 export class RouterPropsClass {
@@ -71,7 +72,7 @@ export class RouterPropsClass {
       title: 'GitHub',
       path: '',
       icon: <GitHubIcon />,
-      page: <></>,
+      page: <Fragment />,
       openNewWindow: true,
       url: 'https://github.com/choewy/g2b',
     };

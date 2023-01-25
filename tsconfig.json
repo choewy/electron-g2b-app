@@ -18,8 +18,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "declaration": true,
+    "declarationDir": "./types"
   },
-  "include": ["src"],
+  "include": ["src", "types"],
   "exclude": ["./craco.config.js"]
 }

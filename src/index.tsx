@@ -3,10 +3,12 @@ import './index.css';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, RecoilEnv } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { App } from '@/app';
+
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

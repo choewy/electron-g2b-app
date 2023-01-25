@@ -25,6 +25,9 @@ export const BidSearchTasks: FC = () => {
           value={task.text}
           checked={!!tasks.find(({ text }) => text === task.text)}
           onChange={onChangeEvent(task.text)}
+          componentsProps={{
+            typography: { fontSize: 13 },
+          }}
         />
       ))}
     </FormGroup>

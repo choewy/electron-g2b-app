@@ -9,7 +9,7 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
   title,
   onReset,
 }) => {
-  const ID = 'csv-download-link';
+  const id = 'csv-download-link';
 
   const [filename, setFilename] = useState<string>('');
 
@@ -27,7 +27,7 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
 
   useEffect(() => {
     if (filename) {
-      document.getElementById(ID)?.click();
+      document.getElementById(id)?.click();
 
       return () => {
         onReset();
@@ -38,7 +38,7 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
 
   return (
     <CSVLink
-      id={ID}
+      id={id}
       hidden={true}
       filename={filename}
       data={data ? data.map((row) => new classType(row)) : []}
