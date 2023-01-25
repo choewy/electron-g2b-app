@@ -1,6 +1,12 @@
 import { BidItemRow } from '@/apis';
 import { CsvDownloader, ExcelDownloader } from '@/component';
-import { Alert, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+} from '@mui/material';
 import { FC, Fragment, SyntheticEvent, useCallback, useState } from 'react';
 import { BidDownloadProps } from './types';
 
@@ -76,9 +82,24 @@ export const BidDownload: FC<BidDownloadProps> = ({ rows, onReset }) => {
         {download.csv && csvDownload()}
         {download.excel && excelDownload()}
       </FormGroup>
-      <Alert severity="warning">
-        Windows에서는 CSV 파일이 정상적으로 보이지 않을 수 있습니다.
-      </Alert>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Alert
+          severity="warning"
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 500,
+          }}
+        >
+          Windows에서는 CSV 파일이 정상적으로 보이지 않을 수 있습니다.
+        </Alert>
+      </Box>
     </Fragment>
   );
 };
