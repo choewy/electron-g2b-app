@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon';
 import { SyntheticEvent, useCallback } from 'react';
 import {
+  BidItemRow,
   bidTask,
   searchApi,
   SearchCustomQueryType,
-  BidItemType,
   SearchTaskType,
 } from '@/apis';
 import { KeywordRegExp, StoreInstance } from '@/core';
@@ -14,7 +14,7 @@ import { keywordStore } from '../keyword';
 import { SearchStoreType } from './types';
 
 export class BidSearchStore extends StoreInstance<
-  SearchStoreType<SearchTaskType, SearchCustomQueryType, BidItemType>
+  SearchStoreType<SearchTaskType, SearchCustomQueryType, BidItemRow>
 > {
   useChangeTaskEvent(): (
     text: string,
@@ -89,28 +89,35 @@ export class BidSearchStore extends StoreInstance<
   }: {
     includeRegExp?: KeywordRegExp;
     excludeRegExp?: KeywordRegExp;
-    rows: BidItemType[];
+    rows: BidItemRow[];
     endPoint: string;
     query: SearchCustomQueryType;
     setMessage(messages: AppMessageType): Promise<void>;
   }) {
     try {
+      let index = rows.length;
+
       const res = await searchApi.bid(endPoint, query);
       const { pageNo, numOfRows, totalCount, items } = res.response.body;
 
       rows = rows.concat(
-        (items || []).filter((item) => {
-          const text = [
-            item.bidNtceNm,
-            item.ntceInsttNm,
-            item.dminsttNm,
-          ].join();
+        (items || []).reduce<BidItemRow[]>((searchedRow, item) => {
+          const includeKeywords =
+            includeRegExp && item.bidNtceNm.match(includeRegExp);
 
-          return (
-            (includeRegExp ? !!text.match(includeRegExp) : true) &&
-            (excludeRegExp ? !text.match(excludeRegExp) : true)
-          );
-        }),
+          const excludeKeywords = excludeRegExp
+            ? [item.bidNtceNm, item.ntceInsttNm, item.dminsttNm]
+                .join()
+                .match(excludeRegExp)
+            : null;
+
+          if (includeKeywords && !excludeKeywords) {
+            index += 1;
+            searchedRow.push(new BidItemRow(index, includeKeywords[0], item));
+          }
+
+          return searchedRow;
+        }, []),
       );
 
       if (totalCount > pageNo * numOfRows) {
@@ -159,7 +166,7 @@ export class BidSearchStore extends StoreInstance<
         taskTargets = tasks;
       }
 
-      let rows: BidItemType[] = [];
+      let rows: BidItemRow[] = [];
 
       setLoading(true);
 

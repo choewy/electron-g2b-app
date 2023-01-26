@@ -1,4 +1,3 @@
-import { BidItemRow } from '@/apis';
 import { CsvDownloader, ExcelDownloader } from '@/component';
 import {
   Alert,
@@ -34,23 +33,11 @@ export const BidDownload: FC<BidDownloadProps> = ({ rows }) => {
   );
 
   const csvDownload = useCallback(() => {
-    return (
-      <CsvDownloader
-        title="나라장터입찰공고"
-        classType={BidItemRow}
-        data={rows}
-      />
-    );
+    return <CsvDownloader title="나라장터입찰공고" data={rows} />;
   }, [rows]);
 
   const excelDownload = useCallback(() => {
-    return (
-      <ExcelDownloader
-        title="나라장터입찰공고"
-        classType={BidItemRow}
-        data={rows}
-      />
-    );
+    return <ExcelDownloader title="나라장터입찰공고" data={rows} />;
   }, [rows]);
 
   return (

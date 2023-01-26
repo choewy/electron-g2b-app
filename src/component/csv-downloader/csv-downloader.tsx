@@ -3,11 +3,7 @@ import { DateTime } from 'luxon';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { CsvDownloaderProps } from './types';
 
-export const CsvDownloader: FC<CsvDownloaderProps> = ({
-  classType,
-  data,
-  title,
-}) => {
+export const CsvDownloader: FC<CsvDownloaderProps> = ({ data, title }) => {
   const id = 'csv-download-link';
 
   const [filename, setFilename] = useState<string>('');
@@ -37,12 +33,5 @@ export const CsvDownloader: FC<CsvDownloaderProps> = ({
     }
   }, [filename, setFilename]);
 
-  return (
-    <CSVLink
-      id={id}
-      hidden={true}
-      filename={filename}
-      data={data ? data.map((row) => new classType(row)) : []}
-    />
-  );
+  return <CSVLink id={id} hidden={true} filename={filename} data={data} />;
 };

@@ -3,11 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { JsonToExcel } from 'react-json-to-excel';
 import { ExcelDownloaderProps } from './types';
 
-export const ExcelDownloader: FC<ExcelDownloaderProps> = ({
-  classType,
-  title,
-  data,
-}) => {
+export const ExcelDownloader: FC<ExcelDownloaderProps> = ({ title, data }) => {
   const id = 'excel-download-link';
 
   const [filename, setFilename] = useState<string>('');
@@ -51,11 +47,7 @@ export const ExcelDownloader: FC<ExcelDownloaderProps> = ({
 
   return (
     <div hidden={true} id={id}>
-      <JsonToExcel
-        title={title}
-        fileName={filename}
-        data={data ? data.map((row) => new classType(row)) : []}
-      />
+      <JsonToExcel title={title} fileName={filename} data={data} />
     </div>
   );
 };

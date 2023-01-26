@@ -1,5 +1,5 @@
-import { BidItemType } from '@/apis';
+import { BidItemRow } from '@/apis';
 
 export type BidDownloadProps = {
-  rows: BidItemType[];
+  rows: BidItemRow[];
 };
