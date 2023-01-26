@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
-import { bidTask } from '@/apis';
-import { bidSearchStore } from '@/store';
+import { hrcsTask } from '@/apis';
+import { hrcsSearchStore } from '@/store';
 
-export const BidSearchTasks: FC = () => {
-  const tasks = bidSearchStore.useValue().tasks || [];
-  const onChangeEvent = bidSearchStore.useChangeTaskEvent();
+export const HrcsSearchTasks: FC = () => {
+  const tasks = hrcsSearchStore.useValue().tasks || [];
+  const onChangeEvent = hrcsSearchStore.useChangeTaskEvent();
 
   return (
     <FormGroup
@@ -17,7 +17,7 @@ export const BidSearchTasks: FC = () => {
         padding: 2,
       }}
     >
-      {bidTask.values.map((task) => (
+      {hrcsTask.values.map((task) => (
         <FormControlLabel
           key={JSON.stringify(task)}
           control={<Checkbox size="small" />}

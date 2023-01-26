@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 import { SyntheticEvent, useCallback } from 'react';
 import {
-  BidItemRow,
-  bidTask,
+  HrcsItemRow,
+  hrcsTask,
   searchApi,
   SearchCustomQueryType,
   SearchTaskType,
@@ -13,8 +13,8 @@ import { AppMessageType, appStore } from '../app';
 import { keywordStore } from '../keyword';
 import { SearchStoreType } from './types';
 
-export class BidSearchStore extends StoreInstance<
-  SearchStoreType<SearchTaskType, SearchCustomQueryType, BidItemRow>
+export class HrcsSearchStore extends StoreInstance<
+  SearchStoreType<SearchTaskType, SearchCustomQueryType, HrcsItemRow>
 > {
   useChangeTaskEvent(): (
     text: string,
@@ -23,7 +23,7 @@ export class BidSearchStore extends StoreInstance<
 
     return useCallback(
       (text) => (_, checked) => {
-        const task = bidTask.findByText(text);
+        const task = hrcsTask.findByText(text);
 
         if (!task) {
           return;
@@ -32,15 +32,15 @@ export class BidSearchStore extends StoreInstance<
         if (!task.endPoint && checked) {
           return setState((prev) => ({
             ...prev,
-            tasks: bidTask.initValues,
+            tasks: hrcsTask.initValues,
           }));
         }
 
         if (task.endPoint && checked) {
           return setState((prev) => {
             const tasks =
-              prev.tasks.length === bidTask.otherValues.length - 1
-                ? bidTask.initValues
+              prev.tasks.length === hrcsTask.otherValues.length - 1
+                ? hrcsTask.initValues
                 : [...prev.tasks.filter(({ endPoint }) => endPoint), task];
 
             return { ...prev, tasks };
@@ -53,7 +53,7 @@ export class BidSearchStore extends StoreInstance<
 
             return {
               ...prev,
-              tasks: tasks.length ? tasks : bidTask.initValues,
+              tasks: tasks.length ? tasks : hrcsTask.initValues,
             };
           });
         }
@@ -93,7 +93,7 @@ export class BidSearchStore extends StoreInstance<
   }: {
     includeRegExp?: KeywordRegExp;
     excludeRegExp?: KeywordRegExp;
-    rows: BidItemRow[];
+    rows: HrcsItemRow[];
     endPoint: string;
     query: SearchCustomQueryType;
     setMessage(messages: AppMessageType): Promise<void>;
@@ -101,23 +101,23 @@ export class BidSearchStore extends StoreInstance<
     try {
       let index = rows.length;
 
-      const res = await searchApi.bid(endPoint, query);
+      const res = await searchApi.hrcs(endPoint, query);
       const { pageNo, numOfRows, totalCount, items } = res.response.body;
 
       rows = rows.concat(
-        (items || []).reduce<BidItemRow[]>((searchedRow, item) => {
+        (items || []).reduce<HrcsItemRow[]>((searchedRow, item) => {
           const includeKeywords =
-            includeRegExp && item.bidNtceNm.match(includeRegExp);
+            includeRegExp && item.prdctClsfcNoNm.match(includeRegExp);
 
           const excludeKeywords = excludeRegExp
-            ? [item.bidNtceNm, item.ntceInsttNm, item.dminsttNm]
+            ? [item.prdctClsfcNoNm, item.rlDminsttNm]
                 .join()
                 .match(excludeRegExp)
             : null;
 
           if (includeKeywords && !excludeKeywords) {
             index += 1;
-            searchedRow.push(new BidItemRow(index, includeKeywords[0], item));
+            searchedRow.push(new HrcsItemRow(index, includeKeywords[0], item));
           }
 
           return searchedRow;
@@ -165,12 +165,12 @@ export class BidSearchStore extends StoreInstance<
       let taskTargets: SearchTaskType[];
 
       if (tasks.length === 1 && !tasks[0].endPoint) {
-        taskTargets = bidTask.otherValues;
+        taskTargets = hrcsTask.otherValues;
       } else {
         taskTargets = tasks;
       }
 
-      let rows: BidItemRow[] = [];
+      let rows: HrcsItemRow[] = [];
 
       setLoading(true);
 
@@ -200,8 +200,8 @@ export class BidSearchStore extends StoreInstance<
   }
 }
 
-export const bidSearchStore = new BidSearchStore(BidSearchStore.name, {
-  tasks: bidTask.initValues,
+export const hrcsSearchStore = new HrcsSearchStore(HrcsSearchStore.name, {
+  tasks: hrcsTask.initValues,
   query: {
     pageNo: 1,
     inqryBgnDt: DateTime.local().toFormat(DateFormat),

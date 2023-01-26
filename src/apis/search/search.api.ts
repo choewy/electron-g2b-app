@@ -2,6 +2,7 @@ import { ApiInstance } from '@/core';
 import { SearchQuery } from './search.query';
 import {
   BidItemType,
+  HrcsItemType,
   SearchCustomQueryType,
   SearchResponseType,
 } from './types';
@@ -22,6 +23,15 @@ export class SearchApi extends ApiInstance {
     query?: SearchCustomQueryType,
   ): Promise<SearchResponseType<BidItemType>> {
     return this.request.get([this.bidURL, endPoint].join('/'), {
+      params: new SearchQuery(query),
+    });
+  }
+
+  async hrcs(
+    endPoint: string,
+    query?: SearchCustomQueryType,
+  ): Promise<SearchResponseType<HrcsItemType>> {
+    return this.request.get([this.hrcsURL, endPoint].join('/'), {
       params: new SearchQuery(query),
     });
   }
