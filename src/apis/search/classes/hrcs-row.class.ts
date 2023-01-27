@@ -1,4 +1,5 @@
 import { HrcsItemHeaderKeyType, HrcsItemType } from '../types';
+import { intToLocaleString } from './helpers';
 
 export class HrcsItemRow
   implements Record<HrcsItemHeaderKeyType, number | string>
@@ -9,8 +10,8 @@ export class HrcsItemRow
   업무구분명: string;
   품명: string;
   실수요기관명: string;
+  배정예산금액: string;
   등록일시: string;
-  접수일시: string;
   의견등록마감일시: string;
 
   constructor(index: number, keyword: string, row: HrcsItemType) {
@@ -20,8 +21,8 @@ export class HrcsItemRow
     this.업무구분명 = row.bsnsDivNm;
     this.품명 = row.prdctClsfcNoNm;
     this.실수요기관명 = row.rlDminsttNm;
+    this.배정예산금액 = intToLocaleString(parseInt(row.asignBdgtAmt));
     this.등록일시 = row.rgstDt;
-    this.접수일시 = row.rcptDt;
     this.의견등록마감일시 = row.opninRgstClseDt;
   }
 }

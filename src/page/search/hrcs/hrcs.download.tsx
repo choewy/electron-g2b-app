@@ -1,3 +1,4 @@
+import { hrcsSearchStore } from '@/store';
 import {
   Alert,
   Box,
@@ -5,15 +6,54 @@ import {
   FormControlLabel,
   FormGroup,
 } from '@mui/material';
-import { FC, Fragment, SyntheticEvent, useCallback, useState } from 'react';
-import { CsvDownloader, ExcelDownloader } from '@/component';
+import {
+  FC,
+  Fragment,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import csvDownload from 'json-to-csv-export';
+import { exportToExcel } from 'react-json-to-excel';
+import { createFileName } from '../helpers';
 import { HrcsDownloadProps } from './types';
 
 export const HrcsDownload: FC<HrcsDownloadProps> = ({ rows }) => {
+  const resetRows = hrcsSearchStore.useResetRows();
+
   const [download, setDownload] = useState<{ csv: boolean; excel: boolean }>({
     csv: false,
     excel: true,
   });
+
+  useEffect(() => {
+    if (!rows || rows.length < 1) {
+      return;
+    }
+
+    if (download.excel) {
+      exportToExcel(
+        [{ sheetName: '사전규격', details: rows }],
+        createFileName('사전규격', 'xlsx'),
+        true,
+      );
+    }
+
+    if (download.csv) {
+      csvDownload({
+        data: rows,
+        filename: createFileName('사전규격', 'csv'),
+        delimiter: ',',
+      });
+    }
+
+    if (rows) {
+      return () => {
+        resetRows();
+      };
+    }
+  }, [rows, download, resetRows]);
 
   const downloadLabel = useCallback((key: string) => {
     switch (key) {
@@ -31,14 +71,6 @@ export const HrcsDownload: FC<HrcsDownloadProps> = ({ rows }) => {
     },
     [setDownload],
   );
-
-  const csvDownload = useCallback(() => {
-    return <CsvDownloader title="나라장터사전규격" data={rows} />;
-  }, [rows]);
-
-  const excelDownload = useCallback(() => {
-    return <ExcelDownloader title="나라장터사전규격" data={rows} />;
-  }, [rows]);
 
   return (
     <Fragment>
@@ -64,8 +96,6 @@ export const HrcsDownload: FC<HrcsDownloadProps> = ({ rows }) => {
             }}
           />
         ))}
-        {download.csv && csvDownload()}
-        {download.excel && excelDownload()}
       </FormGroup>
       <Box
         sx={{

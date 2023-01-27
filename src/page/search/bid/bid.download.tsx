@@ -1,4 +1,4 @@
-import { CsvDownloader, ExcelDownloader } from '@/component';
+import { bidSearchStore } from '@/store';
 import {
   Alert,
   Box,
@@ -6,14 +6,55 @@ import {
   FormControlLabel,
   FormGroup,
 } from '@mui/material';
-import { FC, Fragment, SyntheticEvent, useCallback, useState } from 'react';
+import {
+  FC,
+  Fragment,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+
+import csvDownload from 'json-to-csv-export';
+import { exportToExcel } from 'react-json-to-excel';
+import { createFileName } from '../helpers';
 import { BidDownloadProps } from './types';
 
 export const BidDownload: FC<BidDownloadProps> = ({ rows }) => {
+  const resetRows = bidSearchStore.useResetRows();
+
   const [download, setDownload] = useState<{ csv: boolean; excel: boolean }>({
     csv: false,
     excel: true,
   });
+
+  useEffect(() => {
+    if (!rows || rows.length < 1) {
+      return;
+    }
+
+    if (download.excel) {
+      exportToExcel(
+        [{ sheetName: '입찰공고', details: rows }],
+        createFileName('입찰공고', 'xlsx'),
+        true,
+      );
+    }
+
+    if (download.csv) {
+      csvDownload({
+        data: rows,
+        filename: createFileName('입찰공고', 'csv'),
+        delimiter: ',',
+      });
+    }
+
+    if (rows) {
+      return () => {
+        resetRows();
+      };
+    }
+  }, [rows, download, resetRows]);
 
   const downloadLabel = useCallback((key: string) => {
     switch (key) {
@@ -28,17 +69,10 @@ export const BidDownload: FC<BidDownloadProps> = ({ rows }) => {
   const onChangeEvent = useCallback(
     (key: string) => (_: SyntheticEvent<Element, Event>, checked: boolean) => {
       setDownload((prev) => ({ ...prev, [key]: checked }));
+      resetRows();
     },
-    [setDownload],
+    [setDownload, resetRows],
   );
-
-  const csvDownload = useCallback(() => {
-    return <CsvDownloader title="나라장터입찰공고" data={rows} />;
-  }, [rows]);
-
-  const excelDownload = useCallback(() => {
-    return <ExcelDownloader title="나라장터입찰공고" data={rows} />;
-  }, [rows]);
 
   return (
     <Fragment>
@@ -64,8 +98,6 @@ export const BidDownload: FC<BidDownloadProps> = ({ rows }) => {
             }}
           />
         ))}
-        {download.csv && csvDownload()}
-        {download.excel && excelDownload()}
       </FormGroup>
       <Box
         sx={{

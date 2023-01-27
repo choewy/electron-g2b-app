@@ -193,10 +193,26 @@ export class HrcsSearchStore extends StoreInstance<
         });
       }
 
-      setState((prev) => ({ ...prev, rows }));
+      setState((prev) => ({
+        ...prev,
+        rows: rows
+          .sort((x, y) => x.검색어.localeCompare(y.검색어))
+          .map((row, i) => {
+            row.순번 = i + 1;
+            return row;
+          }),
+      }));
       setLoading(false);
       setMessage({ info: `${rows.length}건의 결과가 검색되었습니다.` });
     }, [tasks, query, keywords, setState, setLoading, setMessage]);
+  }
+
+  useResetRows(): () => void {
+    const setState = this.useSetState();
+
+    return useCallback(() => {
+      setState((prev) => ({ ...prev, rows: [] }));
+    }, [setState]);
   }
 }
 
