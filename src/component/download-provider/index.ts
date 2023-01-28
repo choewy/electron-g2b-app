@@ -1,2 +1,2 @@
-export * from './date-picker';
+export * from './types';
 export * from './download-provider';
