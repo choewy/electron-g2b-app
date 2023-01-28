@@ -2,11 +2,15 @@ export class SessionStorageService {
   private readonly PATH_KEY = 'path';
 
   setPath(path: string): void {
-    return localStorage.setItem(this.PATH_KEY, path);
+    return sessionStorage.setItem(this.PATH_KEY, path);
+  }
+
+  resetPath() {
+    return sessionStorage.removeItem(this.PATH_KEY);
   }
 
   get path(): string | null {
-    return localStorage.getItem(this.PATH_KEY);
+    return sessionStorage.getItem(this.PATH_KEY);
   }
 }
 

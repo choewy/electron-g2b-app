@@ -2,13 +2,13 @@ import {
   BidSearchPage,
   HomePage,
   HrcsSearchPage,
+  NotFoundPage,
   SignInPage,
   SignOutPage,
   SignUpPage,
 } from '@/page';
 import { User } from '@firebase/auth';
 import {
-  Home as HomeIcon,
   GitHub as GitHubIcon,
   Login as SignInIcon,
   Logout as SignOutIcon,
@@ -38,11 +38,18 @@ export class RouterPropsClass {
   }
 
   get all(): RouterPropsType[] {
-    return [...this.common, ...this.service, ...this.visitor, ...this.user];
+    return [
+      this.Home,
+      ...this.common,
+      ...this.service,
+      ...this.visitor,
+      ...this.user,
+      this.NotFound,
+    ];
   }
 
   get common(): RouterPropsType[] {
-    return [this.Home, this.Github];
+    return [this.Github];
   }
 
   get service(): RouterPropsType[] {
@@ -61,7 +68,7 @@ export class RouterPropsClass {
     return {
       title: '홈',
       path: '/',
-      icon: <HomeIcon />,
+      icon: <Fragment />,
       page: <HomePage />,
       hiddenInSidebar: true,
     };
@@ -82,7 +89,7 @@ export class RouterPropsClass {
     return {
       title: '회원가입',
       path: '/signup',
-      icon: <HomeIcon />,
+      icon: <Fragment />,
       page: <SignUpPage />,
       hiddenInSidebar: true,
     };
@@ -121,6 +128,16 @@ export class RouterPropsClass {
       path: '/search/hrcs',
       icon: <SearchIcon />,
       page: <HrcsSearchPage />,
+    };
+  }
+
+  get NotFound() {
+    return {
+      title: '404 - Not Found Page',
+      path: '*',
+      icon: <Fragment />,
+      page: <NotFoundPage />,
+      hiddenInSidebar: true,
     };
   }
 }
