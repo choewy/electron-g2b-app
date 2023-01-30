@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { SyntheticEvent, useCallback } from 'react';
 import {
-  HrcsItemRow,
+  HrcsItemType,
   hrcsTask,
   searchApi,
   SearchCustomQueryType,
@@ -14,7 +14,7 @@ import { keywordStore } from '../keyword';
 import { SearchStoreType } from './types';
 
 export class HrcsSearchStore extends StoreInstance<
-  SearchStoreType<SearchTaskType, SearchCustomQueryType, HrcsItemRow>
+  SearchStoreType<SearchTaskType, SearchCustomQueryType, HrcsItemType>
 > {
   useChangeTaskEvent(): (
     text: string,
@@ -93,19 +93,17 @@ export class HrcsSearchStore extends StoreInstance<
   }: {
     includeRegExp?: KeywordRegExp;
     excludeRegExp?: KeywordRegExp;
-    rows: HrcsItemRow[];
+    rows: HrcsItemType[];
     endPoint: string;
     query: SearchCustomQueryType;
     setMessage(messages: AppMessageType): Promise<void>;
   }) {
     try {
-      let index = rows.length;
-
       const res = await searchApi.hrcs(endPoint, query);
       const { pageNo, numOfRows, totalCount, items } = res.response.body;
 
       rows = rows.concat(
-        (items || []).reduce<HrcsItemRow[]>((searchedRow, item) => {
+        (items || []).reduce<HrcsItemType[]>((searchedRow, item) => {
           const includeKeywords =
             includeRegExp && item.prdctClsfcNoNm.match(includeRegExp);
 
@@ -116,8 +114,8 @@ export class HrcsSearchStore extends StoreInstance<
             : null;
 
           if (includeKeywords && !excludeKeywords) {
-            index += 1;
-            searchedRow.push(new HrcsItemRow(index, includeKeywords[0], item));
+            item.keyword = includeKeywords[0];
+            searchedRow.push(item);
           }
 
           return searchedRow;
@@ -170,7 +168,7 @@ export class HrcsSearchStore extends StoreInstance<
         taskTargets = tasks;
       }
 
-      let rows: HrcsItemRow[] = [];
+      let rows: HrcsItemType[] = [];
 
       setLoading(true);
 
@@ -196,9 +194,9 @@ export class HrcsSearchStore extends StoreInstance<
       setState((prev) => ({
         ...prev,
         rows: rows
-          .sort((x, y) => x.검색어.localeCompare(y.검색어))
+          .sort((x, y) => x.keyword.localeCompare(y.keyword))
           .map((row, i) => {
-            row.순번 = i + 1;
+            row.index = i + 1;
             return row;
           }),
       }));
