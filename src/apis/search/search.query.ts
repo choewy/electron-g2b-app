@@ -9,8 +9,8 @@ export class SearchQuery implements SearchQueryType {
   public readonly type: 'json';
 
   pageNo: number = 1;
-  inqryBgnDt: string = DateTime.local().toFormat(DateFormat);
-  inqryEndDt: string = DateTime.local().toFormat(DateFormat);
+  inqryBgnDt: string = DateTime.local().startOf('day').toFormat(DateFormat);
+  inqryEndDt: string = DateTime.local().endOf('day').toFormat(DateFormat);
 
   constructor(query?: SearchCustomQueryType) {
     this.ServiceKey = process.env.REACT_APP_G2B_API_KEY as string;

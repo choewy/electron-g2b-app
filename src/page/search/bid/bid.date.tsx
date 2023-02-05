@@ -6,8 +6,8 @@ import { Box } from '@mui/material';
 
 export const BidSearchDate: FC = () => {
   const query = bidSearchStore.useValue().query || {
-    inqryBgnDt: DateTime.local().toFormat(DateFormat),
-    inqryEndDt: DateTime.local().toFormat(DateFormat),
+    inqryBgnDt: DateTime.local().startOf('day').toFormat(DateFormat),
+    inqryEndDt: DateTime.local().endOf('day').toFormat(DateFormat),
   };
 
   const onChangeInqryBgnDt = bidSearchStore.useSetDateCallback('inqryBgnDt');

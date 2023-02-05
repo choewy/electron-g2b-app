@@ -73,7 +73,15 @@ export class BidSearchStore extends StoreInstance<
           if (!datetime) {
             value = undefined;
           } else {
-            value = datetime.toFormat(DateFormat);
+            switch (key) {
+              case 'inqryBgnDt':
+                value = datetime.startOf('day').toFormat(DateFormat);
+                break;
+
+              case 'inqryEndDt':
+                value = datetime.endOf('day').toFormat(DateFormat);
+                break;
+            }
           }
 
           return { ...prev, query: { ...prev.query, [key]: value } };
@@ -218,8 +226,8 @@ export const bidSearchStore = new BidSearchStore(BidSearchStore.name, {
   tasks: bidTask.initValues,
   query: {
     pageNo: 1,
-    inqryBgnDt: DateTime.local().toFormat(DateFormat),
-    inqryEndDt: DateTime.local().toFormat(DateFormat),
+    inqryBgnDt: DateTime.local().startOf('day').toFormat(DateFormat),
+    inqryEndDt: DateTime.local().endOf('day').toFormat(DateFormat),
   },
   rows: [],
 });
