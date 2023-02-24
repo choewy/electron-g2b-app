@@ -8,10 +8,12 @@ import {
 } from './types';
 
 export class SearchApi extends ApiInstance {
+  private readonly BID_VERSION = process.env
+    .REACT_APP_G2B_API_VERSION as string;
   private readonly URL = process.env.REACT_APP_G2B_API_URL as string;
 
   private get bidURL(): string {
-    return [this.URL, 'BidPublicInfoService03'].join('/');
+    return [this.URL, `BidPublicInfoService${this.BID_VERSION}`].join('/');
   }
 
   private get hrcsURL(): string {
