@@ -1,14 +1,33 @@
 import { SearchTaskType } from '../types';
 
 export class BidTask {
-  private readonly tasks: SearchTaskType[] = [
-    { text: '전체', endPoint: '' },
-    { text: '물품', endPoint: 'getBidPblancListInfoThngPPSSrch01' },
-    { text: '공사', endPoint: 'getBidPblancListInfoCnstwkPPSSrch01' },
-    { text: '용역', endPoint: 'getBidPblancListInfoServcPPSSrch01' },
-    { text: '외자', endPoint: 'getBidPblancListInfoFrgcptPPSSrch01' },
-    { text: '기타', endPoint: 'getBidPblancListInfoEtcPPSSrch01' },
-  ];
+  private readonly VERSION = '01';
+
+  private get tasks(): SearchTaskType[] {
+    return [
+      { text: '전체', endPoint: '' },
+      {
+        text: '물품',
+        endPoint: `getBidPblancListInfoThngPPSSrch${this.VERSION}`,
+      },
+      {
+        text: '공사',
+        endPoint: `getBidPblancListInfoCnstwkPPSSrch${this.VERSION}`,
+      },
+      {
+        text: '용역',
+        endPoint: `getBidPblancListInfoServcPPSSrch${this.VERSION}`,
+      },
+      {
+        text: '외자',
+        endPoint: `getBidPblancListInfoFrgcptPPSSrch${this.VERSION}`,
+      },
+      {
+        text: '기타',
+        endPoint: `getBidPblancListInfoEtcPPSSrch${this.VERSION}`,
+      },
+    ];
+  }
 
   get values(): SearchTaskType[] {
     return this.tasks;
