@@ -7,47 +7,34 @@ on:
 
 jobs:
   deploy:
-    name: CD Pipeline
     runs-on: ubuntu-20.04
+
+    env:
+      ENVS: ${{ secrets.ENVS }}
+
     strategy:
       matrix:
         node-version: ['16.x']
+
     steps:
-      # Checkout
       - uses: actions/checkout@v3
 
-      # Install Node.js
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Install Node.js dependencies
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      # Create frontend/.env file
       - name: Create .env file
         run: |
           touch .env
-          echo TZ=Asia/Seoul >> .env
-          echo REACT_APP_G2B_API_KEY=${{ secrets.REACT_APP_G2B_API_KEY }} >> .env
-          echo REACT_APP_G2B_API_URL=${{ secrets.REACT_APP_G2B_API_URL }} >> .env
-          echo REACT_APP_G2B_API_VERSION=${{ secrets.REACT_APP_G2B_API_VERSION }} >> .env
-          echo REACT_APP_FIREBASE_API_KEY=${{ secrets.REACT_APP_FIREBASE_API_KEY }} >> .env
-          echo REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }} >> .env
-          echo REACT_APP_FIREBASE_PROJECT_ID=${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }} >> .env
-          echo REACT_APP_FIREBASE_MEASUREMENT_ID=${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }} >> .env
-          echo REACT_APP_FIREBASE_MESSAGE_SENDER_ID=${{ secrets.REACT_APP_FIREBASE_MESSAGE_SENDER_ID }} >> .env
-          echo REACT_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }} >> .env
-          echo REACT_APP_FIREBASE_STORAGE_BUCKET=${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }} >> .env
+          echo $ENVS >> .env
 
-          cat .env
-      # Build Typescript
       - name: Build
         run: npm run build
 
-      # Deploy with Github Pages
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
