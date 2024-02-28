@@ -11,11 +11,11 @@ export class AuthAxios extends AxiosClient {
   }
 
   async signin(body: SignInDto) {
-    return this.post<void>('signin', body);
+    return this.post<ProfileDto>('signin', body);
   }
 
   async signup(body: SignUpDto) {
-    return this.post<void>('signup', body);
+    return this.post<ProfileDto>('signup', body);
   }
 
   async signout() {

@@ -1,11 +1,12 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { RouterPath } from '@router/enums';
 
 import { authStore } from '../auth.store';
 
 export const AuthGuard: FunctionComponent<{ requiredAuth: boolean }> = ({ requiredAuth }) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const auth = authStore.useValue();
 
@@ -21,7 +22,7 @@ export const AuthGuard: FunctionComponent<{ requiredAuth: boolean }> = ({ requir
     } else {
       auth.ok ? navigate(RouterPath.Search, { replace: true }) : setPass(true);
     }
-  }, [requiredAuth, navigate, auth]);
+  }, [location.pathname, requiredAuth, navigate, auth]);
 
   return pass ? <Outlet /> : null;
 };
