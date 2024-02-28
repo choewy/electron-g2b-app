@@ -1,22 +1,38 @@
-import { FunctionComponent, useCallback, useState } from 'react';
+import { FormEvent, FunctionComponent, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 
 import { RouterPath } from '@router/enums';
 
+import { AlertEvent } from '@layout/alert/alert.event';
+
 import { sizeStore } from '@module/size/size.store';
 import { authAxios } from '@module/auth/auth.axios';
 import { SignInDto } from '@module/auth/dto/signin.dto';
+import { authStore } from '@module/auth/auth.store';
 
 export const SignInForm: FunctionComponent = () => {
   const width = sizeStore.useSignFormWidth();
+
+  const setAuth = authStore.useSetState();
   const [capsLockPressed, setCapsLockPressed] = useState<boolean>(false);
   const [body, setBody] = useState<Omit<SignInDto, 'validate'>>(new SignInDto());
 
-  const onSubmit = useCallback(async () => {
-    await authAxios.signin(new SignInDto(body.email, body.password));
-  }, [body]);
+  const onSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+
+      const { ok, data, error } = await authAxios.signin(new SignInDto(body.email, body.password));
+
+      if (error) {
+        AlertEvent.warning(error.message).dispatch();
+      } else {
+        setAuth({ ok, profile: data });
+      }
+    },
+    [body],
+  );
 
   return (
     <Box component={'form'} sx={{ maxWidth: '468px', width }} onSubmit={onSubmit}>
