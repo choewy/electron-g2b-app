@@ -18,10 +18,10 @@ export class AxiosException {
     if (e instanceof AxiosError) {
       const response = e.response;
 
-      this.statusCode = response.data?.data?.statusCode;
-      this.name = response.data?.data?.name;
-      this.message = response.data?.data?.message;
-      this.cause = response.data?.data?.cause;
+      this.statusCode = response.data?.statusCode;
+      this.name = response.data?.name;
+      this.message = response.data?.message;
+      this.cause = response.data?.cause;
     } else {
       this.statusCode = -1;
       this.name = e.name;
@@ -33,14 +33,12 @@ export class AxiosException {
 
 export class AxiosReturnValue<R> {
   readonly ok: boolean;
-  readonly version: string;
   readonly data: R;
   readonly error?: AxiosException;
 
   constructor(result: AxiosResponse | AxiosError<any> | Error) {
     if (result instanceof AxiosError) {
       this.ok = false;
-      this.version = result.response?.data?.version ?? null;
       this.data = null;
       this.error = new AxiosException(result);
 
@@ -49,7 +47,6 @@ export class AxiosReturnValue<R> {
 
     if (result instanceof Error) {
       this.ok = false;
-      this.version = null;
       this.data = null;
       this.error = new AxiosException(result);
 
@@ -57,8 +54,7 @@ export class AxiosReturnValue<R> {
     }
 
     this.ok = true;
-    this.version = result.data?.version ?? null;
-    this.data = result.data?.data ?? null;
+    this.data = result.data ?? null;
     this.error = null;
   }
 }
