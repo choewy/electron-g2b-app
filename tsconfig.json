@@ -26,8 +26,8 @@
       "@component/*": ["src/component/*"],
       "@page/*": ["src/page/*"],
       "@layout/*": ["src/layout/*"],
-      "@router": ["src/router/*"],
-      "@app": ["src/app/*"]
+      "@router/*": ["src/router/*"],
+      "@app/*": ["src/app/*"]
     }
   },
   "include": ["src"],
