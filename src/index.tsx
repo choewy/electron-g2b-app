@@ -1,17 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+
+import { Settings } from 'luxon';
+import { RecoilRoot } from 'recoil';
+import { RouterProvider } from 'react-router-dom';
+
+import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+import { appConfig } from '@config/app.config';
+import { router } from '@router/router';
+
+Settings.defaultZone = appConfig.getTimeZone();
+
+const element = document.getElementById('root');
+
+if (element) {
+  ReactDOM.createRoot(element).render(
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>,
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
