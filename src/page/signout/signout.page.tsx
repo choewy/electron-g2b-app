@@ -9,7 +9,7 @@ export const SignOutPage: FunctionComponent = () => {
 
   const handleSignout = useCallback(async () => {
     await authAxios.signout();
-    setAuth({ ok: false, profile: new ProfileDto() });
+    setAuth({ ok: false, profile: new ProfileDto(), verify: false });
   }, []);
 
   useEffect(() => {

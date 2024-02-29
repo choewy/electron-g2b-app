@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { PageFooter } from '@layout/page-footer';
 import { PageTitle } from '@layout/page-title';
 
-export const SignUpPageContainer: FunctionComponent<PropsWithChildren> = ({ children }) => {
+export const PageCenterContainer: FunctionComponent<PropsWithChildren> = ({ children }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%' }}>
       <Box

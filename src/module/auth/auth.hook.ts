@@ -12,9 +12,9 @@ export class AuthHook {
       const { ok, data } = await authAxios.auth();
 
       if (ok) {
-        setAuth({ ok, profile: data });
+        setAuth({ ok, profile: data, verify: false });
       } else {
-        setAuth({ ok, profile: new ProfileDto() });
+        setAuth({ ok, profile: new ProfileDto(), verify: false });
       }
     }, [setAuth]);
 

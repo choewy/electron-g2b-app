@@ -1,12 +1,15 @@
 import { FunctionComponent } from 'react';
 
-import { SignUpPageContainer } from './components/container';
+import { PageCenterContainer } from '@component/containers/page-center-container';
+
 import { SignUpForm } from './components/form';
+import { SignUpLinks } from './components/links';
 
 export const SignUpPage: FunctionComponent = () => {
   return (
-    <SignUpPageContainer>
+    <PageCenterContainer>
       <SignUpForm />
-    </SignUpPageContainer>
+      <SignUpLinks />
+    </PageCenterContainer>
   );
 };

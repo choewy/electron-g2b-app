@@ -21,6 +21,10 @@ export class AuthAxios extends AxiosClient {
   async signout() {
     return this.post<void>('signout');
   }
+
+  async verifyEmail(code: string) {
+    return this.post<ProfileDto>('verify/email', { code });
+  }
 }
 
 export const authAxios = new AuthAxios(appConfig.getServerUrl(), 'users');

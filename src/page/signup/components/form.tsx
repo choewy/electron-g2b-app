@@ -1,9 +1,6 @@
 import { FormEvent, FunctionComponent, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
-
-import { RouterPath } from '@router/enums';
 
 import { AlertEvent } from '@layout/alert/alert.event';
 
@@ -30,7 +27,8 @@ export const SignUpForm: FunctionComponent = () => {
       if (error) {
         AlertEvent.warning(error.message).dispatch();
       } else {
-        setAuth({ ok, profile: data });
+        setAuth((prev) => ({ ...prev, ok, profile: data }));
+        AlertEvent.info('인증 메일이 발송되었습니다.').dispatch();
       }
     },
     [body],
@@ -76,22 +74,6 @@ export const SignUpForm: FunctionComponent = () => {
           회원가입
         </Button>
       </FormControl>
-      <Box
-        sx={{
-          display: 'flex',
-          marginTop: '10px',
-          justifyContent: 'space-between',
-          paddingX: '5px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <Link to={'#'} style={{ textDecoration: 'none', color: 'GrayText' }}>
-          <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
-        </Link>
-        <Link to={RouterPath.SignIn} style={{ textDecoration: 'none', color: 'GrayText' }}>
-          <Typography variant="body2">로그인 페이지로 이동하기</Typography>
-        </Link>
-      </Box>
     </Box>
   );
 };

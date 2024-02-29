@@ -5,11 +5,14 @@ import { App } from '@app/app';
 import { RouterPath } from './enums';
 
 import { AuthGuard } from '@module/auth/guards/auth.guard';
+import { EmailVerifyGuard } from '@module/auth/guards/email-verify.guard';
 import { SignInPage } from '@page/signin/signin.page';
 import { SignUpPage } from '@page/signup/signup.page';
 import { SignOutPage } from '@page/signout/signout.page';
 import { SearchPage } from '@page/search/search.page';
 import { DrivePage } from '@page/drive/drive.page';
+import { EmailVerificationPage } from '@page/email-verification/email-verification.page';
+import { ResetPasswordPage } from '@page/reset-password/reset-password.page';
 
 export const router = createBrowserRouter([
   {
@@ -26,11 +29,24 @@ export const router = createBrowserRouter([
             path: RouterPath.SignUp,
             element: <SignUpPage />,
           },
+          {
+            path: RouterPath.ResetPassword,
+            element: <ResetPasswordPage />,
+          },
         ],
       },
       {
-        element: <AuthGuard requiredAuth={true} />,
+        element: (
+          <>
+            <AuthGuard requiredAuth={true} />
+            <EmailVerifyGuard />
+          </>
+        ),
         children: [
+          {
+            path: RouterPath.EmailVerification,
+            element: <EmailVerificationPage />,
+          },
           {
             path: RouterPath.SignOut,
             element: <SignOutPage />,
