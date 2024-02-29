@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import { ThemeProvider } from '@mui/material';
 
+import { AppHelmetProvider } from '@layout/helmet/helmet.provider';
 import { ThemeOptions } from '@layout/theme';
 import { AlertProvider } from '@layout/alert/alert.provider';
 
@@ -14,9 +15,12 @@ export const App: FunctionComponent = () => {
   authHook.useAuth();
 
   return (
-    <ThemeProvider theme={ThemeOptions.create()}>
-      <AlertProvider />
-      <Outlet />
-    </ThemeProvider>
+    <>
+      <AppHelmetProvider />
+      <ThemeProvider theme={ThemeOptions.create()}>
+        <AlertProvider />
+        <Outlet />
+      </ThemeProvider>
+    </>
   );
 };
