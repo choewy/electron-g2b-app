@@ -5,10 +5,13 @@ import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/mater
 import { Menu } from '@mui/icons-material';
 
 import { RouterPath } from '@router/enums';
+import { sidebarStore } from '@layout/sidebar/sidebar.store';
 
 export const Header: FunctionComponent = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const setSidebar = sidebarStore.useSetState();
 
   for (const pathname of [
     RouterPath.Home,
@@ -27,7 +30,7 @@ export const Header: FunctionComponent = () => {
     <Box>
       <AppBar position="static">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
+          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={() => setSidebar(true)}>
             <Menu />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

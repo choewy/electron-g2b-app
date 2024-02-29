@@ -10,6 +10,7 @@ import { AlertProvider } from '@layout/alert/alert.provider';
 import { authHook } from '@module/auth/auth.hook';
 import { sizeHook } from '@module/size/size.hook';
 import { Header } from '@layout/header/header';
+import { Sidebar } from '@layout/sidebar/sidebar';
 
 export const App: FunctionComponent = () => {
   sizeHook.useObserver();
@@ -21,6 +22,7 @@ export const App: FunctionComponent = () => {
       <ThemeProvider theme={ThemeOptions.create()}>
         <AlertProvider />
         <Header />
+        <Sidebar />
         <Outlet />
       </ThemeProvider>
     </>
