@@ -35,7 +35,7 @@ jobs:
           env: ${{ secrets.ENVIRONMENT }}
         run: |
           rm .env*
-          echo "$ENV" >> .env
+          echo "$env" >> .env
           echo "REACT_APP_VERSION=$tag" >> .env
 
       - name: Build Application
