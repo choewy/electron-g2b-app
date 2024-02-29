@@ -55,6 +55,8 @@ jobs:
         run: aws s3 sync build s3://$bucket --acl bucket-owner-full-control
 
   deploy:
+    needs: build
+
     runs-on: ubuntu-22.04
 
     steps:
