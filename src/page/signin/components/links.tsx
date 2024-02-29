@@ -22,10 +22,10 @@ export const SignInLinks: FunctionComponent = () => {
       }}
     >
       <Link to={RouterPath.ResetPassword} style={{ textDecoration: 'none', color: 'GrayText' }}>
-        <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
+        <Typography variant="body2">비밀번호 찾기</Typography>
       </Link>
       <Link to={RouterPath.SignUp} style={{ textDecoration: 'none', color: 'GrayText' }}>
-        <Typography variant="body2">계정이 없으신가요?</Typography>
+        <Typography variant="body2">회원가입</Typography>
       </Link>
     </Box>
   );

@@ -4,6 +4,7 @@ import { AxiosClient } from '@core/axios-client';
 import { ProfileDto } from './dto/profile.dto';
 import { SignInDto } from './dto/signin.dto';
 import { SignUpDto } from './dto/signup.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 export class AuthAxios extends AxiosClient {
   async auth() {
@@ -24,6 +25,10 @@ export class AuthAxios extends AxiosClient {
 
   async verifyEmail(code: string) {
     return this.post<ProfileDto>('verify/email', { code });
+  }
+
+  async verifyResetPassword(body: ResetPasswordDto) {
+    return this.post<ProfileDto>('verify/reset-password', body);
   }
 }
 

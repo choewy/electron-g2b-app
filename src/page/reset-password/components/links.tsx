@@ -7,7 +7,7 @@ import { RouterPath } from '@router/enums';
 
 import { sizeStore } from '@module/size/size.store';
 
-export const SignUpLinks: FunctionComponent = () => {
+export const ResetPasswordLinks: FunctionComponent = () => {
   const width = sizeStore.useSignFormWidth();
 
   return (
@@ -22,11 +22,11 @@ export const SignUpLinks: FunctionComponent = () => {
         width,
       }}
     >
-      <Link to={RouterPath.ResetPassword} style={{ textDecoration: 'none', color: 'GrayText' }}>
-        <Typography variant="body2">비밀번호 찾기</Typography>
-      </Link>
       <Link to={RouterPath.SignIn} style={{ textDecoration: 'none', color: 'GrayText' }}>
         <Typography variant="body2">로그인</Typography>
+      </Link>
+      <Link to={RouterPath.SignUp} style={{ textDecoration: 'none', color: 'GrayText' }}>
+        <Typography variant="body2">회원가입</Typography>
       </Link>
     </Box>
   );

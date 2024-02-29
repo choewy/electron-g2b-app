@@ -8,9 +8,9 @@ import { authAxios } from '@module/auth/auth.axios';
 import { authStore } from '@module/auth/auth.store';
 import { sizeStore } from '@module/size/size.store';
 
-import { VerifyEmailCodeTextField } from './verify-email-code-textfield';
+import { VerificationEmailCodeTextField } from './textfield';
 
-export const VerifyEmailForm: FunctionComponent = () => {
+export const EmailVerificationForm: FunctionComponent = () => {
   const width = sizeStore.useSignFormWidth();
   const setAuth = authStore.useSetState();
 
@@ -43,7 +43,7 @@ export const VerifyEmailForm: FunctionComponent = () => {
     >
       <Box sx={{ width, maxWidth: '300px', display: 'flex', gap: 0.5 }}>
         {codes.map((_, index) => (
-          <VerifyEmailCodeTextField
+          <VerificationEmailCodeTextField
             key={['verify-email-form-textfield', index].join('-')}
             index={index}
             codes={codes}

@@ -3,7 +3,7 @@ import { SetterOrUpdater } from 'recoil';
 
 import { TextField } from '@mui/material';
 
-export const VerifyEmailCodeTextField: FunctionComponent<{
+export const VerificationEmailCodeTextField: FunctionComponent<{
   index: number;
   codes: string[];
   setCodes: SetterOrUpdater<string[]>;

@@ -1,5 +1,6 @@
 import { appConfig } from '@config/app.config';
 import { AxiosClient } from '@core/axios-client';
+import { SendResetPasswordEmailDto } from './dto/send-reset-password-email.dto';
 
 export class EmailAxios extends AxiosClient {
   async getRemainedVerifyEmailSeconds() {
@@ -10,8 +11,8 @@ export class EmailAxios extends AxiosClient {
     return this.post<void>('verify');
   }
 
-  async sendResetPassword() {
-    return this.post<void>('reset-password');
+  async sendResetPassword(body: SendResetPasswordEmailDto) {
+    return this.post<void>('reset-password', body);
   }
 }
 
