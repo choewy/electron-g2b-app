@@ -3,6 +3,7 @@ export class AppConfig {
   private readonly ENV = process.env.REACT_APP_ENV;
   private readonly VERSION = process.env.REACT_APP_VERSION;
   private readonly SERVER_URL = process.env.REACT_APP_SERVER_URL;
+  private readonly CDN_URL = process.env.REACT_APP_CDN_URL;
 
   getTimeZone() {
     return this.TZ;
@@ -31,6 +32,10 @@ export class AppConfig {
 
   getServerUrl() {
     return this.SERVER_URL;
+  }
+
+  getCDNUrl() {
+    return this.CDN_URL;
   }
 }
 

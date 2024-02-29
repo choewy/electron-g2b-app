@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "craco start",
+    "start": "env-cmd -f .env craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject"
@@ -42,7 +42,8 @@
   },
   "devDependencies": {
     "@types/luxon": "^3.4.2",
-    "@types/uuid": "^9.0.8"
+    "@types/uuid": "^9.0.8",
+    "env-cmd": "^10.1.0"
   },
   "eslintConfig": {
     "extends": [
