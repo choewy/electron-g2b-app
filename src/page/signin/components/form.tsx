@@ -10,7 +10,7 @@ import { SignInDto } from '@module/auth/dto/signin.dto';
 import { authStore } from '@module/auth/auth.store';
 
 export const SignInForm: FunctionComponent = () => {
-  const width = sizeStore.useSignFormWidth();
+  const width = sizeStore.useCenterPageContentWidth();
 
   const setAuth = authStore.useSetState();
   const [capsLockPressed, setCapsLockPressed] = useState<boolean>(false);
