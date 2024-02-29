@@ -52,7 +52,7 @@ export const SignInForm: FunctionComponent = () => {
         onKeyUp={(e) => setCapsLockPressed(e.getModifierState('CapsLock'))}
       />
       <Typography variant="body2" color="red" textAlign="center">
-        {capsLockPressed && 'CapsLock이 눌려있어요'}
+        {capsLockPressed && 'CapsLock이 활성화되어 있습니다.'}
       </Typography>
       <FormControl>
         <Button type="submit" disabled={capsLockPressed}>
