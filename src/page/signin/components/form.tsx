@@ -1,9 +1,6 @@
 import { FormEvent, FunctionComponent, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
-
-import { RouterPath } from '@router/enums';
 
 import { AlertEvent } from '@layout/alert/alert.event';
 
@@ -28,7 +25,7 @@ export const SignInForm: FunctionComponent = () => {
       if (error) {
         AlertEvent.warning(error.message).dispatch();
       } else {
-        setAuth({ ok, profile: data });
+        setAuth({ ok, profile: data, verify: false });
       }
     },
     [body],
@@ -59,22 +56,6 @@ export const SignInForm: FunctionComponent = () => {
           로그인
         </Button>
       </FormControl>
-      <Box
-        sx={{
-          display: 'flex',
-          marginTop: '10px',
-          justifyContent: 'space-between',
-          paddingX: '5px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <Link to={'#'} style={{ textDecoration: 'none', color: 'GrayText' }}>
-          <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
-        </Link>
-        <Link to={RouterPath.SignUp} style={{ textDecoration: 'none', color: 'GrayText' }}>
-          <Typography variant="body2">계정이 없으신가요?</Typography>
-        </Link>
-      </Box>
     </Box>
   );
 };
