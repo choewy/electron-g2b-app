@@ -12,7 +12,7 @@ export const PageCenterContainer: FunctionComponent<PropsWithChildren> = ({ chil
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: 'calc(100% - 80px)',
+          height: 'calc(100% - 35px)',
           width: '100%',
           justifyContent: 'center',
           alignItems: 'center',
