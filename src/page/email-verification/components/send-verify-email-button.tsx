@@ -1,15 +1,21 @@
 import { DateTime } from 'luxon';
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
+import { RouterPath } from '@router/enums';
 import { AlertEvent } from '@layout/alert/alert.event';
 
 import { authStore } from '@module/auth/auth.store';
 import { emailAxios } from '@module/email/email.axios';
 import { emailHook } from '@module/email/email.hook';
+import { sizeStore } from '@module/size/size.store';
 
 export const SendVerifyEmailButton: FunctionComponent = () => {
+  const navigate = useNavigate();
+
+  const width = sizeStore.useSignFormWidth();
   const initSeconds = emailHook.useVerifyEmailSeconds();
 
   const [auth, setAuth] = authStore.useState();
@@ -47,9 +53,15 @@ export const SendVerifyEmailButton: FunctionComponent = () => {
   }, [auth, seconds, setAuth, setSeconds]);
 
   return (
-    <Button onClick={onClick} disabled={auth.verify}>
-      인증 메일 요청
-      {auth.verify && `(${DateTime.local().startOf('hour').plus({ minutes: 5 }).minus({ seconds }).toFormat('mm:ss')})`}
-    </Button>
+    <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '468px', width, marginTop: 3, rowGap: 1 }}>
+      <Button onClick={onClick} disabled={auth.verify} fullWidth>
+        인증 메일 요청
+        {auth.verify &&
+          `(${DateTime.local().startOf('hour').plus({ minutes: 5 }).minus({ seconds }).toFormat('mm:ss')})`}
+      </Button>
+      <Button variant="outlined" onClick={() => navigate(RouterPath.SignOut, { replace: true })} fullWidth>
+        로그아웃
+      </Button>
+    </Box>
   );
 };
