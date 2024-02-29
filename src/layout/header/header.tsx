@@ -14,14 +14,13 @@ export const Header: FunctionComponent = () => {
   const setSidebar = sidebarStore.useSetState();
 
   for (const pathname of [
-    RouterPath.Home,
     RouterPath.SignIn,
     RouterPath.SignUp,
     RouterPath.SignOut,
     RouterPath.ResetPassword,
     RouterPath.EmailVerification,
   ]) {
-    if (pathname.startsWith(location.pathname)) {
+    if (location.pathname.startsWith(pathname)) {
       return null;
     }
   }

@@ -1,12 +1,12 @@
 import { FunctionComponent } from 'react';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider as ReactHelmentProvider } from 'react-helmet-async';
 
 import { HelmetTitle } from './helmet-title';
 
-export const AppHelmetProvider: FunctionComponent = () => {
+export const HelmetProvider: FunctionComponent = () => {
   return (
-    <HelmetProvider>
+    <ReactHelmentProvider>
       <HelmetTitle />
-    </HelmetProvider>
+    </ReactHelmentProvider>
   );
 };
