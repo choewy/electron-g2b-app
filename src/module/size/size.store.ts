@@ -6,15 +6,19 @@ export type SizeStoreProps = {
 };
 
 export class SizeStore extends RecoilStore<SizeStoreProps> {
-  useGeneralPageHeight(): number {
-    return this.useValue().height - 70;
+  useHeight(marginal = 0) {
+    return this.useValue().height - marginal;
   }
 
-  useGeneralPageContentHeight(): number {
-    return this.useValue().height - 100;
+  useWidePageHeight(): number {
+    return this.useValue().height - 75;
   }
 
-  useGeneralPageBoxMaxWidth() {
+  useWidePageContentHeight(): number {
+    return this.useValue().height - 95;
+  }
+
+  useWidePageBoxMaxWidth() {
     const width = this.useValue().width;
 
     return width < 468 ? width - 20 : 486;
@@ -36,7 +40,7 @@ export class SizeStore extends RecoilStore<SizeStoreProps> {
     }
   }
 
-  useSignFormWidth(): string | number {
+  useCenterPageContentWidth(): string | number {
     const width = this.useValue().width;
 
     if (width < 469) {

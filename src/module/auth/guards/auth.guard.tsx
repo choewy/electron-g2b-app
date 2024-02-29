@@ -20,7 +20,7 @@ export const AuthGuard: FunctionComponent<{ requiredAuth: boolean }> = ({ requir
     if (requiredAuth) {
       auth.ok ? setPass(true) : navigate(RouterPath.SignIn, { replace: true });
     } else {
-      auth.ok ? navigate(RouterPath.Search, { replace: true }) : setPass(true);
+      auth.ok ? navigate(RouterPath.Home, { replace: true }) : setPass(true);
     }
   }, [location.pathname, requiredAuth, navigate, auth]);
 

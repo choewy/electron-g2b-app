@@ -17,7 +17,7 @@ export const EmailVerifyGuard: FunctionComponent = () => {
 
     if (location.pathname.startsWith(RouterPath.EmailVerification)) {
       if (auth.profile.verified === true) {
-        navigate(RouterPath.Search, { replace: true });
+        navigate(RouterPath.Home, { replace: true });
       }
     } else {
       if (auth.profile.verified === false) {
