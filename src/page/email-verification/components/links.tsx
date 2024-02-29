@@ -8,7 +8,7 @@ import { RouterPath } from '@router/enums';
 import { sizeStore } from '@module/size/size.store';
 
 export const EmailVerificationLinks: FunctionComponent = () => {
-  const width = sizeStore.useSignFormWidth();
+  const width = sizeStore.useCenterPageContentWidth();
 
   return (
     <Box

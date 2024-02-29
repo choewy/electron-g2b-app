@@ -11,7 +11,7 @@ import { emailHook } from '@module/email/email.hook';
 import { sizeStore } from '@module/size/size.store';
 
 export const SendVerifyEmailButton: FunctionComponent = () => {
-  const width = sizeStore.useSignFormWidth();
+  const width = sizeStore.useCenterPageContentWidth();
   const initSeconds = emailHook.useVerifyEmailSeconds();
 
   const [auth, setAuth] = authStore.useState();

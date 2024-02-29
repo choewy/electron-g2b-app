@@ -11,7 +11,7 @@ import { sizeStore } from '@module/size/size.store';
 import { VerificationEmailCodeTextField } from './textfield';
 
 export const EmailVerificationForm: FunctionComponent = () => {
-  const width = sizeStore.useSignFormWidth();
+  const width = sizeStore.useCenterPageContentWidth();
   const setAuth = authStore.useSetState();
 
   const [codes, setCodes] = useState<string[]>(new Array(6).fill(''));
