@@ -12,7 +12,7 @@ import { authAxios } from '@module/auth/auth.axios';
 import { authStore } from '@module/auth/auth.store';
 
 export const ResetPasswordForm: FunctionComponent = () => {
-  const width = sizeStore.useSignFormWidth();
+  const width = sizeStore.useCenterPageContentWidth();
 
   const setAuth = authStore.useSetState();
   const [capsLockPressed, setCapsLockPressed] = useState<boolean>(false);
