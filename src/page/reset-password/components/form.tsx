@@ -30,7 +30,7 @@ export const ResetPasswordForm: FunctionComponent = () => {
     if (error) {
       AlertEvent.warning(error.message).dispatch();
     } else {
-      AlertEvent.info('임시 비밀번호가 발송되었습니다.').dispatch();
+      AlertEvent.info('임시 비밀번호가 발급되었습니다.').dispatch();
 
       setEmailSended(true);
     }
