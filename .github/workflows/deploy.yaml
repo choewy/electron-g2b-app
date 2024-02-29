@@ -1,0 +1,72 @@
+name: deploy
+
+on:
+  push:
+    tags: ['v*']
+    branches: ['develop']
+
+env:
+  tag: ${{ github.ref_name }}
+  sha: ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node: [20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Create .env
+        env:
+          env: ${{ secrets.ENVIRONMENT }}
+        run: |
+          echo "$ENV" >> .env
+          echo "REACT_APP_VERSION=$tag" >> .env
+
+      - name: Build Application
+        run: |
+          npm run build
+          cp build/index.html build/404.html
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Upload to AWS S3
+        env:
+          bucket: ${{ secrets.AWS_S3_BUCKET }}
+        run: aws s3 sync build s3://$bucket --acl bucket-owner-full-control
+
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Deploy
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_DISTRIBUTION_ID }}
+          PATHS: /*
