@@ -1,28 +1,26 @@
 import './index.css';
 
+import { Settings } from 'luxon';
+import { RecoilRoot } from 'recoil';
+import { RouterProvider } from 'react-router-dom';
+
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 
-import { RecoilRoot, RecoilEnv } from 'recoil';
-import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
-import { App } from '@/app';
+import { appConfig } from '@config/app.config';
+import { router } from '@router/router';
 
-RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
+Settings.defaultZone = appConfig.getTimeZone();
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-);
+const element = document.getElementById('root');
 
-root.render(
-  <RecoilRoot>
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <HelmetProvider>
-        <App />
-      </HelmetProvider>
-    </BrowserRouter>
-  </RecoilRoot>,
-);
+if (element) {
+  ReactDOM.createRoot(element).render(
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>,
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

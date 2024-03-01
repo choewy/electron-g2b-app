@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "es5",
+    "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,16 +12,24 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
+    "strictNullChecks": false,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
-    },
-    "declaration": true,
-    "declarationDir": "./types"
+      "@config/*": ["src/config/*"],
+      "@common/*": ["src/common/*"],
+      "@model/*": ["src/model/*"],
+      "@core/*": ["src/core/*"],
+      "@module/*": ["src/module/*"],
+      "@component/*": ["src/component/*"],
+      "@page/*": ["src/page/*"],
+      "@layout/*": ["src/layout/*"],
+      "@router/*": ["src/router/*"],
+      "@app/*": ["src/app/*"]
+    }
   },
-  "include": ["src", "types"],
+  "include": ["src"],
   "exclude": ["./craco.config.js"]
 }

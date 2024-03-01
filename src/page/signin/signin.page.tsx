@@ -1,41 +1,14 @@
-import { ChangeEvent, FC, useCallback, useState } from 'react';
-import { Box } from '@mui/material';
+import { FunctionComponent } from 'react';
 
-import { authStore } from '@/store';
-import { SignInInputs } from './signin.inputs';
-import { SignInAccountType } from './types';
-import { SignInButtons } from './signin.buttons';
+import { PageCenterContainer } from '@component/containers/page-center-container';
+import { SignInForm } from './components/form';
+import { SignInLinks } from './components/links';
 
-export const SignInPage: FC = () => {
-  const [account, setAccount] = useState<SignInAccountType>({
-    email: '',
-    password: '',
-  });
-
-  const onSignIn = authStore.useSignInCallback(account.email, account.password);
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setAccount((prev) => ({ ...prev, [name]: value }));
-    },
-    [setAccount],
-  );
-
+export const SignInPage: FunctionComponent = () => {
   return (
-    <Box
-      component="form"
-      onSubmit={onSignIn}
-      style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        top: 80,
-      }}
-    >
-      <SignInInputs account={account} onChange={onChange} />
-      <SignInButtons />
-    </Box>
+    <PageCenterContainer>
+      <SignInForm />
+      <SignInLinks />
+    </PageCenterContainer>
   );
 };
