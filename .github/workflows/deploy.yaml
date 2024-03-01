@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     tags: ['v*']
-    paths-ignore: ['README.md']
+    paths-ignore: ['*.md']
 
 env:
   tag: ${{ github.ref_name }}
