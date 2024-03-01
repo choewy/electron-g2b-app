@@ -4,6 +4,7 @@ import { FileDto } from './dto/file.dto';
 import { Link, TableCellProps } from '@mui/material';
 import { SearchType } from '@module/search/dto/enums';
 import { appConfig } from '@config/app.config';
+import { DateTime } from 'luxon';
 
 export type FilesStoreProps = {
   query: { type: SearchType };
@@ -19,7 +20,7 @@ export class FilesStore extends RecoilStore<FilesStoreProps> {
         align: 'center',
       },
       {
-        children: '파일명',
+        children: '수집완료일시',
         sx: { minWidth: 100, width: '100%' },
         align: 'center',
       },
@@ -38,7 +39,12 @@ export class FilesStore extends RecoilStore<FilesStoreProps> {
           align: 'center',
         },
         {
-          children: <Link href={[appConfig.getCDNUrl(), file.key].join('/')}>{file.filename}</Link>,
+          children: (
+            <Link href={[appConfig.getCDNUrl(), file.key].join('/')}>
+              {DateTime.fromJSDate(new Date(file.uploadedAt)).toFormat('yyyy-MM-dd HH:mm:ss')}
+            </Link>
+          ),
+          align: 'center',
         },
       ];
 

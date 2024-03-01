@@ -1,4 +1,5 @@
-import { TableCellProps } from '@mui/material';
+import { Box, IconButton, TableCellProps, Typography } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 
 import { RecoilStore } from '@core/recoil-store';
 
@@ -8,6 +9,11 @@ import { KeywordType } from './dto/enums';
 export type KeywordsStoreProps = {
   query: { type: KeywordType };
   rows: KeywordDto[];
+  dialog: {
+    create: { open: boolean };
+    update: { id: number; open: boolean };
+    delete: { id: number; open: boolean };
+  };
 };
 
 export class KeywordsStore extends RecoilStore<KeywordsStoreProps> {
@@ -27,7 +33,7 @@ export class KeywordsStore extends RecoilStore<KeywordsStoreProps> {
   }
 
   useTableRows(): TableCellProps[][] {
-    const value = this.useValue();
+    const [value, setState] = this.useState();
     const rows: TableCellProps[][] = [];
 
     for (let i = 0; i < value.rows.length; i++) {
@@ -37,7 +43,37 @@ export class KeywordsStore extends RecoilStore<KeywordsStoreProps> {
           children: i + 1,
           align: 'center',
         },
-        { children: keyword.text },
+        {
+          children: (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Typography sx={{ fontSize: 12 }}>{keyword.text}</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'center', alignItems: 'center' }}>
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    setState((prev) => ({
+                      ...prev,
+                      dialog: { ...prev.dialog, update: { id: keyword.id, open: true } },
+                    }))
+                  }
+                >
+                  <Edit sx={{ fontSize: 14 }} />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    setState((prev) => ({
+                      ...prev,
+                      dialog: { ...prev.dialog, delete: { id: keyword.id, open: true } },
+                    }))
+                  }
+                >
+                  <Delete sx={{ fontSize: 14 }} />
+                </IconButton>
+              </Box>
+            </Box>
+          ),
+        },
       ];
 
       rows.push(row);
@@ -50,4 +86,9 @@ export class KeywordsStore extends RecoilStore<KeywordsStoreProps> {
 export const keywordsStore = new KeywordsStore({
   query: { type: KeywordType.Include },
   rows: [],
+  dialog: {
+    create: { open: false },
+    update: { id: 0, open: false },
+    delete: { id: 0, open: false },
+  },
 });
