@@ -4,13 +4,15 @@ import { FileDto } from './dto/file.dto';
 
 export class FileServie {
   private createAnchor(file: FileDto) {
-    const anchor = document.createElement('a');
+    const url = [appConfig.getCDNUrl(), file.key].join('/');
+    const query = `?response-content-disposition=attachment;filename=${file.filename}`;
 
-    anchor.href = [appConfig.getCDNUrl(), file.key].join('/');
-    anchor.download = file.filename;
-    anchor.style.setProperty('display', 'none');
+    const a = document.createElement('a');
 
-    return anchor;
+    a.href = url + query;
+    a.style.display = 'none';
+
+    return a;
   }
 
   download(file: FileDto): void {

@@ -25,7 +25,7 @@ export const SearchForm: FunctionComponent = () => {
     } else {
       AlertEvent.success('데이터 수집이 시작되었습니다.').dispatch();
 
-      setSearch((prev) => ({ ...prev, [data.type]: data }));
+      setSearch((prev) => ({ ...prev, [data.type]: true }));
     }
   }, [query, setSearch]);
 
@@ -103,7 +103,7 @@ export const SearchForm: FunctionComponent = () => {
         ))}
       </FormGroup>
       <FormControl>
-        <Button disabled={!!search[query.type]} onClick={onClickSearch}>
+        <Button disabled={search[query.type]} onClick={onClickSearch}>
           검색
         </Button>
       </FormControl>

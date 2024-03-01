@@ -1,16 +1,19 @@
 import { useCallback, useEffect } from 'react';
 
+import { CustomEventMap, customEventListener } from '@core/custom.event-listener';
+
+import { AlertEvent } from '@layout/alert/alert.event';
+
+import { filesStore } from '@module/file/file.store';
+import { fileService } from '@module/file/file.service';
+
 import { SearchType } from './dto/enums';
 import { searchStore } from './search.store';
 import { searchAxios } from './search.axios';
-import { bidsSearchSocket, hrcsSearchSocket } from './search.socket';
-import { CustomEventMap, customEventListener } from '@core/custom.event-listener';
+import { searchSocket } from './search.socket';
 import { SearchCountEvent } from './events/search-count.event';
-import { AlertEvent } from '@layout/alert/alert.event';
-import { SearchExcelFileEvent } from './events/search-excel-file.event';
-import { filesStore } from '@module/file/file.store';
-import { SearchFailEvent } from './events/search-fail.event';
-import { fileService } from '@module/file/file.service';
+import { SearchFileEvent } from './events/search-file.event';
+import { SearchEndEvent } from './events/search-end.event';
 
 export class SearchHook {
   useHas(): void {
@@ -21,8 +24,8 @@ export class SearchHook {
 
       setSearch((prev) => ({
         ...prev,
-        bids: bids.data ?? null,
-        hrcs: hrcs.data ?? null,
+        bids: !!bids.data,
+        hrcs: !!hrcs.data,
       }));
     }, [setSearch]);
 
@@ -32,68 +35,58 @@ export class SearchHook {
   }
 
   useSocket(): void {
-    const [{ bids, hrcs }, setSearch] = searchStore.useState();
+    const setSearch = searchStore.useSetState();
     const setFiles = filesStore.useSetState();
 
     const customEventMaps = [
       new CustomEventMap(SearchCountEvent, (e) => {
         const type = e.detail.type === SearchType.Bids ? '입찰공고' : '사전규격';
 
-        AlertEvent.info(`${e.detail.value}건의 ${type} 데이터가 검색되었습니다.`).dispatch();
-
-        if (e.detail.value === 0) {
-          setSearch((prev) => ({ ...prev, [e.detail.type]: null }));
-        }
+        AlertEvent.info(`${e.detail.count}건의 ${type} 데이터가 검색되었습니다.`).dispatch();
       }),
-      new CustomEventMap(SearchExcelFileEvent, (e) => {
-        fileService.download(e.detail.value);
+      new CustomEventMap(SearchFileEvent, (e) => {
+        fileService.download(e.detail);
 
         setFiles((prev) => ({
           ...prev,
-          rows: prev.query.type === e.detail.type ? [e.detail.value, ...prev.rows] : prev.rows,
+          rows: prev.query.type === e.detail.type ? [e.detail, ...prev.rows] : prev.rows,
         }));
-
-        setSearch((prev) => ({ ...prev, [e.detail.type]: null }));
       }),
-      new CustomEventMap(SearchFailEvent, (e) => {
+      new CustomEventMap(SearchEndEvent, (e) => {
         const type = e.detail.type === SearchType.Bids ? '입찰공고' : '사전규격';
 
-        AlertEvent.warning(`${type} 검색에 실패하였습니다(${e.detail.value.message}).`).dispatch();
-        setSearch((prev) => ({ ...prev, [e.detail.type]: null }));
+        if (e.detail.error) {
+          AlertEvent.warning(`${type} 검색을 실패하였습니다(${e.detail.error.message}).`).dispatch();
+        } else {
+          AlertEvent.info(`${type} 검색이 완료되었습니다.`).dispatch();
+        }
+
+        setSearch((prev) => {
+          switch (e.detail.type) {
+            case SearchType.Bids:
+              return { ...prev, bids: false };
+
+            case SearchType.Hrcs:
+              return { ...prev, hrcs: false };
+
+            default:
+              return prev;
+          }
+        });
       }),
     ];
 
     useEffect(() => {
-      let connection = 0;
-
-      if (bids) {
-        if (bidsSearchSocket.connected === false) {
-          bidsSearchSocket.connection(SearchType.Bids, bids.id);
-        }
-
-        connection++;
-      } else {
-        bidsSearchSocket.disconnect();
+      if (searchSocket.disconnected) {
+        searchSocket.connection();
       }
+    }, []);
 
-      if (hrcs) {
-        if (hrcsSearchSocket.connected === false) {
-          hrcsSearchSocket.connection(SearchType.Hrcs, hrcs.id);
-        }
-
-        connection++;
-      } else {
-        hrcsSearchSocket.disconnect();
-      }
-
-      if (connection === 0) {
-        return;
-      }
-
+    useEffect(() => {
       const cleanupFunction = customEventListener.addEventListeners(...customEventMaps);
 
       return () => cleanupFunction();
-    }, [bids, hrcs]);
+    }, []);
   }
 }
 

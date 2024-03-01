@@ -2,19 +2,20 @@ import { FunctionComponent } from 'react';
 
 import { Box } from '@mui/material';
 
+import { sizeStore } from '@module/size/size.store';
+import { searchHook } from '@module/search/search.hook';
+
 import { PageWideContainer } from '@component/containers/page-wide-container';
 
 import { SearchForm } from './components/search-form';
 import { KeywordTabs } from './components/keyword-tabs';
-import { sizeStore } from '@module/size/size.store';
 import { FileTabs } from './components/file-tabs';
-import { searchHook } from '@module/search/search.hook';
 
 export const HomePage: FunctionComponent = () => {
-  const flexDirection = sizeStore.useFlexDirection(768);
-
   searchHook.useHas();
   searchHook.useSocket();
+
+  const flexDirection = sizeStore.useFlexDirection(768);
 
   return (
     <PageWideContainer>

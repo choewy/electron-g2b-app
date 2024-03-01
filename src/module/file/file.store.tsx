@@ -3,7 +3,7 @@ import { RecoilStore } from '@core/recoil-store';
 import { FileDto } from './dto/file.dto';
 import { Link, TableCellProps } from '@mui/material';
 import { SearchType } from '@module/search/dto/enums';
-import { fileService } from './file.service';
+import { appConfig } from '@config/app.config';
 
 export type FilesStoreProps = {
   query: { type: SearchType };
@@ -38,11 +38,7 @@ export class FilesStore extends RecoilStore<FilesStoreProps> {
           align: 'center',
         },
         {
-          children: (
-            <div onClick={() => fileService.download(file)}>
-              <Link>{file.filename}</Link>
-            </div>
-          ),
+          children: <Link href={[appConfig.getCDNUrl(), file.key].join('/')}>{file.filename}</Link>,
         },
       ];
 

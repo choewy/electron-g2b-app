@@ -1,17 +1,13 @@
 import { FunctionComponent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 
 import { RouterPath } from '@router/enums';
-import { sidebarStore } from '@layout/sidebar/sidebar.store';
 
 export const Header: FunctionComponent = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  const setSidebar = sidebarStore.useSetState();
 
   for (const pathname of [
     RouterPath.SignIn,
@@ -29,9 +25,6 @@ export const Header: FunctionComponent = () => {
     <Box>
       <AppBar position="static">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={() => setSidebar(true)}>
-            <Menu />
-          </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             G2B
           </Typography>

@@ -2,7 +2,6 @@ import { DateTime } from 'luxon';
 
 import { RecoilStore } from '@core/recoil-store';
 
-import { SearchDto } from './dto/search.dto';
 import { SearchType } from './dto/enums';
 
 export type SearchStoreProps = {
@@ -12,8 +11,8 @@ export type SearchStoreProps = {
     startDate: string;
     endDate: string;
   };
-  bids: SearchDto | null;
-  hrcs: SearchDto | null;
+  bids: boolean;
+  hrcs: boolean;
 };
 
 export class SearchStore extends RecoilStore<SearchStoreProps> {
@@ -37,6 +36,6 @@ export const searchStore = new SearchStore({
     startDate: DateTime.local().toSQLDate(),
     endDate: DateTime.local().toSQLDate(),
   },
-  bids: null,
-  hrcs: null,
+  bids: false,
+  hrcs: false,
 });
