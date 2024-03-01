@@ -33,8 +33,8 @@ export const searchStore = new SearchStore({
   query: {
     type: SearchType.Bids,
     types: [0, 1, 2, 3, 4],
-    startDate: DateTime.local().toSQLDate(),
-    endDate: DateTime.local().toSQLDate(),
+    startDate: DateTime.local().minus({ days: 1 }).toSQLDate(),
+    endDate: DateTime.local().minus({ days: 1 }).toSQLDate(),
   },
   bids: false,
   hrcs: false,

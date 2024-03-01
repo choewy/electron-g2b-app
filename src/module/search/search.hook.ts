@@ -45,12 +45,12 @@ export class SearchHook {
         AlertEvent.info(`${e.detail.count}건의 ${type} 데이터가 검색되었습니다.`).dispatch();
       }),
       new CustomEventMap(SearchFileEvent, (e) => {
-        fileService.download(e.detail);
-
         setFiles((prev) => ({
           ...prev,
           rows: prev.query.type === e.detail.type ? [e.detail, ...prev.rows] : prev.rows,
         }));
+
+        fileService.download(e.detail);
       }),
       new CustomEventMap(SearchEndEvent, (e) => {
         const type = e.detail.type === SearchType.Bids ? '입찰공고' : '사전규격';
