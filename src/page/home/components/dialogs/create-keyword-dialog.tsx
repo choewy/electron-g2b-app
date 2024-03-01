@@ -1,4 +1,4 @@
-import { FormEvent, FunctionComponent, useCallback, useState } from 'react';
+import { FormEvent, FunctionComponent, useCallback, useEffect, useState } from 'react';
 
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
@@ -21,7 +21,6 @@ export const CreateKeywordDialog: FunctionComponent = () => {
       ...prev,
       dialog: { ...prev.dialog, create: { open: false } },
     }));
-    setText('');
   }, []);
 
   const onSubmit = useCallback(
@@ -44,6 +43,12 @@ export const CreateKeywordDialog: FunctionComponent = () => {
     },
     [query.type, text],
   );
+
+  useEffect(() => {
+    if (dialog.create.open) {
+      setText('');
+    }
+  }, [dialog.create.open]);
 
   return (
     <Dialog component="form" open={dialog.create.open} onSubmit={onSubmit} onClose={onClose}>
