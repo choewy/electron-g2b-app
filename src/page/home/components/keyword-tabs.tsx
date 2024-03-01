@@ -10,6 +10,7 @@ import { KeywordType } from '@module/keyword/dto/enums';
 import { sizeStore } from '@module/size/size.store';
 
 import { CreateKeywordDialog } from './dialogs/create-keyword-dialog';
+import { UpdateKeywordDialog } from './dialogs/update-keyword-dialog';
 
 export const KeywordTabs: FunctionComponent = () => {
   keywordHook.useLoad();
@@ -23,6 +24,7 @@ export const KeywordTabs: FunctionComponent = () => {
   return (
     <>
       <CreateKeywordDialog />
+      <UpdateKeywordDialog />
       <Paper sx={{ padding: 2, minWidth: 350, boxSizing: 'border-box' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Tabs

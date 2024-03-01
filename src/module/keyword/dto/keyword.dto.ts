@@ -1,5 +1,7 @@
+import { KeywordType } from './enums';
+
 export class KeywordDto {
   id: number;
-  type: 'include' | 'exclude';
+  type: KeywordType;
   text: string;
 }

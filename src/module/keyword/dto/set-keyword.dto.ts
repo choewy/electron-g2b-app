@@ -2,7 +2,7 @@ import { AxiosValidator } from '@core/axios-client';
 
 import { KeywordType } from './enums';
 
-export class CreateKeywordDto implements AxiosValidator {
+export class SetKeywordDto implements AxiosValidator {
   constructor(readonly type: KeywordType, readonly text: string) {}
 
   validate(): string | void {

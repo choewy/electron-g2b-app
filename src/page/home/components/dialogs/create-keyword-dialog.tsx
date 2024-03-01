@@ -7,7 +7,7 @@ import { AlertEvent } from '@layout/alert/alert.event';
 import { keywordsStore } from '@module/keyword/keyword.store';
 import { KeywordType } from '@module/keyword/dto/enums';
 import { keywordAxios } from '@module/keyword/keyword.axios';
-import { CreateKeywordDto } from '@module/keyword/dto/create-keyword.dto';
+import { SetKeywordDto } from '@module/keyword/dto/set-keyword.dto';
 
 export const CreateKeywordDialog: FunctionComponent = () => {
   const [{ query, dialog }, setKeywords] = keywordsStore.useState();
@@ -28,7 +28,7 @@ export const CreateKeywordDialog: FunctionComponent = () => {
     async (e: FormEvent) => {
       e.preventDefault();
 
-      const { error, data } = await keywordAxios.create(new CreateKeywordDto(query.type, text));
+      const { error, data } = await keywordAxios.createKeyword(new SetKeywordDto(query.type, text));
 
       if (error) {
         AlertEvent.warning(error.message).dispatch();
