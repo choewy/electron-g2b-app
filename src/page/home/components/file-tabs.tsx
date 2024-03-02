@@ -12,7 +12,7 @@ import { SearchType } from '@module/search/dto/enums';
 export const FileTabs: FunctionComponent = () => {
   fileHook.useLoad();
 
-  const height = sizeStore.useHeight(477);
+  const height = sizeStore.useHeight(403);
 
   const [{ query }, setFiles] = filesStore.useState();
 
@@ -20,7 +20,7 @@ export const FileTabs: FunctionComponent = () => {
   const rows = filesStore.useTableRows();
 
   return (
-    <Paper sx={{ padding: 2, minWidth: 350, boxSizing: 'border-box' }}>
+    <Paper sx={{ padding: 2, minWidth: 350, boxSizing: 'border-box', maxHeight: height }}>
       <Tabs
         value={query.type}
         onChange={(_, type) => setFiles((prev) => ({ ...prev, query: { ...prev.query, type } }))}
@@ -35,7 +35,7 @@ export const FileTabs: FunctionComponent = () => {
         columns={colums}
         rows={rows}
         emptyText={`${query.type === SearchType.Bids ? '입찰공고' : '사전규격'} 조회 이력이 없습니다.`}
-        height={height < 200 ? 200 : height}
+        height={height - 85}
       />
     </Paper>
   );

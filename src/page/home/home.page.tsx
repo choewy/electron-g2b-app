@@ -23,16 +23,18 @@ export const HomePage: FunctionComponent = () => {
         sx={{
           display: 'flex',
           flexDirection,
-          gap: 2,
           maxWidth: '768px',
           marginY: 2,
+          gap: 2,
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <SearchForm />
           <FileTabs />
         </Box>
-        <KeywordTabs />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <KeywordTabs />
+        </Box>
       </Box>
     </PageWideContainer>
   );

@@ -23,7 +23,7 @@ export const PageWideContainer: FunctionComponent<PropsWithChildren> = ({ childr
       <Box
         sx={{
           display: 'flex',
-          mt: 1,
+          my: 1,
           width: '100%',
           height: contentHeight,
           overflow: 'auto',

@@ -16,7 +16,9 @@ import { DeleteKeywordDialog } from './dialogs/delete-keyword-dialog';
 export const KeywordTabs: FunctionComponent = () => {
   keywordHook.useLoad();
 
-  const height = sizeStore.useHeight(230);
+  const flexDirection = sizeStore.useFlexDirection(768);
+  const height = sizeStore.useHeight(153);
+  const marginBottom = flexDirection === 'row' ? 0 : 1;
 
   const [{ query }, setKeywords] = keywordsStore.useState();
   const colums = keywordsStore.useTableColumns();
@@ -27,7 +29,7 @@ export const KeywordTabs: FunctionComponent = () => {
       <CreateKeywordDialog />
       <UpdateKeywordDialog />
       <DeleteKeywordDialog />
-      <Paper sx={{ padding: 2, minWidth: 350, boxSizing: 'border-box' }}>
+      <Paper sx={{ padding: 2, minWidth: 350, boxSizing: 'border-box', maxHeight: height, marginBottom }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Tabs
             value={query.type}
@@ -56,7 +58,7 @@ export const KeywordTabs: FunctionComponent = () => {
           columns={colums}
           rows={rows}
           emptyText={`${query.type === KeywordType.Include ? '검색어' : '제외어'} 정보가 없습니다.`}
-          height={height < 200 ? 200 : height}
+          height={height - 85}
         />
       </Paper>
     </>
