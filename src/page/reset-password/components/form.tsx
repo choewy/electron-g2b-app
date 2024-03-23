@@ -8,7 +8,6 @@ import { sizeStore } from '@module/size/size.store';
 import { ResetPasswordDto } from '@module/auth/dto/reset-password.dto';
 import { emailAxios } from '@module/email/email.axios';
 import { SendResetPasswordEmailDto } from '@module/email/dto/send-reset-password-email.dto';
-import { authAxios } from '@module/auth/auth.axios';
 import { authStore } from '@module/auth/auth.store';
 
 export const ResetPasswordForm: FunctionComponent = () => {
@@ -25,7 +24,7 @@ export const ResetPasswordForm: FunctionComponent = () => {
   });
 
   const onClickSendEmail = useCallback(async () => {
-    const { error } = await emailAxios.sendResetPassword(new SendResetPasswordEmailDto(body.email));
+    const { error } = await emailAxios.sendResetPasswordEmail(new SendResetPasswordEmailDto(body.email));
 
     if (error) {
       AlertEvent.warning(error.message).dispatch();
@@ -37,7 +36,7 @@ export const ResetPasswordForm: FunctionComponent = () => {
   }, [body.email, setEmailSended]);
 
   const onClickResetPassword = useCallback(async () => {
-    const { error, data } = await authAxios.verifyResetPassword(
+    const { error, data } = await emailAxios.verifyResetPasswordEmail(
       new ResetPasswordDto(body.email, body.tempPassword, body.newPassword, body.confirmPassword),
     );
 

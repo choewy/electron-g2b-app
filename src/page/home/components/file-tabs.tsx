@@ -4,20 +4,20 @@ import { Paper, Tab, Tabs } from '@mui/material';
 
 import { CommonTable } from '@component/tables/common-table';
 
-import { fileHook } from '@module/file/file.hook';
-import { filesStore } from '@module/file/file.store';
+import { excelHook } from '@module/excel/excel.hook';
+import { excelStore } from '@module/excel/excel.store';
 import { sizeStore } from '@module/size/size.store';
 import { SearchType } from '@module/search/dto/enums';
 
 export const FileTabs: FunctionComponent = () => {
-  fileHook.useLoad();
+  excelHook.useLoad();
 
   const height = sizeStore.useHeight(403);
 
-  const [{ query }, setFiles] = filesStore.useState();
+  const [{ query }, setFiles] = excelStore.useState();
 
-  const colums = filesStore.useTableColumns();
-  const rows = filesStore.useTableRows();
+  const colums = excelStore.useTableColumns();
+  const rows = excelStore.useTableRows();
 
   return (
     <Paper sx={{ padding: 2, minWidth: 350, boxSizing: 'border-box', maxHeight: height }}>

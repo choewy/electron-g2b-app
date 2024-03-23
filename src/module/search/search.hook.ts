@@ -4,15 +4,15 @@ import { CustomEventMap, customEventListener } from '@core/custom.event-listener
 
 import { AlertEvent } from '@layout/alert/alert.event';
 
-import { filesStore } from '@module/file/file.store';
-import { fileService } from '@module/file/file.service';
+import { excelStore } from '@module/excel/excel.store';
+import { excelService } from '@module/excel/excel.service';
 
 import { SearchType } from './dto/enums';
 import { searchStore } from './search.store';
 import { searchAxios } from './search.axios';
 import { searchSocket } from './search.socket';
 import { SearchCountEvent } from './events/search-count.event';
-import { SearchFileEvent } from './events/search-file.event';
+import { SearchExcelEvent } from './events/search-excel.event';
 import { SearchEndEvent } from './events/search-end.event';
 
 export class SearchHook {
@@ -36,21 +36,21 @@ export class SearchHook {
 
   useSocket(): void {
     const setSearch = searchStore.useSetState();
-    const setFiles = filesStore.useSetState();
+    const setFiles = excelStore.useSetState();
 
     const customEventMaps = [
       new CustomEventMap(SearchCountEvent, (e) => {
         const type = e.detail.type === SearchType.Bids ? '입찰공고' : '사전규격';
 
-        AlertEvent.info(`${e.detail.count}건의 ${type} 데이터가 검색되었습니다.`).dispatch();
+        AlertEvent.info(`총 ${e.detail.total}건 중 ${e.detail.count}건의 ${type} 데이터가 검색되었습니다.`).dispatch();
       }),
-      new CustomEventMap(SearchFileEvent, (e) => {
+      new CustomEventMap(SearchExcelEvent, (e) => {
         setFiles((prev) => ({
           ...prev,
           rows: prev.query.type === e.detail.type ? [e.detail, ...prev.rows] : prev.rows,
         }));
 
-        fileService.download(e.detail);
+        excelService.download(e.detail);
       }),
       new CustomEventMap(SearchEndEvent, (e) => {
         const type = e.detail.type === SearchType.Bids ? '입찰공고' : '사전규격';

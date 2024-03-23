@@ -10,7 +10,7 @@ export class EmailHook {
 
     const setAuth = authStore.useSetState();
     const getVerifyEmailSeconds = useCallback(async () => {
-      const { ok, data } = await emailAxios.getRemainedVerifyEmailSeconds();
+      const { ok, data } = await emailAxios.getSignUpEmailRemainSeconds();
 
       if (ok === false) {
         return;

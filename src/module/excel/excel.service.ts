@@ -1,9 +1,9 @@
 import { appConfig } from '@config/app.config';
 
-import { FileDto } from './dto/file.dto';
+import { ExcelDto } from './dto/excel.dto';
 
-export class FileServie {
-  private createAnchor(file: FileDto) {
+export class ExcelService {
+  private createAnchor(file: ExcelDto) {
     const url = [appConfig.getCDNUrl(), file.key].join('/');
     const query = `?response-content-disposition=attachment;filename=${file.filename}`;
 
@@ -15,7 +15,7 @@ export class FileServie {
     return a;
   }
 
-  download(file: FileDto): void {
+  download(file: ExcelDto): void {
     const anchor = this.createAnchor(file);
 
     document.body.appendChild(anchor);
@@ -24,4 +24,4 @@ export class FileServie {
   }
 }
 
-export const fileService = new FileServie();
+export const excelService = new ExcelService();

@@ -1,17 +1,17 @@
 import { RecoilStore } from '@core/recoil-store';
 
-import { FileDto } from './dto/file.dto';
+import { ExcelDto } from './dto/excel.dto';
 import { Link, TableCellProps } from '@mui/material';
 import { SearchType } from '@module/search/dto/enums';
 import { appConfig } from '@config/app.config';
 import { DateTime } from 'luxon';
 
-export type FilesStoreProps = {
+export type ExcelStoreProps = {
   query: { type: SearchType };
-  rows: FileDto[];
+  rows: ExcelDto[];
 };
 
-export class FilesStore extends RecoilStore<FilesStoreProps> {
+export class ExcelStore extends RecoilStore<ExcelStoreProps> {
   useTableColumns(): TableCellProps[] {
     return [
       {
@@ -55,7 +55,7 @@ export class FilesStore extends RecoilStore<FilesStoreProps> {
   }
 }
 
-export const filesStore = new FilesStore({
+export const excelStore = new ExcelStore({
   query: { type: SearchType.Bids },
   rows: [],
 });
