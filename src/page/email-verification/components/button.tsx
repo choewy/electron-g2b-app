@@ -18,7 +18,7 @@ export const SendVerifyEmailButton: FunctionComponent = () => {
   const [seconds, setSeconds] = useState<number>(0);
 
   const onClick = useCallback(async () => {
-    const { error } = await emailAxios.sendVerifyEmail();
+    const { error } = await emailAxios.sendSignUpEmail();
 
     if (error) {
       AlertEvent.warning(error.message).dispatch();

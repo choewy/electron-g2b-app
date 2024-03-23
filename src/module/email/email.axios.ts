@@ -1,18 +1,28 @@
 import { appConfig } from '@config/app.config';
 import { AxiosClient } from '@core/axios-client';
 import { SendResetPasswordEmailDto } from './dto/send-reset-password-email.dto';
+import { ProfileDto } from '@module/auth/dto/profile.dto';
+import { ResetPasswordDto } from '@module/auth/dto/reset-password.dto';
 
 export class EmailAxios extends AxiosClient {
-  async getRemainedVerifyEmailSeconds() {
-    return this.get<number>('verify/seconds');
+  async getSignUpEmailRemainSeconds() {
+    return this.get<number>('check/signup');
   }
 
-  async sendVerifyEmail() {
-    return this.post<void>('verify');
+  async sendSignUpEmail() {
+    return this.post<void>('send/signup');
   }
 
-  async sendResetPassword(body: SendResetPasswordEmailDto) {
-    return this.post<void>('reset-password', body);
+  async sendResetPasswordEmail(body: SendResetPasswordEmailDto) {
+    return this.post<void>('send/reset-password', body);
+  }
+
+  async verifySignUpEmail(code: string) {
+    return this.patch<ProfileDto>('verify/signup', { code });
+  }
+
+  async verifyResetPasswordEmail(body: ResetPasswordDto) {
+    return this.patch<ProfileDto>('verify/reset-password', body);
   }
 }
 

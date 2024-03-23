@@ -4,11 +4,11 @@ import { Box } from '@mui/material';
 
 import { AlertEvent } from '@layout/alert/alert.event';
 
-import { authAxios } from '@module/auth/auth.axios';
 import { authStore } from '@module/auth/auth.store';
 import { sizeStore } from '@module/size/size.store';
 
 import { VerificationEmailCodeTextField } from './textfield';
+import { emailAxios } from '@module/email/email.axios';
 
 export const EmailVerificationForm: FunctionComponent = () => {
   const width = sizeStore.useCenterPageContentWidth();
@@ -17,7 +17,7 @@ export const EmailVerificationForm: FunctionComponent = () => {
   const [codes, setCodes] = useState<string[]>(new Array(6).fill(''));
 
   const verifyEmailCode = useCallback(async () => {
-    const { error, data } = await authAxios.verifyEmail(codes.join(''));
+    const { error, data } = await emailAxios.verifySignUpEmail(codes.join(''));
 
     if (error) {
       AlertEvent.warning(error.message).dispatch();
