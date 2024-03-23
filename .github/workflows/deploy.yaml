@@ -74,10 +74,6 @@ jobs:
     env:
       tag: ${{ needs.tagging.outputs.tag }}
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: node gh-pages.js
