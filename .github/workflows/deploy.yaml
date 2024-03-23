@@ -1,74 +1,101 @@
-name: deploy with cloudfront
+name: deploy
 
 on:
   push:
-    tags: ['v*']
-    paths-ignore: ['*.md']
+    branches: ['master']
+    paths: ['package.json']
 
 env:
   tag: ${{ github.ref_name }}
   sha: ${{ github.sha }}
 
 jobs:
-  build:
+  version:
     runs-on: ubuntu-22.04
-
-    strategy:
-      matrix:
-        node: [20]
-
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      changed: ${{ steps.version.outputs.changed }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
         with:
-          node-version: ${{ matrix.node }}
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Create .env
-        env:
-          env: ${{ secrets.ENVIRONMENT }}
+          fetch-depth: 2
+      - id: version
         run: |
-          rm .env*
-          echo "$env" >> .env
+          previous=$(git show HEAD^:package.json | grep '"version"' | awk -F '"' '{print $4}')
+          current=$(git show HEAD:package.json | grep '"version"' | awk -F '"' '{print $4}')
+          changed=$( [ "$previous" = "$current" ] && echo "false" || echo "true" )
+          echo "tag=v$current" >> $GITHUB_OUTPUT
+          echo "changed=$changed" >> $GITHUB_OUTPUT
+
+  tagging:
+    needs: version
+    runs-on: ubuntu-22.04
+    if: needs.version.outputs.changed == 'true'
+    outputs:
+      tag: ${{ needs.version.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: tag
+        run: |
+          tag=${{ needs.version.outputs.tag }}
+          git tag $tag
+          git push origin $tag
+
+  build:
+    needs: tagging
+    runs-on: ubuntu-22.04
+    outputs:
+      tag: ${{ needs.tagging.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          echo "${{ secrets.ENVS }}" >> .env
           echo "REACT_APP_VERSION=$tag" >> .env
-
-      - name: Build Application
-        run: |
+          npm ci
           npm run build
           cp build/index.html build/404.html
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - uses: actions/upload-artifact@v2
         with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          name: build
+          path: build
 
-      - name: Upload to AWS S3
-        env:
-          bucket: ${{ secrets.AWS_S3_BUCKET }}
-        run: aws s3 sync build s3://$bucket --acl bucket-owner-full-control
-
-  deploy:
+  aws-cdn:
     needs: build
-
     runs-on: ubuntu-22.04
-
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Deploy
-        uses: chetan/invalidate-cloudfront-action@master
+      - run: aws s3 sync build s3://$BUCKET --acl bucket-owner-full-control
+        env:
+          BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+      - uses: chetan/invalidate-cloudfront-action@master
         env:
           DISTRIBUTION: ${{ secrets.AWS_DISTRIBUTION_ID }}
           PATHS: /*
+
+  gh-pages:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: node gh-pages.js
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./build
