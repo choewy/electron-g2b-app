@@ -6,7 +6,10 @@
     "start": "env-cmd -f .env craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "version:patch": "npm version patch && source scripts/git-current-branch.sh && git push origin $current_branch",
+    "version:minor": "npm version minor && source scripts/git-current-branch.sh && git push origin $current_branch",
+    "version:major": "npm version major && source scripts/git-current-branch.sh && git push origin $current_branch"
   },
   "dependencies": {
     "@craco/craco": "^7.1.0",
