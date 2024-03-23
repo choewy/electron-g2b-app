@@ -5,10 +5,6 @@ on:
     branches: ['master']
     paths: ['package.json']
 
-env:
-  tag: ${{ github.ref_name }}
-  sha: ${{ github.sha }}
-
 jobs:
   version:
     runs-on: ubuntu-22.04
@@ -41,10 +37,10 @@ jobs:
           git tag $tag
           git push origin $tag
 
-  build:
+  aws-cdn:
     needs: tagging
     runs-on: ubuntu-22.04
-    outputs:
+    env:
       tag: ${{ needs.tagging.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
@@ -55,22 +51,10 @@ jobs:
           rm -rf .env*
           echo "${{ secrets.ENVS }}" >> .env
           echo "REACT_APP_VERSION=$tag" >> .env
+      - run: |
           npm ci
           npm run build
           cp build/index.html build/404.html
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: build
-
-  aws-cdn:
-    needs: build
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: ${{ secrets.AWS_REGION }}
@@ -85,8 +69,10 @@ jobs:
           PATHS: /*
 
   gh-pages:
-    needs: build
+    needs: tagging
     runs-on: ubuntu-22.04
+    env:
+      tag: ${{ needs.tagging.outputs.tag }}
     steps:
       - uses: actions/download-artifact@v2
         with:
@@ -95,6 +81,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: node gh-pages.js
+      - run: |
+          rm -rf .env*
+          echo "${{ secrets.ENVS }}" >> .env
+          echo "REACT_APP_VERSION=$tag" >> .env
+      - run: |
+          npm ci
+          npm run build
+          cp build/index.html build/404.html
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
