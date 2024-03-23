@@ -52,6 +52,7 @@ jobs:
         with:
           node-version: 20
       - run: |
+          rm -rf .env*
           echo "${{ secrets.ENVS }}" >> .env
           echo "REACT_APP_VERSION=$tag" >> .env
           npm ci
