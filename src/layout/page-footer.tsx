@@ -41,7 +41,7 @@ export const PageFooter: FunctionComponent = () => {
           <img
             width={70}
             alt="visits"
-            src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fg2b.client.click&count_bg=%23C60026&title_bg=%23BEBEBE&icon=&icon_color=%23DADADA&title=visits&edge_flat=false"
+            src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fg2b.stdte.click&count_bg=%23C60026&title_bg=%23BEBEBE&icon=&icon_color=%23DADADA&title=visits&edge_flat=false"
           />
         </Link>
       </Box>
