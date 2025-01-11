@@ -13,8 +13,20 @@ import { SignOutPage } from '@page/signout/signout.page';
 import { HomePage } from '@page/home/home.page';
 import { EmailVerificationPage } from '@page/email-verification/email-verification.page';
 import { ResetPasswordPage } from '@page/reset-password/reset-password.page';
+import { MainTenancePage } from '@page/maintenance/maintenance.page';
 
-export const router = createBrowserRouter(
+export const maintenanceRouter = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainTenancePage />,
+  },
+  {
+    path: '*',
+    element: <Navigate to={RouterPath.Home} />,
+  },
+]);
+
+export const serviceRouter = createBrowserRouter(
   [
     {
       element: <App />,

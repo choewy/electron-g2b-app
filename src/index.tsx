@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 
 import { appConfig } from '@config/app.config';
-import { router } from '@router/router';
+import { maintenanceRouter, serviceRouter } from '@router/router';
 
 Settings.defaultZone = appConfig.getTimeZone();
 
@@ -17,7 +17,7 @@ const element = document.getElementById('root');
 if (element) {
   ReactDOM.createRoot(element).render(
     <RecoilRoot>
-      <RouterProvider router={router} />
+      <RouterProvider router={maintenanceRouter} />
     </RecoilRoot>,
   );
 }
